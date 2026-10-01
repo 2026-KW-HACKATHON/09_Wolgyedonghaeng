@@ -4,6 +4,8 @@
 
 [English](README.en.md)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23088350.svg)](https://doi.org/10.5281/zenodo.23088350)
+
 2026 광운대학교 KW 해커톤 9조 **월계동행**의 프로젝트입니다.
 
 - 주제 분야: 배리어프리·생활편의
@@ -206,9 +208,16 @@
 
 프로젝트 관련 문의는 팀 리포지토리 또는 담당자에게 연락해 주세요.
 
+## 인용
+
+이 프로젝트를 인용할 때는 Zenodo 기록을 사용해 주세요.
+
+- DOI: [10.5281/zenodo.23088350](https://doi.org/10.5281/zenodo.23088350)
+
 ## 라이선스
 
-미정 (팀에서 결정 예정)
+- 코드: [GNU Affero General Public License v3.0 only](LICENSE) (SPDX: `AGPL-3.0-only`)
+- 문서 (README와 `docs/`): [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/deed.ko) (CC BY 4.0)
 
 ---
 

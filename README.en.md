@@ -4,6 +4,8 @@
 
 [한국어](README.md)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23088350.svg)](https://doi.org/10.5281/zenodo.23088350)
+
 A project by **Wolgyedonghaeng** (Team 9), 2026 Kwangwoon University KW Hackathon.
 
 - Topic area: Barrier-free and everyday convenience
@@ -206,9 +208,16 @@ To be added as development progresses.
 
 For questions about the project, please contact us through the team repository or a team member.
 
+## Citation
+
+Please cite this project using its Zenodo record.
+
+- DOI: [10.5281/zenodo.23088350](https://doi.org/10.5281/zenodo.23088350)
+
 ## License
 
-To be decided by the team.
+- Code: [GNU Affero General Public License v3.0 only](LICENSE) (SPDX: `AGPL-3.0-only`)
+- Documentation (README and `docs/`): [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0)
 
 ---
 
