@@ -97,7 +97,7 @@ The card is shown on screen; printing and text-message delivery are under review
 
 ## Easy mode (barrier-free)
 
-So that older residents can use the app on their own, the design follows these principles, referring to the Korean Web Content Accessibility Guidelines (KWCAG 2.2) and WCAG 2.2:
+So that older residents can use the app on their own, the design follows these principles. Because Jipgyeol is a mobile app, it primarily follows the Korean mobile application content accessibility guidelines, and also refers to the Korean Web Content Accessibility Guidelines (KWCAG 2.2) and WCAG 2.2:
 
 - Large text and sufficient color contrast
 - Large, easy-to-tap buttons
