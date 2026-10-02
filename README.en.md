@@ -108,6 +108,21 @@ Conditions, amounts, application periods, and sources for each program are in [d
 
 Administrative data knows a household's income and composition, but it cannot tell whether the roof is leaking today. Jipgyeol fills this gap with a resident's photo and a few answers.
 
+### Compared with private home-repair apps
+
+Some private apps now combine a government-support eligibility check with contractor matching. We tried a representative one, Drrk (드르륵), on October 2, 2026.
+
+| | Private home-repair app (Drrk) | Jipgyeol |
+|---|---|---|
+| Starting point for finding support | Choosing a type of construction work (waterproofing, insulation, windows, and so on) | A photo of the problem or plain words ("water is leaking from the ceiling") |
+| Role of photos | Checked by staff in the paid repair flow | AI classifies the problem type to find support programs |
+| Result | Eligible or not eligible | Programs that may apply, one by one, with reasons, sources, and reference dates |
+| Next step | In-house consultation and contractor matching | Counseling at the community service center (public connection) |
+
+Jipgyeol starts from the problem, so residents do not have to translate it into construction terms such as "waterproofing work". The app's screen flow is documented in [docs/related-services/drrk-2026-10-02](docs/related-services/drrk-2026-10-02/) (Korean screenshots).
+
+![Drrk app flow (captured 2026-10-02)](docs/related-services/drrk-2026-10-02/flow.png)
+
 ## Built to be trusted
 
 **Showing why a program was suggested**
@@ -218,6 +233,7 @@ Please cite this project using its Zenodo record.
 
 - Code: [GNU Affero General Public License v3.0 only](LICENSE) (SPDX: `AGPL-3.0-only`)
 - Documentation (README and `docs/`): [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0)
+- Exception: screenshots of other services in `docs/related-services/` are copyright of their operators, quoted for comparison, and are not covered by CC BY 4.0.
 
 ---
 
