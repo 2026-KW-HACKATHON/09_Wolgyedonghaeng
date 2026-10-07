@@ -1,0 +1,41 @@
+{
+  "requestId": "01JEXAMPLE0000000000000004",
+  "classification": {
+    "type": "leak",
+    "confidence": 0.86,
+    "description": "욕실 천장 모서리에 물이 번진 자국이 있어요",
+    "source": "fake",
+    "overridden": false
+  },
+  "needsConfirm": false,
+  "recommendations": [],
+  "checkup": [],
+  "excluded": [
+    {
+      "programId": "S01",
+      "why": "주거급여를 받는 집은 신청할 수 없어요"
+    },
+    {
+      "programId": "C02",
+      "why": "주거급여를 받는 집은 신청할 수 없어요"
+    }
+  ],
+  "rankerUsed": "rules",
+  "fallbackUsed": false,
+  "version": {
+    "server": "git:abc1234",
+    "rulesHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "programsAsOf": "2026-10-06",
+    "classifier": {
+      "provider": "fake",
+      "model": null,
+      "promptHash": null
+    },
+    "ranker": {
+      "provider": "rules",
+      "model": null,
+      "promptHash": null
+    },
+    "confirmThreshold": 0.7
+  }
+}

@@ -2,18 +2,115 @@
   "openapi": "3.1.0",
   "info": {
     "title": "집결 서버",
-    "version": "1"
+    "version": "0.1.0"
   },
   "paths": {
+    "/programs": {
+      "get": {
+        "tags": [
+          "programs"
+        ],
+        "summary": "List Programs",
+        "operationId": "list_programs_programs_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgramsFile"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/programs/{program_id}": {
+      "get": {
+        "tags": [
+          "programs"
+        ],
+        "summary": "Read Program",
+        "operationId": "read_program_programs__program_id__get",
+        "parameters": [
+          {
+            "name": "program_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Program Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Program"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/analyze": {
       "post": {
-        "summary": "Analyze",
-        "operationId": "analyze_analyze_post",
+        "tags": [
+          "analyze"
+        ],
+        "summary": "Post Analyze",
+        "operationId": "post_analyze_analyze_post",
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_analyze_analyze_post"
+                "$ref": "#/components/schemas/Body_post_analyze_analyze_post"
               }
             }
           },
@@ -31,7 +128,7 @@
             }
           },
           "400": {
-            "description": "오류",
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -40,76 +137,8 @@
               }
             }
           },
-          "422": {
-            "description": "오류",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "오류",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/address/reverse": {
-      "get": {
-        "summary": "Address Reverse",
-        "operationId": "address_reverse_address_reverse_get",
-        "parameters": [
-          {
-            "name": "lat",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "number",
-              "title": "Lat"
-            }
-          },
-          {
-            "name": "lng",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "number",
-              "title": "Lng"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Address"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "오류",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "오류",
+          "502": {
+            "description": "Bad Gateway",
             "content": {
               "application/json": {
                 "schema": {
@@ -131,10 +160,78 @@
         }
       }
     },
+    "/address/reverse": {
+      "get": {
+        "tags": [
+          "address"
+        ],
+        "summary": "Reverse",
+        "operationId": "reverse_address_reverse_get",
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "maximum": 90,
+              "minimum": -90,
+              "title": "Lat"
+            }
+          },
+          {
+            "name": "lng",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "maximum": 180,
+              "minimum": -180,
+              "title": "Lng"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Address"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/address/search": {
       "get": {
-        "summary": "Address Search",
-        "operationId": "address_search_address_search_get",
+        "tags": [
+          "address"
+        ],
+        "summary": "Search",
+        "operationId": "search_address_search_get",
         "parameters": [
           {
             "name": "q",
@@ -142,6 +239,8 @@
             "required": true,
             "schema": {
               "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
               "title": "Q"
             }
           }
@@ -156,27 +255,7 @@
                   "items": {
                     "$ref": "#/components/schemas/Address"
                   },
-                  "title": "Response Address Search Address Search Get"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "오류",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "오류",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "title": "Response Search Address Search Get"
                 }
               }
             }
@@ -196,8 +275,11 @@
     },
     "/building": {
       "get": {
-        "summary": "Building Info",
-        "operationId": "building_info_building_get",
+        "tags": [
+          "building"
+        ],
+        "summary": "Read Building",
+        "operationId": "read_building_building_get",
         "parameters": [
           {
             "name": "sigunguCd",
@@ -205,6 +287,7 @@
             "required": true,
             "schema": {
               "type": "string",
+              "pattern": "^\\d{5}$",
               "title": "Sigungucd"
             }
           },
@@ -214,6 +297,7 @@
             "required": true,
             "schema": {
               "type": "string",
+              "pattern": "^\\d{5}$",
               "title": "Bjdongcd"
             }
           },
@@ -223,6 +307,7 @@
             "required": true,
             "schema": {
               "type": "string",
+              "pattern": "^[01]$",
               "title": "Platgbcd"
             }
           },
@@ -232,6 +317,7 @@
             "required": true,
             "schema": {
               "type": "string",
+              "pattern": "^\\d{4}$",
               "title": "Bun"
             }
           },
@@ -241,6 +327,7 @@
             "required": true,
             "schema": {
               "type": "string",
+              "pattern": "^\\d{4}$",
               "title": "Ji"
             }
           }
@@ -256,117 +343,12 @@
               }
             }
           },
-          "400": {
-            "description": "오류",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "오류",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "422": {
             "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/programs": {
-      "get": {
-        "summary": "Programs",
-        "operationId": "programs_programs_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProgramsFile"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/programs/{id}": {
-      "get": {
-        "summary": "Program",
-        "operationId": "program_programs__id__get",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Program"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "오류",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/health": {
-      "get": {
-        "summary": "Health",
-        "operationId": "health_health_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -574,17 +556,22 @@
         ],
         "title": "Apply"
       },
-      "Body_analyze_analyze_post": {
+      "Body_post_analyze_analyze_post": {
         "properties": {
           "household": {
             "type": "string",
-            "title": "Household",
-            "description": "Household JSON 문자열"
+            "title": "Household"
           },
           "address": {
-            "type": "string",
-            "title": "Address",
-            "description": "Address JSON 문자열"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
           },
           "building": {
             "anyOf": [
@@ -595,8 +582,18 @@
                 "type": "null"
               }
             ],
-            "title": "Building",
-            "description": "Building JSON 문자열 (null 가능)"
+            "title": "Building"
+          },
+          "overrideType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overridetype"
           },
           "images[]": {
             "anyOf": [
@@ -611,28 +608,14 @@
                 "type": "null"
               }
             ],
-            "title": "Images[]",
-            "description": "JPEG, 긴 변 1024px 이하, 최대 3장"
-          },
-          "overrideType": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Overridetype",
-            "description": "S4에서 바꾼 문제 유형"
+            "title": "Images[]"
           }
         },
         "type": "object",
         "required": [
-          "household",
-          "address"
+          "household"
         ],
-        "title": "Body_analyze_analyze_post"
+        "title": "Body_post_analyze_analyze_post"
       },
       "Building": {
         "properties": {

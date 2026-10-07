@@ -42,11 +42,14 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@react-native/jest-preset": "^0.86.3",
     "@types/jest": "^30.0.0",
     "@types/react": "~19.2.2",
     "eslint": "^9.39.5",
     "eslint-config-expo": "^57.0.2",
+    "jest": "^30.5.2",
     "jest-expo": "^57.0.5",
+    "openapi-typescript": "^7.13.0",
     "prettier": "^3.9.9",
     "typescript": "~6.0.3"
   },
@@ -57,7 +60,8 @@
     "web": "expo start --web",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "jest"
+    "test": "jest",
+    "sync-contracts": "node scripts/sync-contracts.js"
   },
   "private": true,
   "jest": {
