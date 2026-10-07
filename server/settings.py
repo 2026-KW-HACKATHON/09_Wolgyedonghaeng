@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     OPENROUTER_API_KEY: str = ""
     OPENROUTER_VISION_MODEL: str = ""
     OPENROUTER_TEXT_MODEL: str = ""
+    OPENROUTER_MAX_TOKENS: int = 4000  # 응답 상한. 비우면 모델 최대치만큼 크레딧을 예약해 402가 날 수 있다
     KAKAO_REST_KEY: str = ""
     KAKAO_CLIENT_SECRET: str = ""
     APP_TOKEN_SECRET: str = ""  # 비면 프로세스 시작 시 임의로 만든다 (재시작하면 로그인이 풀린다)

@@ -91,6 +91,7 @@ class LLMRanker:
         self.api_key = settings.OPENROUTER_API_KEY
         self.model = settings.OPENROUTER_TEXT_MODEL
         self.timeout = settings.RANK_TIMEOUT
+        self.max_tokens = settings.OPENROUTER_MAX_TOKENS
         self.max = settings.RANK_MAX
         self.transport = transport
 
@@ -125,6 +126,7 @@ class LLMRanker:
                     schema_name="program_ranking",
                     schema=schema,
                     timeout=remain,
+                    max_tokens=self.max_tokens,
                     transport=self.transport,
                 )
             except OpenRouterError as e:
