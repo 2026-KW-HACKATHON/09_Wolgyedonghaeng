@@ -25,7 +25,9 @@ export function ChoiceButton({ title, selected, onPress, size, accessibilityLabe
       onPress={onPress}
       style={({ pressed }) => [
         {
-          height: square ? dim.personButton : dim.incomeButton,
+          minHeight: square ? dim.personButton : dim.incomeButton,
+          paddingVertical: 8,
+          paddingHorizontal: square ? 0 : 16,
           width: square ? dim.personButton : undefined,
           alignSelf: square ? undefined : 'stretch',
           borderRadius: radius.md,

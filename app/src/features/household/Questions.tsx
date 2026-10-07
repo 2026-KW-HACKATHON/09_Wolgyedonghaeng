@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextInput, View, type ViewStyle } from 'react-native';
+import { TextInput, View } from 'react-native';
 import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
 import { bands, needsCounselConfirm } from '../../config/income-2026';
 import { copy } from '../../config/copy';
@@ -7,9 +7,6 @@ import type { Household, IncomeBand, Tenure, Trait, YesNoUnknown } from '../../s
 import { ChoiceButton, Meta, Title, useReducedMotion, useTheme } from '../../ui';
 import { parseSize } from './logic';
 import { TextChoice } from './TextChoice';
-
-/** 글씨를 크게 키워도 잘리지 않게 높이를 최소값으로 바꾼다. */
-const flexible: ViewStyle = { height: undefined, minHeight: 64, paddingVertical: 8, paddingHorizontal: 16 };
 
 type Patch = (p: Partial<Household>) => void;
 
@@ -118,7 +115,6 @@ export function IncomeQuestion({
                 title={b.label}
                 selected={income === b.code}
                 onPress={() => onChange(b.code)}
-                style={flexible}
               />
             ))}
           </Animated.View>
@@ -159,7 +155,6 @@ export function HousingBenefitQuestion({
             title={name}
             selected={value === code}
             onPress={() => onChange(code)}
-            style={flexible}
           />
         ))}
       </View>
@@ -185,7 +180,6 @@ export function TenureQuestion({ value, onChange }: { value?: Tenure; onChange: 
             title={name}
             selected={value === code}
             onPress={() => onChange(code)}
-            style={flexible}
           />
         ))}
       </View>
@@ -217,7 +211,6 @@ export function TraitsQuestion({
             title={name}
             selected={code === 'none' ? value === 'none' : Array.isArray(value) && value.includes(code)}
             onPress={() => onToggle(code)}
-            style={flexible}
           />
         ))}
       </View>
