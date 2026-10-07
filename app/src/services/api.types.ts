@@ -123,6 +123,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/kakao/url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Kakao Url */
+        get: operations["kakao_url_auth_kakao_url_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/kakao": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Kakao Login */
+        post: operations["kakao_login_auth_kakao_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/me/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Profile */
+        get: operations["read_profile_me_profile_get"];
+        /** Write Profile */
+        put: operations["write_profile_me_profile_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -191,6 +243,31 @@ export interface components {
             text: string;
             /** Nexttext */
             nextText?: string | null;
+        };
+        /** AuthRequest */
+        AuthRequest: {
+            /** Code */
+            code: string;
+            /** Redirecturi */
+            redirectUri: string;
+        };
+        /** AuthResponse */
+        AuthResponse: {
+            /** Token */
+            token: string;
+            user: components["schemas"]["AuthUser"];
+        };
+        /** AuthUrlResponse */
+        AuthUrlResponse: {
+            /** Url */
+            url: string;
+        };
+        /** AuthUser */
+        AuthUser: {
+            /** Id */
+            id: string;
+            /** Nickname */
+            nickname: string;
         };
         /** Body_post_analyze_analyze_post */
         Body_post_analyze_analyze_post: {
@@ -333,6 +410,49 @@ export interface components {
             version: components["schemas"]["VersionInfo"];
             /** Mock */
             mock?: string[];
+        };
+        /** Profile */
+        Profile: {
+            household?: components["schemas"]["ProfileHousehold"] | null;
+            address?: components["schemas"]["ProfileAddress"] | null;
+        };
+        /**
+         * ProfileAddress
+         * @description 주소 기본값. 채워진 것만 담는 부분 객체.
+         */
+        ProfileAddress: {
+            /** Road */
+            road?: string | null;
+            /** Jibun */
+            jibun?: string | null;
+            /** Sidocd */
+            sidoCd?: string | null;
+            /** Sigungucd */
+            sigunguCd?: string | null;
+            /** Bjdongcd */
+            bjdongCd?: string | null;
+            /** Platgbcd */
+            platGbCd?: string | null;
+            /** Bun */
+            bun?: string | null;
+            /** Ji */
+            ji?: string | null;
+        };
+        /**
+         * ProfileHousehold
+         * @description 가구 기본값. 채워진 것만 담는 부분 객체.
+         */
+        ProfileHousehold: {
+            /** Size */
+            size?: number | null;
+            /** Income */
+            income?: ("le48" | "48_60" | "60_100" | "gt100" | "unknown") | null;
+            /** Housingbenefit */
+            housingBenefit?: ("yes" | "no" | "unknown") | null;
+            /** Tenure */
+            tenure?: ("own" | "rent" | "public_rent" | "unknown") | null;
+            /** Traits */
+            traits?: ("elderly65" | "disabled" | "welfare")[] | string | null;
         };
         /** Program */
         Program: {
@@ -727,6 +847,163 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Building"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    kakao_url_auth_kakao_url_get: {
+        parameters: {
+            query: {
+                redirectUri: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthUrlResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    kakao_login_auth_kakao_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AuthRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Bad Gateway */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    read_profile_me_profile_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Profile"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    write_profile_me_profile_put: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Profile"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Profile"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
                 };
             };
             /** @description Validation Error */

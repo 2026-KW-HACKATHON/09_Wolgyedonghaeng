@@ -1,7 +1,15 @@
 import { ApiError } from './api.error';
 import { appendImage } from './api.formdata';
 import type { Api } from './api.contract';
-import type { Address, AnalyzeResponse, Building, HealthResponse, ProgramsFile } from './api.models';
+import type {
+  Address,
+  AnalyzeResponse,
+  AuthResponse,
+  Building,
+  HealthResponse,
+  ProgramsFile,
+  RemoteProfile,
+} from './api.models';
 
 const BASE_URL = (process.env.EXPO_PUBLIC_API_BASE_URL ?? 'http://localhost:8000').replace(/\/+$/, '');
 
@@ -64,6 +72,33 @@ export const realApi: Api = {
     request<Address>(`/address/reverse?${qs({ lat, lng })}`, {}, TIMEOUT_MS.address),
 
   searchAddress: (q) => request<Address[]>(`/address/search?${qs({ q })}`, {}, TIMEOUT_MS.address),
+
+  async getKakaoAuthUrl(redirectUri) {
+    const res = await request<{ url: string }>(`/auth/kakao/url?${qs({ redirectUri })}`, {}, TIMEOUT_MS.address);
+    return res.url;
+  },
+
+  loginKakao: (code, redirectUri) =>
+    request<AuthResponse>(
+      '/auth/kakao',
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ code, redirectUri }),
+      },
+      TIMEOUT_MS.address,
+    ),
+
+  putMyProfile: (token, profile) =>
+    request<RemoteProfile>(
+      '/me/profile',
+      {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
+        body: JSON.stringify(profile),
+      },
+      TIMEOUT_MS.address,
+    ),
 
   getBuilding: (a) =>
     request<Building>(

@@ -1,9 +1,11 @@
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Linking, View } from 'react-native';
 import { copy } from '../src/config/copy';
 import { AddressSearch } from '../src/features/location/AddressSearch';
 import { OUT_OF_REGION_URL, isOutOfRegion } from '../src/features/location/region';
+import { useProfileDraft } from '../src/features/profile/draft';
+import { StartFromSaved } from '../src/features/profile/StartFromSaved';
 import { startLookup, waitLookup } from '../src/features/location/startLookup';
 import { getBuilding, type Address } from '../src/services/api';
 import { useFlow } from '../src/store/flow';
@@ -14,6 +16,9 @@ const LOOKUP_WAIT_MS = 5000;
 
 export default function AddressScreen() {
   const router = useRouter();
+  // 내 정보 화면에서 [주소 다시 찾기]로 들어왔으면 고른 주소를 내 정보에 돌려주고 돌아간다
+  const { pick } = useLocalSearchParams<{ pick?: string }>();
+  const forProfile = pick === 'profile';
   const { space } = useTheme();
   const lookup = useFlow((s) => s.lookup);
   const address = useFlow((s) => s.address);
@@ -61,6 +66,12 @@ export default function AddressScreen() {
 
   const confirm = useCallback(
     (a: Address) => {
+      if (forProfile) {
+        useProfileDraft.getState().setAddress(a);
+        if (router.canGoBack()) router.back();
+        else router.replace('/profile');
+        return;
+      }
       if (useFlow.getState().address !== a) {
         setAddress(a);
         setBuilding(undefined);
@@ -71,7 +82,7 @@ export default function AddressScreen() {
       }
       void proceed(a);
     },
-    [proceed, setAddress, setBuilding],
+    [forProfile, router, proceed, setAddress, setBuilding],
   );
 
   const header = <StepHeader step={3} onBack={() => (outside ? setOutside(null) : router.back())} />;
@@ -164,6 +175,7 @@ export default function AddressScreen() {
     <Screen scroll>
       {header}
       <View style={{ gap: space.lg, paddingTop: space.lg, paddingBottom: space.xl }}>
+        {forProfile ? null : <StartFromSaved scope="address" />}
         <Voice accessibilityRole="header">{copy.address.searchTitle}</Voice>
         {lookup === 'failed' && !manual ? <Body tone="inkSoft">{copy.address.permissionDenied}</Body> : null}
         <AddressSearch disabled={busy} onPick={confirm} />

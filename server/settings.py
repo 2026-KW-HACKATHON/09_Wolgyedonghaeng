@@ -16,14 +16,23 @@ class Settings(BaseSettings):
     OPENROUTER_TEXT_MODEL: str = ""
     KAKAO_REST_KEY: str = ""
     KAKAO_CLIENT_SECRET: str = ""
+    APP_TOKEN_SECRET: str = ""  # 비면 프로세스 시작 시 임의로 만든다 (재시작하면 로그인이 풀린다)
+    TOKEN_TTL_DAYS: int = 30
+    AUTH_TIMEOUT: float = 5.0
     JUSO_API_KEY: str = ""
     BLDG_API_KEY: str = ""
     FAKE_CLASSIFIER_TYPE: str = "leak"  # 가짜 분류기가 돌려줄 유형
     FAKE_CLASSIFIER_CONFIDENCE: float = 0.82  # 가짜 분류기 확신도
     CLASSIFY_TIMEOUT: float = 8.0
+    RANK_TIMEOUT: float = 6.0  # 추천(LLM) 전체 제한 시간. 넘으면 규칙 추천으로 대체
+    REVERSE_TIMEOUT: float = 4.0  # 좌표 → 주소
+    SEARCH_TIMEOUT: float = 3.0  # 주소 검색
+    BUILDING_TIMEOUT: float = 3.0  # 건축물대장
     MAX_IMAGES: int = 3
     MAX_REQUEST_BYTES: int = 10 * 1024 * 1024
     CORS_ORIGINS: str = "http://localhost:8081,http://localhost:19006"
+    RATE_LIMIT_PER_MIN: int = 60  # IP당 분당 요청 수. 0이면 끈다. /health 는 세지 않는다
+    TRUST_PROXY: bool = False  # 프록시 뒤(Render 등)에서만 true: X-Forwarded-For 첫 값을 IP로 쓴다
 
 
 @lru_cache

@@ -1,6 +1,8 @@
 import logging
 from typing import Protocol
 
+import httpx
+
 from schemas import Address
 from settings import Settings
 
@@ -89,8 +91,127 @@ class FakeAddressService:
         return hits[:10]
 
 
+KAKAO_COORD_URL = "https://dapi.kakao.com/v2/local/geo/coord2address.json"
+JUSO_URL = "https://business.juso.go.kr/addrlink/addrLinkApi.do"
+
+
+def _to_address(item: dict) -> Address | None:
+    """행안부 juso 항목 하나를 Address 로 바꾼다. 모자란 값이 있으면 None."""
+    try:
+        adm = str(item["admCd"])
+        if len(adm) != 10:
+            return None
+        return Address(
+            road=item["roadAddr"],
+            jibun=item.get("jibunAddr") or None,
+            sidoCd=adm[:2],
+            sigunguCd=adm[:5],
+            bjdongCd=adm[5:10],
+            platGbCd="1" if str(item.get("mtYn", "0")) == "1" else "0",
+            bun=str(int(item["lnbrMnnm"])).zfill(4),
+            ji=str(int(item.get("lnbrSlno") or 0)).zfill(4),
+        )
+    except (KeyError, ValueError, TypeError):
+        return None
+
+
+class RealAddressService:
+    """카카오 로컬(좌표 → 지번 주소)과 행안부 도로명주소(검색, 법정동코드·번지)를 쓴다.
+
+    reverse 는 두 키가 모두 있어야 하고, search 는 행안부 키만 있으면 된다.
+    실패는 오류로 올리지 않고 None, 빈 목록으로 돌려준다. 주소·좌표는 로그에 남기지 않는다.
+    """
+
+    def __init__(self, settings: Settings, transport: httpx.AsyncBaseTransport | None = None):
+        self.kakao_key = settings.KAKAO_REST_KEY
+        self.juso_key = settings.JUSO_API_KEY
+        self.reverse_timeout = settings.REVERSE_TIMEOUT
+        self.search_timeout = settings.SEARCH_TIMEOUT
+        self.transport = transport
+
+    async def _juso(self, keyword: str, count: int, timeout: float) -> list[dict]:
+        # 응답 형식은 실제 키로 확인 필요 (results.common.errorCode, results.juso[])
+        async with httpx.AsyncClient(transport=self.transport, timeout=timeout) as client:
+            resp = await client.get(
+                JUSO_URL,
+                params={
+                    "confmKey": self.juso_key,
+                    "keyword": keyword,
+                    "resultType": "json",
+                    "currentPage": 1,
+                    "countPerPage": count,
+                },
+            )
+        if resp.status_code != 200:
+            raise ValueError(f"juso http {resp.status_code}")
+        results = resp.json()["results"]
+        if str(results["common"]["errorCode"]) != "0":
+            raise ValueError(f"juso error {results['common']['errorCode']}")
+        return results.get("juso") or []
+
+    async def reverse(self, lat: float, lng: float) -> Address | None:
+        if not (self.kakao_key and self.juso_key):
+            return None
+        try:
+            # 응답 형식은 실제 키로 확인 필요 (documents[0].address)
+            async with httpx.AsyncClient(
+                transport=self.transport, timeout=self.reverse_timeout
+            ) as client:
+                resp = await client.get(
+                    KAKAO_COORD_URL,
+                    params={"x": lng, "y": lat},
+                    headers={"Authorization": f"KakaoAK {self.kakao_key}"},
+                )
+            if resp.status_code != 200:
+                log.warning("kakao reverse http %s", resp.status_code)
+                return None
+            docs = resp.json().get("documents") or []
+            jibun = (docs[0].get("address") or {}) if docs else {}
+            name = jibun.get("address_name")
+            if not name:
+                return None
+            items = await self._juso(name, 5, self.reverse_timeout)
+            main_no = str(jibun.get("main_address_no") or "").lstrip("0")
+            # 지번 본번이 같은 항목을 먼저 고르고, 없으면 첫 항목
+            items.sort(key=lambda i: 0 if main_no and str(i.get("lnbrMnnm")) == main_no else 1)
+            for item in items:
+                addr = _to_address(item)
+                if addr:
+                    return addr
+            return None
+        except (httpx.HTTPError, ValueError, KeyError, TypeError, AttributeError) as e:
+            log.warning("reverse failed: %s", type(e).__name__)
+            return None
+
+    async def search(self, q: str) -> list[Address]:
+        if not self.juso_key:
+            return []
+        try:
+            items = await self._juso(q, 10, self.search_timeout)
+        except (httpx.HTTPError, ValueError, KeyError, TypeError) as e:
+            log.warning("search failed: %s", type(e).__name__)
+            return []
+        out = [a for a in (_to_address(i) for i in items) if a]
+        return out[:10]
+
+
+class _Mixed:
+    """reverse 는 두 키가 있어야 실제, search 는 행안부 키만 있으면 실제."""
+
+    def __init__(self, real: RealAddressService, fake: FakeAddressService):
+        self.real, self.fake = real, fake
+
+    async def reverse(self, lat: float, lng: float) -> Address | None:
+        has_both = self.real.kakao_key and self.real.juso_key
+        return await (self.real if has_both else self.fake).reverse(lat, lng)
+
+    async def search(self, q: str) -> list[Address]:
+        return await (self.real if self.real.juso_key else self.fake).search(q)
+
+
 def get_address_service(settings: Settings) -> AddressService:
     if not (settings.KAKAO_REST_KEY and settings.JUSO_API_KEY):
         log.warning("[MOCK] address")
-    # TODO(키 반영 후): 카카오·행안부 실제 구현
-    return FakeAddressService()
+    if not (settings.KAKAO_REST_KEY or settings.JUSO_API_KEY):
+        return FakeAddressService()
+    return _Mixed(RealAddressService(settings), FakeAddressService())

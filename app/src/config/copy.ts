@@ -23,7 +23,10 @@ export const copy = {
   // S0 홈
   home: {
     login: '로그인',
-    loginLabel: '로그인',
+    loginLabel: '카카오로 로그인하기',
+    myInfo: '내 정보',
+    myInfoLabel: '내 정보 보기',
+    loginFailed: '로그인이 잘 안 됐어요. 다시 해 볼게요.',
     themeMenu: '화면 밝기',
     themeMenuLabel: '화면 밝기 바꾸기',
     themeAuto: '자동',
@@ -168,7 +171,7 @@ export const copy = {
     whoBuilding: '집을 다 지은 해',
     whoRegion: '지역',
     whoConditions: '그 밖의 조건',
-    whyMaybe: '이 가구가 해당될 수 있는 이유',
+    whyMaybe: '이 가구가 받을 수 있을 수도 있는 이유',
     period: '접수 상태와 기간',
     howTo: '신청 방법',
     phone: '문의 전화',
@@ -238,6 +241,53 @@ export const copy = {
     loginKakao: '카카오로 로그인',
     loginLater: '괜찮아요',
     loginNever: '다시 보지 않기',
+  },
+
+  // 로그인 안내 모달, 로그인 돌아오는 화면
+  auth: {
+    kakaoLabel: '카카오 계정으로 로그인하기',
+    laterLabel: '로그인하지 않고 카드 보기',
+    neverLabel: '로그인 안내를 다시 보지 않기',
+    working: '로그인하고 있어요',
+    failed: '로그인이 잘 안 됐어요. 다시 해 볼게요.',
+  },
+
+  // S7 내 정보
+  profile: {
+    title: '내 정보',
+    back: '뒤로',
+    backLabel: '처음 화면으로 돌아가기',
+    signedInAs: (name: string) => `${name} 님으로 로그인했어요`,
+    signedInNoName: '로그인했어요',
+    signedOut: '로그인하지 않았어요',
+    signedOutHelp: '로그인하면 정보가 지워지지 않아요',
+    addressTitle: '사는 곳',
+    addressNone: '아직 정한 주소가 없어요',
+    addressAgain: '주소 다시 찾기',
+    addressAgainLabel: '사는 곳 주소를 다시 찾기',
+    save: '저장하기',
+    saveLabel: '내 정보 저장하기',
+    saveDisabledReason: '가구 정보에 모두 답하면 저장할 수 있어요',
+    saved: '저장했어요. 다음 검색에서 이 정보로 시작할 수 있어요.',
+    savedLocalOnly: '내 기기에 저장했어요. 서버에는 올리지 못했어요.',
+    themeTitle: '화면 밝기',
+    logout: '로그아웃',
+    logoutLabel: '로그아웃하기',
+    logoutAsk: '로그아웃할까요?',
+    logoutYes: '로그아웃하기',
+    logoutNo: '그만둘게요',
+    keepAsk: '내 기기에 저장한 사업·카드를 남길까요?',
+    keepYes: '남길게요',
+    keepNo: '지울게요',
+    keepNoLabel: '저장한 사업과 카드를 지우고 로그아웃하기',
+  },
+
+  // 저장된 정보로 시작 (S1, S2)
+  startFromSaved: {
+    ask: '저장된 정보로 시작할까요?',
+    yes: '네',
+    yesLabel: '저장된 정보로 시작하기',
+    no: '아니요, 새로 입력할게요',
   },
 
   // 실패 화면 공통

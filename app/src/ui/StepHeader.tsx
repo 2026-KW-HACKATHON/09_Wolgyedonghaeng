@@ -55,3 +55,24 @@ export function StepHeader({ step, total = 3, onBack }: Props) {
     </View>
   );
 }
+
+/** 단계 표시가 없는 화면(S5, S6)의 맨 위 [뒤로] */
+export function BackLink({ onBack }: { onBack: () => void }) {
+  const { size } = useTheme();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="뒤로 가기"
+      onPress={onBack}
+      style={({ pressed }) => ({
+        minHeight: size.touch,
+        minWidth: size.touch,
+        alignSelf: 'flex-start',
+        justifyContent: 'center',
+        opacity: pressed ? 0.85 : 1,
+      })}
+    >
+      <Body tone="inkSoft">‹ 뒤로</Body>
+    </Pressable>
+  );
+}

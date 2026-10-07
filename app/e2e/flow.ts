@@ -78,6 +78,9 @@ export async function runFullFlow(page: Page, startUrl: string) {
 
   // 상담 카드 → S6
   await page.getByRole('button', { name: '상담 카드 만들기' }).click();
+  // 비로그인으로 처음 카드를 만들면 로그인 안내가 한 번 뜬다
+  await expect(page.getByText('로그인하면 정보가 지워지지 않아요')).toBeVisible();
+  await page.getByRole('button', { name: '로그인하지 않고 카드 보기' }).click();
   await page.waitForURL(/card\//);
   await expect(page.getByText('상담 준비 카드')).toBeVisible();
   const [download] = await Promise.all([
@@ -89,10 +92,27 @@ export async function runFullFlow(page: Page, startUrl: string) {
 
   // 홈에 저장 목록
   await page.getByRole('button', { name: '처음 화면으로 가기' }).first().click();
-  await expect(page.getByRole('heading', { name: '저장한 지원사업' }).first()).toBeVisible();
+  await expect(page.getByRole('heading', { name: '저장한 지원사업' })).toHaveCount(1); // 홈이 스택에 두 번 남지 않는다
+  await expect(page.getByRole('heading', { name: '저장한 지원사업' })).toBeVisible();
   await expect(page.getByRole('button', { name: /^저장한 사업/ }).first()).toBeVisible();
   await expect(page.getByRole('heading', { name: '저장한 상담 카드' }).first()).toBeVisible();
   await expect(page.getByRole('button', { name: /^상담 카드/ }).first()).toBeVisible();
   expect(programName.length).toBeGreaterThan(0);
   expect(errors).toEqual([]);
+}
+
+/** 홈 오른쪽 위 [로그인] → (가짜) 로그인 → [내 정보] */
+export async function loginFromHome(page: Page) {
+  await page.getByRole('button', { name: '카카오로 로그인하기' }).click();
+  await expect(page.getByRole('button', { name: '내 정보 보기' })).toBeVisible();
+}
+
+/** 내 정보: 1명, 소득 첫 구간, 주거급여 아니요, 자가 → 저장 */
+export async function fillAndSaveProfile(page: Page) {
+  await page.getByLabel('1명', { exact: true }).click();
+  await page.getByText('만 원 이하').first().click();
+  await page.getByRole('radio', { name: '아니요', exact: true }).click();
+  await page.getByText('우리 집(자가)').click();
+  await page.getByRole('button', { name: '내 정보 저장하기' }).click();
+  await expect(page.getByText(/저장했어요/).first()).toBeVisible();
 }

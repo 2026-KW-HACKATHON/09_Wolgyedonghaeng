@@ -1,7 +1,9 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, Pressable, View } from 'react-native';
 import { copy } from '../../config/copy';
-import { Body, Label, useTheme, type ThemeSetting } from '../../ui';
+import { auth, useAuthUser } from '../auth';
+import { Body, Label, Meta, useTheme, type ThemeSetting } from '../../ui';
 
 const OPTIONS: [ThemeSetting, string][] = [
   ['auto', copy.home.themeAuto],
@@ -32,8 +34,11 @@ function TopTextButton({ title, label, onPress }: { title: string; label: string
   );
 }
 
-/** 로고, 화면 밝기 메뉴, 로그인 자리. 로고는 홈에서만 쓴다 (design.md 1절). */
-export function HomeTopBar({ onPressLogin }: { onPressLogin?: () => void }) {
+/** 로고, 화면 밝기 메뉴, 로그인(로그인했으면 내 정보). 로고는 홈에서만 쓴다 (design.md 1절). */
+export function HomeTopBar() {
+  const router = useRouter();
+  const user = useAuthUser();
+  const [failed, setFailed] = useState(false);
   const { logo, setting, setSetting, colors, radius, size, space } = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -52,9 +57,27 @@ export function HomeTopBar({ onPressLogin }: { onPressLogin?: () => void }) {
             label={copy.home.themeMenuLabel}
             onPress={() => setOpen((v) => !v)}
           />
-          <TopTextButton title={copy.home.login} label={copy.home.loginLabel} onPress={onPressLogin} />
+          {auth.enabled ? (
+            user ? (
+              <TopTextButton
+                title={copy.home.myInfo}
+                label={copy.home.myInfoLabel}
+                onPress={() => router.push('/profile')}
+              />
+            ) : (
+              <TopTextButton
+                title={copy.home.login}
+                label={copy.home.loginLabel}
+                onPress={() => {
+                  setFailed(false);
+                  auth.signIn('/').catch(() => setFailed(true));
+                }}
+              />
+            )
+          ) : null}
         </View>
       </View>
+      {failed ? <Meta accessibilityLiveRegion="polite">{copy.home.loginFailed}</Meta> : null}
       {open ? (
         <View style={{ flexDirection: 'row', gap: space.xs }} accessibilityRole="radiogroup">
           {OPTIONS.map(([key, name]) => {

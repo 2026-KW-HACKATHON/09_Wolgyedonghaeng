@@ -21,6 +21,10 @@ function make(role: TypeRole, defaultTone: NonNullable<Props['tone']>) {
       ...wordBreakStyle,
     };
     if (role === 'amount') base.fontVariant = ['tabular-nums'];
+    // 금액 줄: "1,200만 원"에서 "원"만 다음 줄로 떨어지지 않게 단위 앞 공백을 붙여 쓴다
+    if (role === 'amount' && typeof rest.children === 'string') {
+      rest.children = rest.children.replace(/([0-9만억천]) (원|명|%|개월)/g, '$1\u00a0$2');
+    }
     return <RNText {...rest} style={[base, style]} />;
   };
   Comp.displayName = role;

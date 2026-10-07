@@ -1,0 +1,17 @@
+# 서버 이미지는 저장소 루트를 빌드 컨텍스트로 쓴다: docker build -f server/Dockerfile .
+# 이미지에는 server/ 와 contracts/problem-types.json 만 들어가면 된다.
+.git
+.github
+app
+docs
+**/node_modules
+**/.venv
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.ruff_cache
+**/.env
+**/*.sqlite3
+server/tests
+server/eval
+server/scripts
