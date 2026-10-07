@@ -10,8 +10,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "server"))
 
-from main import app  # noqa: E402
-from schemas import ProgramsFile  # noqa: E402
+from main import app
+from schemas import ProgramsFile
 
 CONTRACTS = ROOT / "contracts"
 
