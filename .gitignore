@@ -16,3 +16,4 @@ dist/
 .ruff_cache/
 *.sqlite3
 /docs/KEYS_NEEDED.md
+/docs/DEPLOY.md
