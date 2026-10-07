@@ -134,7 +134,7 @@ export const copy = {
 
   // S4 결과
   results: {
-    seenAs: (type: string) => ({ before: '', strong: type, after: ' 문제 있으시네요' }),
+    seenAs: (type: string) => ({ before: '', strong: type, after: ' 문제가 있으시네요' }),
     change: '바꾸기',
     changeLabel: '문제 종류 바꾸기',
     confirmAsk: (type: string) => ({ before: '', strong: type, after: '로 보여요. 맞나요?' }),
