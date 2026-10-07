@@ -85,7 +85,7 @@ export const copy = {
     tenureRent: '전세·월세',
     tenurePublic: '공공임대(LH·SH)',
     tenureUnknown: '모르겠어요',
-    q5: '해당되는 게 있으면 모두 눌러 주세요',
+    q5: '해당되는 항목을 모두 눌러 주세요',
     traitElderly: '65세 이상 가족이 있어요',
     traitDisabled: '장애가 있는 가족이 있어요',
     traitWelfare: '기초수급·차상위예요',
