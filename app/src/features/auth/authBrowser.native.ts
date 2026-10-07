@@ -5,8 +5,21 @@ import type { AuthBrowserResult } from './authBrowser';
 
 WebBrowser.maybeCompleteAuthSession();
 
+const APP_RETURN = () => makeRedirectUri({ scheme: 'jipgyeol', path: 'auth-callback' });
+
+/** 중계용 웹 주소(EXPO_PUBLIC_AUTH_WEB_BASE)가 있으면 그 /auth-callback, 없으면 앱 주소. */
+function webBase(): string | null {
+  const b = process.env.EXPO_PUBLIC_AUTH_WEB_BASE?.trim().replace(/\/+$/, '');
+  return b || null;
+}
+
 export function getRedirectUri(): string {
-  return makeRedirectUri({ scheme: 'jipgyeol', path: 'auth-callback' });
+  const base = webBase();
+  return base ? `${base}/auth-callback` : APP_RETURN();
+}
+
+export function getAppReturnUrl(): string | null {
+  return webBase() ? APP_RETURN() : null;
 }
 
 export async function openAuth(url: string, redirectUri: string): Promise<AuthBrowserResult> {

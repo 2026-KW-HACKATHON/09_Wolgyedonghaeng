@@ -1,8 +1,8 @@
 import { getKakaoAuthUrl, loginKakao } from '../../services/api';
 import { createLocalStorage, createRemoteStorage, migrateLocalToRemote } from '../../services/storage';
 import type { AuthProvider, AuthUser } from './AuthProvider';
-import { getRedirectUri, openAuth } from './authBrowser';
-import { directCode } from './redirect';
+import { getAppReturnUrl, getRedirectUri, openAuth } from './authBrowser';
+import { directCode, withReturnState } from './redirect';
 import { clearSession, loadSession, saveSession } from './token';
 
 /** 카카오 OAuth: 서버에서 인가 URL 을 받고, 돌아온 code 를 서버가 토큰으로 바꾼다. */
@@ -27,10 +27,13 @@ export class KakaoAuth implements AuthProvider {
 
   async signIn(returnTo?: string) {
     const redirectUri = getRedirectUri();
-    const url = await getKakaoAuthUrl(redirectUri);
-    const code = directCode(url, redirectUri);
+    const authUrl = await getKakaoAuthUrl(redirectUri);
+    const code = directCode(authUrl, redirectUri);
     if (code) return this.completeSignIn(code);
-    const res = await openAuth(url, redirectUri, returnTo);
+    // 앱: 카카오는 웹 주소로 돌려보내고, 그 페이지가 state 의 앱 주소로 code 를 다시 넘긴다
+    const back = getAppReturnUrl();
+    const url = back ? withReturnState(authUrl, back) : authUrl;
+    const res = await openAuth(url, back ?? redirectUri, returnTo);
     if (res.status === 'code') return this.completeSignIn(res.code);
     return null;
   }

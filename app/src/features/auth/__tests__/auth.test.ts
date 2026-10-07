@@ -1,5 +1,5 @@
 import { parseAuthKind } from '../../../config/flags';
-import { codeFromUrl, directCode } from '../redirect';
+import { bridgeTarget, codeFromUrl, directCode, withReturnState } from '../redirect';
 import { shouldPromptLogin } from '../loginPrompt';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -8,6 +8,7 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 );
 jest.mock('../authBrowser', () => ({
   getRedirectUri: () => 'http://localhost/auth-callback',
+  getAppReturnUrl: () => null,
   openAuth: jest.fn(),
   takeReturnTo: () => null,
 }));
@@ -73,5 +74,27 @@ describe('로그인 안내 모달', () => {
     expect(shouldPromptLogin({ ...base, hide: true })).toBe(false);
     expect(shouldPromptLogin({ ...base, signedIn: true })).toBe(false);
     expect(shouldPromptLogin({ ...base, enabled: false })).toBe(false);
+  });
+});
+
+describe('앱으로 넘기는 중계', () => {
+  it('state 에 앱 주소를 실어 보낸다', () => {
+    expect(withReturnState('https://kauth/x?a=1', 'jipgyeol://auth-callback')).toBe(
+      'https://kauth/x?a=1&state=jipgyeol%3A%2F%2Fauth-callback',
+    );
+  });
+
+  it('우리 앱 주소일 때만 code 를 붙여 돌려준다', () => {
+    expect(bridgeTarget('jipgyeol://auth-callback', 'c1')).toBe('jipgyeol://auth-callback?code=c1');
+    expect(bridgeTarget('exp://192.168.0.2:8081/--/auth-callback', 'c1')).toBe(
+      'exp://192.168.0.2:8081/--/auth-callback?code=c1',
+    );
+  });
+
+  it('다른 주소나 빈 값에는 code 를 넘기지 않는다', () => {
+    expect(bridgeTarget('https://evil.example/x', 'c1')).toBeNull();
+    expect(bridgeTarget('javascript:alert(1)', 'c1')).toBeNull();
+    expect(bridgeTarget(undefined, 'c1')).toBeNull();
+    expect(bridgeTarget('jipgyeol://auth-callback', undefined)).toBeNull();
   });
 });

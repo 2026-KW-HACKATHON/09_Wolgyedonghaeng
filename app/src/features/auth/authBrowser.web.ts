@@ -6,6 +6,10 @@ export function getRedirectUri(): string {
   return `${globalThis.location.origin}/auth-callback`;
 }
 
+export function getAppReturnUrl(): string | null {
+  return null;
+}
+
 export async function openAuth(url: string, _redirectUri: string, returnTo?: string): Promise<AuthBrowserResult> {
   try {
     if (returnTo) globalThis.sessionStorage?.setItem(RETURN_KEY, returnTo);
