@@ -8,9 +8,7 @@ from settings import get_settings
 router = APIRouter(prefix="/address", tags=["address"])
 
 
-@router.get(
-    "/reverse", response_model=Address, responses={404: {"model": ErrorResponse}}
-)
+@router.get("/reverse", response_model=Address, responses={404: {"model": ErrorResponse}})
 async def reverse(lat: float = Query(ge=-90, le=90), lng: float = Query(ge=-180, le=180)):
     result = await get_address_service(get_settings()).reverse(lat, lng)
     if result is None:

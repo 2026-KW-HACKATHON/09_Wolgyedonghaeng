@@ -30,7 +30,11 @@ def test_fake_classifier_settings_and_hint():
 def test_mock_parts():
     assert mock_parts(Settings(_env_file=None)) == ["openrouter", "address", "building"]
     s = Settings(
-        _env_file=None, OPENROUTER_API_KEY="a", KAKAO_REST_KEY="b", JUSO_API_KEY="c", BLDG_API_KEY="d"
+        _env_file=None,
+        OPENROUTER_API_KEY="a",
+        KAKAO_REST_KEY="b",
+        JUSO_API_KEY="c",
+        BLDG_API_KEY="d",
     )
     assert mock_parts(s) == []
 
