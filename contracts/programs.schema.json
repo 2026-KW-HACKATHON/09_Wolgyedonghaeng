@@ -1,0 +1,659 @@
+{
+  "$defs": {
+    "Amount": {
+      "additionalProperties": false,
+      "properties": {
+        "max": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max"
+        },
+        "short": {
+          "title": "Short",
+          "type": "string"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "short",
+        "detail"
+      ],
+      "title": "Amount",
+      "type": "object"
+    },
+    "Apply": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "always",
+            "open",
+            "check",
+            "closed_next"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "nextText": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nexttext"
+        }
+      },
+      "required": [
+        "state",
+        "text"
+      ],
+      "title": "Apply",
+      "type": "object"
+    },
+    "CallPhone": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "phone": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Phone"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "CallPhone",
+      "type": "object"
+    },
+    "Display": {
+      "additionalProperties": false,
+      "properties": {
+        "statusText": {
+          "title": "Statustext",
+          "type": "string"
+        },
+        "incomeText": {
+          "title": "Incometext",
+          "type": "string"
+        },
+        "buildingAgeText": {
+          "title": "Buildingagetext",
+          "type": "string"
+        },
+        "regionText": {
+          "title": "Regiontext",
+          "type": "string"
+        },
+        "conditionsText": {
+          "title": "Conditionstext",
+          "type": "string"
+        },
+        "supportItemsText": {
+          "title": "Supportitemstext",
+          "type": "string"
+        },
+        "operatorText": {
+          "title": "Operatortext",
+          "type": "string"
+        },
+        "howToApplyText": {
+          "title": "Howtoapplytext",
+          "type": "string"
+        },
+        "periodText": {
+          "title": "Periodtext",
+          "type": "string"
+        },
+        "sourcesText": {
+          "title": "Sourcestext",
+          "type": "string"
+        }
+      },
+      "required": [
+        "statusText",
+        "incomeText",
+        "buildingAgeText",
+        "regionText",
+        "conditionsText",
+        "supportItemsText",
+        "operatorText",
+        "howToApplyText",
+        "periodText",
+        "sourcesText"
+      ],
+      "title": "Display",
+      "type": "object"
+    },
+    "Eligibility": {
+      "additionalProperties": false,
+      "properties": {
+        "incomeMaxPct": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Incomemaxpct"
+        },
+        "tenure": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "own",
+                  "rent",
+                  "public_rent",
+                  "unknown"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tenure"
+        },
+        "excludeHousingBenefitOwner": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Excludehousingbenefitowner"
+        },
+        "welfare": {
+          "anyOf": [
+            {
+              "const": "required_or_low",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Welfare"
+        },
+        "traitsRequired": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "elderly65",
+                  "disabled",
+                  "welfare"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Traitsrequired"
+        },
+        "buildingAgeMin": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Buildingagemin"
+        },
+        "approvedBefore": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Approvedbefore"
+        },
+        "lowRiseOnly": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lowriseonly"
+        },
+        "basementHint": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Basementhint"
+        },
+        "variants": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/Variant"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Variants"
+        }
+      },
+      "title": "Eligibility",
+      "type": "object"
+    },
+    "Program": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[CSN]\\d{2}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "in_kind",
+            "grant",
+            "loan",
+            "service",
+            "reference"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "group": {
+          "enum": [
+            "main",
+            "checkup",
+            "reference"
+          ],
+          "title": "Group",
+          "type": "string"
+        },
+        "region": {
+          "$ref": "#/$defs/Region"
+        },
+        "problemTypes": {
+          "items": {
+            "enum": [
+              "leak",
+              "mold",
+              "window_insulation",
+              "heating",
+              "plumbing",
+              "safety",
+              "electric",
+              "other"
+            ],
+            "type": "string"
+          },
+          "title": "Problemtypes",
+          "type": "array"
+        },
+        "priority": {
+          "title": "Priority",
+          "type": "integer"
+        },
+        "apply": {
+          "$ref": "#/$defs/Apply"
+        },
+        "eligibility": {
+          "$ref": "#/$defs/Eligibility"
+        },
+        "toConfirm": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Toconfirm",
+          "type": "array"
+        },
+        "amount": {
+          "$ref": "#/$defs/Amount"
+        },
+        "traitBonus": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "propertyNames": {
+                "enum": [
+                  "elderly65",
+                  "disabled",
+                  "welfare"
+                ]
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Traitbonus"
+        },
+        "callPhone": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CallPhone"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "display": {
+          "$ref": "#/$defs/Display"
+        },
+        "verificationNotes": {
+          "title": "Verificationnotes",
+          "type": "string"
+        },
+        "dataNote": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Datanote"
+        },
+        "dataConfidence": {
+          "enum": [
+            "high",
+            "mid",
+            "low"
+          ],
+          "title": "Dataconfidence",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "kind",
+        "group",
+        "region",
+        "problemTypes",
+        "priority",
+        "apply",
+        "eligibility",
+        "toConfirm",
+        "amount",
+        "display",
+        "verificationNotes",
+        "dataConfidence"
+      ],
+      "title": "Program",
+      "type": "object"
+    },
+    "Region": {
+      "additionalProperties": false,
+      "properties": {
+        "sido": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sido"
+        },
+        "sigungu": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sigungu"
+        }
+      },
+      "title": "Region",
+      "type": "object"
+    },
+    "Variant": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "amountShort": {
+          "title": "Amountshort",
+          "type": "string"
+        },
+        "incomeMaxPct": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Incomemaxpct"
+        },
+        "traitsAny": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "elderly65",
+                  "disabled",
+                  "welfare"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Traitsany"
+        },
+        "traitsOther": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Traitsother"
+        },
+        "basement": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Basement"
+        },
+        "rooftop": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rooftop"
+        },
+        "zoneCheck": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zonecheck"
+        },
+        "buildingAgeMin": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Buildingagemin"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "amountShort"
+      ],
+      "title": "Variant",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 2,
+      "title": "Schemaversion",
+      "type": "integer"
+    },
+    "asOf": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "title": "Asof",
+      "type": "string"
+    },
+    "builtAt": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Builtat"
+    },
+    "source": {
+      "title": "Source",
+      "type": "string"
+    },
+    "fallbackPhone": {
+      "$ref": "#/$defs/CallPhone"
+    },
+    "programs": {
+      "items": {
+        "$ref": "#/$defs/Program"
+      },
+      "minItems": 1,
+      "title": "Programs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "asOf",
+    "source",
+    "fallbackPhone",
+    "programs"
+  ],
+  "title": "ProgramsFile",
+  "type": "object"
+}
