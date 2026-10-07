@@ -57,11 +57,11 @@ export async function runFullFlow(page: Page, startUrl: string) {
   await confirmAddress(page);
 
   // S4: 추천 행과 안내 문구 (S3 찾는 중 화면은 짧게 지나간다)
-  await expect(page.getByText('누수 문제가 있으시네요')).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText('누수 문제 있으시네요')).toBeVisible({ timeout: 30_000 });
   const rows = page.getByRole('button', { name: /^(?!문제 종류|다른 사업).*,(?!.*무료 점검)/ });
   await expect(rows.first()).toBeVisible();
   expect(await rows.count()).toBeGreaterThanOrEqual(1);
-  await expect(page.getByText('받을 수 있을 수도 있는 사업이에요')).toBeVisible();
+  await expect(page.getByText('해당 가능성이 있는 사업이에요')).toBeVisible();
   const rowName = (await rows.first().getAttribute('aria-label')) ?? '';
   const programName = rowName.split(',')[0];
 

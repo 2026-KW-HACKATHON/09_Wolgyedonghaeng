@@ -62,6 +62,6 @@ test('가짜 서버로 로그인 → 내 정보 저장 (서버에도 올라간�
   await page.getByRole('button', { name: '내 정보 보기' }).click();
   await expect(page.getByText('테스트 님으로 로그인했어요')).toBeVisible();
   await fillAndSaveProfile(page);
-  await expect(page.getByText('다음 검색에서 이 정보로 시작할 수 있어요')).toBeVisible();
+  await expect(page.getByText('다음 검색에서 반영돼요')).toBeVisible();
   expect(puts).toEqual([200]);
 });

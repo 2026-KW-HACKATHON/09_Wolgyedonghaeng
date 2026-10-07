@@ -16,7 +16,7 @@ export const copy = {
     saved: '저장했어요',
     save: '저장',
     notFoundFallback: '지금은 찾지 못했어요',
-    estimateNote: '받을 수 있을 수도 있는 사업이에요. 최종 결정은 상담에서 해요.',
+    estimateNote: '해당 가능성이 있는 사업이에요.\n최종 결정은 상담에서 해요.',
     assetNote: '재산을 포함한 정확한 기준은 상담에서 확인해요.',
   },
 
@@ -66,7 +66,7 @@ export const copy = {
   // S1 가구 정보
   household: {
     stepLabel: (step: number) => `3단계 중 ${step}단계`,
-    q1: '몇 명이 함께 사세요?',
+    q1: '몇 명이 함께 사나요?',
     q1More: '5명 이상 직접 입력',
     q1MoreLabel: '5명 이상 인원을 직접 입력하기',
     q1InputLabel: '함께 사는 사람 수',
@@ -75,7 +75,7 @@ export const copy = {
     q1InputMax: '20명까지 적을 수 있어요',
     sizeLabel: (n: number) => `${n}명`,
     sizeSelected: (n: number) => `${n}명 선택됨`,
-    q2: '가족이 한 달에 버는 돈은 모두 얼마쯤이에요?',
+    q2: '가족이 한 달에 버는 돈은\n모두 얼마 즈음이에요?',
     q2Pick: '먼저 몇 명이 사는지 골라 주세요',
     q2Over7: '상담에서 확인해요',
     q2Unknown: '잘 모르겠어요',
@@ -108,7 +108,7 @@ export const copy = {
     searchFailed: '주소를 찾지 못했어요. 다시 해 볼게요.',
     pickOne: '아래에서 맞는 주소를 골라 주세요',
     jibunPrefix: '지번',
-    outOfRegion: '지금은 서울시 노원구 중심으로 안내해요',
+    outOfRegion: '지금은 서울시\n노원구 중심으로 안내해요',
     outOfRegionLink: '복지로에서 찾아보기',
     outOfRegionKeep: '그래도 계속 볼게요',
     outOfRegionBack: '다른 주소 찾기',
@@ -134,7 +134,7 @@ export const copy = {
 
   // S4 결과
   results: {
-    seenAs: (type: string) => ({ before: '', strong: type, after: ' 문제가 있으시네요' }),
+    seenAs: (type: string) => ({ before: '', strong: type, after: ' 문제 있으시네요' }),
     change: '바꾸기',
     changeLabel: '문제 종류 바꾸기',
     confirmAsk: (type: string) => ({ before: '', strong: type, after: '로 보여요. 맞나요?' }),
@@ -148,7 +148,7 @@ export const copy = {
     pickLabel: (name: string) => `${name}로 고르기`,
     retryLabel: '다시 시도하기',
     checkupLabel: (name: string) => `${name}, 먼저 무료 점검을 받아 볼 수 있어요`,
-    checkupRow: '먼저 무료 점검을 받아 볼 수 있어요',
+    checkupRow: '먼저 무료 점검을\n받아 볼 수 있어요',
     emptyVoice: '지금 조건으로는 찾지 못했어요',
     emptyHelp: '행정복지센터에서 다른 방법을 알려 드려요',
     whyNot: '다른 사업은 왜 없나요?',
@@ -270,7 +270,7 @@ export const copy = {
     save: '저장하기',
     saveLabel: '내 정보 저장하기',
     saveDisabledReason: '가구 정보에 모두 답하면 저장할 수 있어요',
-    saved: '저장했어요. 다음 검색에서 이 정보로 시작할 수 있어요.',
+    saved: '저장했어요. 다음 검색에서 반영돼요.',
     savedLocalOnly: '내 기기에 저장했어요. 서버에는 올리지 못했어요.',
     sessionExpired: '내 기기에 저장했어요. 로그인이 풀려서 다시 로그인해 주세요.',
     themeTitle: '화면 밝기',

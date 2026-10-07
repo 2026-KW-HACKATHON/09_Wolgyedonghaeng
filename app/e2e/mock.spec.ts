@@ -36,7 +36,7 @@ test.describe('위치 권한 거부', () => {
     const hit = page.getByRole('button', { name: /월계로/ }).first();
     await expect(hit).toBeVisible();
     await hit.click();
-    await expect(page.getByText(/문제가 있으시네요|지금은 찾지 못했어요/)).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByText(/문제 있으시네요|지금은 찾지 못했어요/)).toBeVisible({ timeout: 30_000 });
   });
 });
 
@@ -61,7 +61,7 @@ test.describe('확인 단계·기타·결과 없음·오류', () => {
     await toResults(page, 'confirm');
     await expect(page.getByRole('button', { name: '맞아요' })).toBeVisible({ timeout: 30_000 });
     await page.getByRole('button', { name: '맞아요' }).click();
-    await expect(page.getByText('받을 수 있을 수도 있는 사업이에요')).toBeVisible();
+    await expect(page.getByText('해당 가능성이 있는 사업이에요')).toBeVisible();
   });
 
   test('기타: 문제 종류를 고르게 한다', async ({ page }) => {
@@ -128,7 +128,7 @@ test.describe('로그인과 내 정보', () => {
     await pickPhoto(page);
     await fillHousehold(page);
     await confirmAddress(page);
-    await expect(page.getByText('누수 문제가 있으시네요')).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByText('누수 문제 있으시네요')).toBeVisible({ timeout: 30_000 });
     await page.getByRole('button', { name: /^(?!문제 종류|다른 사업).*,(?!.*무료 점검)/ }).first().click();
     await page.getByRole('button', { name: '상담 카드 만들기' }).click();
     await expect(page.getByText('로그인하면 정보가 지워지지 않아요')).toBeVisible();

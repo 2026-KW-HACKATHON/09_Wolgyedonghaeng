@@ -65,8 +65,8 @@ export default function DesignDemo() {
           ))}
         </View>
 
-        <VoiceLine before="" strong="누수" after=" 문제가 있으시네요" />
-        <Title>몇 명이 함께 사세요?</Title>
+        <VoiceLine before="" strong="누수" after=" 문제 있으시네요" />
+        <Title>몇 명이 함께 사나요?</Title>
         <Body>설명 글은 20px 본문입니다. 크게, 또렷하게 읽혀야 해요.</Body>
         <Label>사업명 Label</Label>
         <Amount>1,234,000원</Amount>
