@@ -34,14 +34,12 @@ async def chat_json(
     schema_name: str,
     schema: dict[str, Any],
     timeout: float,
-    max_tokens: int,
     transport: httpx.AsyncBaseTransport | None = None,
 ) -> dict[str, Any]:
     """JSON 스키마를 강제해 한 번 호출하고 파싱한 JSON 객체를 돌려준다."""
     body = {
         "model": model,
         "messages": messages,
-        "max_tokens": max_tokens,
         "response_format": {
             "type": "json_schema",
             "json_schema": {"name": schema_name, "strict": True, "schema": schema},

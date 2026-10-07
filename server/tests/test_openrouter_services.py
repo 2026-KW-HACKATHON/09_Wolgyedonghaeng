@@ -71,7 +71,7 @@ def test_classifier_request_and_result():
     req = seen[0]
     body = json.loads(req.content)
     assert req.headers["Authorization"] == "Bearer k"
-    assert body["model"] == "vision-x" and body["max_tokens"] > 0
+    assert body["model"] == "vision-x"
     fmt = body["response_format"]["json_schema"]
     assert fmt["strict"] is True
     assert len(fmt["schema"]["properties"]["type"]["enum"]) == 8
@@ -168,7 +168,7 @@ def test_llm_ranker_ok_and_request_shape():
         "items"
     ]["properties"]["programId"]["enum"]
     assert enum == [c.program.id for c in cands]
-    assert body["max_tokens"] > 0 and body["model"] == "text-x"
+    assert body["model"] == "text-x"
 
 
 def test_llm_ranker_uses_candidate_values_not_llm_values():

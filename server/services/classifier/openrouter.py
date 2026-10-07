@@ -57,7 +57,6 @@ class OpenRouterClassifier:
         self.api_key = settings.OPENROUTER_API_KEY
         self.model = settings.OPENROUTER_VISION_MODEL
         self.timeout = settings.CLASSIFY_TIMEOUT
-        self.max_tokens = settings.OPENROUTER_MAX_TOKENS
         self.max_images = settings.MAX_IMAGES
         self.transport = transport
 
@@ -89,7 +88,6 @@ class OpenRouterClassifier:
                     schema_name="problem_classification",
                     schema=SCHEMA,
                     timeout=self.timeout,
-                    max_tokens=self.max_tokens,
                     transport=self.transport,
                 )
                 return ClassifyResult.model_validate(
