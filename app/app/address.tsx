@@ -170,6 +170,15 @@ export default function AddressScreen() {
     );
   }
 
+  const lookupNotice =
+    lookup === 'denied'
+      ? copy.address.permissionDenied
+      : lookup === 'noCoords'
+        ? copy.address.noCoords
+        : lookup === 'failed'
+          ? copy.address.lookupFailed
+          : null;
+
   // 직접 입력 (조회 실패·권한 거부·시간 초과·"아니요")
   return (
     <Screen scroll>
@@ -177,7 +186,7 @@ export default function AddressScreen() {
       <View style={{ gap: space.lg, paddingTop: space.lg, paddingBottom: space.xl }}>
         {forProfile ? null : <StartFromSaved scope="address" />}
         <Voice accessibilityRole="header">{copy.address.searchTitle}</Voice>
-        {lookup === 'failed' && !manual ? <Body tone="inkSoft">{copy.address.permissionDenied}</Body> : null}
+        {!manual && lookupNotice ? <Body tone="inkSoft">{lookupNotice}</Body> : null}
         <AddressSearch disabled={busy} onPick={confirm} />
         {busy ? <Meta accessibilityLiveRegion="polite">{copy.address.checking}</Meta> : null}
       </View>

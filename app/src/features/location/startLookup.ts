@@ -24,7 +24,7 @@ export function startLookup(): Promise<void> {
     const coords = await getCoords();
     if (!alive()) return;
     if (coords.status !== 'ok') {
-      useFlow.getState().setLookup('failed');
+      useFlow.getState().setLookup(coords.status === 'denied' ? 'denied' : 'noCoords');
       return;
     }
     try {

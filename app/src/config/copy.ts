@@ -118,6 +118,8 @@ export const copy = {
     checking: '집 정보를 확인하고 있어요',
     unitOptional: '동·호수는 안 적어도 돼요',
     permissionDenied: '위치를 쓸 수 없어서 주소를 직접 적어 주세요',
+    noCoords: '지금 계신 곳을 알 수 없어요. 주소를 직접 적어 주세요',
+    lookupFailed: '주소를 찾지 못했어요. 주소를 직접 적어 주세요',
     buildingUnknown: '집을 다 지은 해는 상담에서 확인해요',
   },
 

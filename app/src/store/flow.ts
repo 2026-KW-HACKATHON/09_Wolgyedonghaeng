@@ -7,7 +7,7 @@ import type {
   LocalImage,
 } from '../services/api.models';
 
-export type LookupState = 'idle' | 'running' | 'done' | 'failed';
+export type LookupState = 'idle' | 'running' | 'done' | 'failed' | 'denied' | 'noCoords';
 
 export const MAX_IMAGES = 3;
 
