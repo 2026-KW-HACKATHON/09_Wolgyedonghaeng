@@ -4,15 +4,13 @@ import { View } from 'react-native';
 import { copy } from '../src/config/copy';
 import { HomeTopBar } from '../src/features/photo/HomeTopBar';
 import { PhotoBox, ThumbRow } from '../src/features/photo/PhotoBox';
-import { hasSeenPhotoNotice, markPhotoNoticeSeen } from '../src/features/photo/photoNotice';
 import { pickPhoto, type PhotoSource } from '../src/features/photo/pickPhoto';
+import { SavedLists } from '../src/features/programs/SavedLists';
+import { getFlag, setFlag } from '../src/services/storage';
 import { MAX_IMAGES, useFlow } from '../src/store/flow';
 import { BigButton, Body, FixedBottomBar, Meta, Screen, useTheme } from '../src/ui';
 
-/** 저장한 사업·카드 목록 자리. 이후 작업(T33)에서 실제 목록으로 바꾼다. */
-function SavedListsSlot() {
-  return null;
-}
+const PHOTO_NOTICE_FLAG = 'photoNotice';
 
 export default function Home() {
   const router = useRouter();
@@ -29,7 +27,7 @@ export default function Home() {
 
   useEffect(() => {
     let alive = true;
-    hasSeenPhotoNotice().then((seen) => {
+    getFlag(PHOTO_NOTICE_FLAG).then((seen) => {
       if (alive && !seen) setShowNotice(true);
     });
     return () => {
@@ -49,7 +47,7 @@ export default function Home() {
         setCurrent(useFlow.getState().images.length - 1);
         if (showNotice) {
           setShowNotice(false);
-          markPhotoNoticeSeen();
+          void setFlag(PHOTO_NOTICE_FLAG, true);
         }
       } else if (res.status === 'denied') {
         setMessage(source === 'camera' ? copy.home.cameraDenied : copy.home.albumDenied);
@@ -134,7 +132,7 @@ export default function Home() {
         ) : null}
         {showNotice ? <Meta>{copy.home.photoNotice}</Meta> : null}
 
-        <SavedListsSlot />
+        <SavedLists />
       </View>
     </Screen>
   );
