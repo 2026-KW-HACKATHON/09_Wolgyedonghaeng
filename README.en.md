@@ -77,7 +77,7 @@ Jipgyeol starts from **the problem in the home**, not from a policy name. Reside
 | 2 | "Are you a basic livelihood recipient or in the near-poverty group?" | Roughly at or below 50%. May qualify for Hope Home Repair and Energy Efficiency Improvement |
 | 3 | Household size and "Which range is your monthly household income in?" (buttons) | The 60% and 100% brackets. May qualify for the Safe Home Repair Grant and Hope Home Repair |
 
-If the answer to question 1 or 2 is "yes", the following questions are skipped. Every question has an "I'm not sure" option; choosing it still shows the programs but adds "income and asset criteria to be checked at counseling" to the prep card. Bracket amounts are listed in [docs/support-programs-2026.md](docs/support-programs-2026.md) (Korean).
+If the answer to question 1 or 2 is "yes", the following questions are skipped. Every question has an "I'm not sure" option; choosing it still shows the programs but adds "income and asset criteria to be checked at counseling" to the prep card. Bracket amounts are listed in [docs/support-programs-research-2026.md](docs/support-programs-research-2026.md) (Korean).
 
 ### 3. Receive
 
@@ -96,7 +96,7 @@ If the answer to question 1 or 2 is "yes", the following questions are skipped. 
 | Energy Efficiency Improvement for Low-Income Households (저소득층 에너지효율개선) | Ministry of Trade, Industry and Energy; Korea Energy Foundation | Basic livelihood recipients, near-poverty households, and others | Insulation, windows, boilers, air conditioners |
 | Nowon-gu home repair support | Nowon-gu | Low-income households | Under verification |
 
-Conditions, amounts, application periods, and sources for each program are in [docs/support-programs-2026.md](docs/support-programs-2026.md) (Korean).
+Conditions, amounts, application periods, and sources for each program are in [docs/support-programs-research-2026.md](docs/support-programs-research-2026.md) (Korean).
 
 ## What is different
 
