@@ -73,9 +73,9 @@ async def test_juso_search(settings):
 
 async def test_building_hub(settings):
     need(settings.BLDG_API_KEY, names="BLDG_API_KEY")
-    # 서울 노원구 월계동 일대. 번지가 없으면 fetchedOk=False 일 수 있어 여러 곳을 본다
-    for bun, ji in (("0001", "0000"), ("0012", "0003"), ("0025", "0007")):
-        b = await RealBuildingService(settings).get("11350", "10100", "0", bun, ji)
+    # 서울 노원구 월계동 일대(행안부 API로 확인한 번지). 대장이 없으면 fetchedOk=False 일 수 있어 여러 곳을 본다
+    for bun, ji in (("0947", "0000"), ("0562", "0000"), ("0845", "0005")):
+        b = await RealBuildingService(settings).get("11350", "10200", "0", bun, ji)
         if b.fetchedOk:
             assert b.useAprDay is None or b.useAprDay.year > 1900
             return

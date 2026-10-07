@@ -27,8 +27,8 @@ def _addr(road, jibun, sido, sigungu, bjdong, bun, ji) -> Address:
     )
 
 
-# 월계동 법정동코드 10자리 1135010100 중 뒤 5자리 (확인 필요, 보고 참고)
-_WOLGYE = ("11", "11350", "10100")
+# 월계동 법정동코드 10자리 1135010200 중 뒤 5자리 (행안부 API 응답 admCd로 확인)
+_WOLGYE = ("11", "11350", "10200")
 
 _SAMPLES: list[Address] = [
     _addr(

@@ -51,7 +51,7 @@ function currentScenario(): MockScenario {
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
-const WOLGYE = { sidoCd: '11', sigunguCd: '11350', bjdongCd: '10100', platGbCd: '0' as const };
+const WOLGYE = { sidoCd: '11', sigunguCd: '11350', bjdongCd: '10200', platGbCd: '0' as const };
 
 export const MOCK_ADDRESSES: Address[] = [
   { road: '서울특별시 노원구 월계로 45길 12', jibun: '서울특별시 노원구 월계동 12-3', ...WOLGYE, bun: '0012', ji: '0003' },
