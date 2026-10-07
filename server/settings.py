@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     CLASSIFIER: str = "openrouter"
     RANKER: str = "llm"
     CONFIRM_THRESHOLD: float = 0.7
+    RANK_MAX: int = 5  # 결과에 보여 줄 추천 최대 개수
+    REASON_MAX_LEN: int = 200  # 추천 이유 문장 최대 길이 (Recommendation 스키마와 같게)
     OPENROUTER_API_KEY: str = ""
     OPENROUTER_VISION_MODEL: str = ""
     OPENROUTER_TEXT_MODEL: str = ""
