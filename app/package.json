@@ -42,6 +42,7 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@react-native/jest-preset": "^0.86.3",
     "@types/jest": "^30.0.0",
     "@types/react": "~19.2.2",
@@ -61,10 +62,16 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "jest",
-    "sync-contracts": "node scripts/sync-contracts.js"
+    "sync-contracts": "node scripts/sync-contracts.js",
+    "e2e": "node e2e/build.js && playwright test -c e2e/playwright.config.ts",
+    "e2e:run": "playwright test -c e2e/playwright.config.ts"
   },
   "private": true,
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/e2e/"
+    ]
   }
 }
