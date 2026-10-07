@@ -55,6 +55,8 @@ export function useAnalyze() {
     } catch (e) {
       if (id !== token.current) return;
       clearSlow();
+      // 개발 중에만 원인 종류를 터미널에 남긴다 (사진·주소는 남기지 않는다)
+      if (__DEV__) console.warn('analyze failed:', isApiError(e) ? `${e.code} ${e.status ?? ''}` : String(e));
       setPhase({ kind: 'error', message: isApiError(e) ? e.message : copy.failure.unknown });
     }
   }, []);
