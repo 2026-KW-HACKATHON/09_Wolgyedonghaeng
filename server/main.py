@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from limits import RequestLimitMiddleware
 from routers import address as address_router
 from routers import analyze as analyze_router
 from routers import auth as auth_router
@@ -34,6 +35,13 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="집결 서버", lifespan=lifespan)
+# 나중에 추가한 것이 바깥쪽이다. CORS 가 바깥이어야 413·429 응답에도 CORS 헤더가 붙는다.
+app.add_middleware(
+    RequestLimitMiddleware,
+    max_bytes=settings.MAX_REQUEST_BYTES,
+    per_min=settings.RATE_LIMIT_PER_MIN,
+    trust_proxy=settings.TRUST_PROXY,
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[o.strip() for o in settings.CORS_ORIGINS.split(",") if o.strip()],

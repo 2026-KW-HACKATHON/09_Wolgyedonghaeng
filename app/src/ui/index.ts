@@ -10,3 +10,4 @@ export * from './Row';
 export * from './Screen';
 export * from './ProblemIcon';
 export * from './useReducedMotion';
+export * from './useFocusBorder';

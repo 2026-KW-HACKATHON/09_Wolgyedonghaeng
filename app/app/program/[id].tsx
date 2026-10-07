@@ -21,6 +21,7 @@ import { saveCard, toggleSavedProgram, useSavedPrograms } from '../../src/servic
 import { useFlow } from '../../src/store/flow';
 import {
   Amount,
+  BackLink,
   BigButton,
   Body,
   FixedBottomBar,
@@ -169,7 +170,8 @@ export default function ProgramDetail() {
         </FixedBottomBar>
       }
     >
-      <View style={{ gap: space.xl, paddingTop: space.lg, paddingBottom: space.lg }}>
+      <View style={{ gap: space.xl, paddingTop: space.xs, paddingBottom: space.lg }}>
+        <BackLink onBack={goBack} />
         <View style={{ gap: space.xs }}>
           <Title accessibilityRole="header">{program.name}</Title>
           <Meta>{program.display.operatorText}</Meta>

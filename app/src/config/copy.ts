@@ -171,7 +171,7 @@ export const copy = {
     whoBuilding: '집을 다 지은 해',
     whoRegion: '지역',
     whoConditions: '그 밖의 조건',
-    whyMaybe: '이 가구가 해당될 수 있는 이유',
+    whyMaybe: '이 가구가 받을 수 있을 수도 있는 이유',
     period: '접수 상태와 기간',
     howTo: '신청 방법',
     phone: '문의 전화',
