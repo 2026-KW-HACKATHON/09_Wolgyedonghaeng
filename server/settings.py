@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     KAKAO_CLIENT_SECRET: str = ""
     JUSO_API_KEY: str = ""
     BLDG_API_KEY: str = ""
+    FAKE_CLASSIFIER_TYPE: str = "leak"  # 가짜 분류기가 돌려줄 유형
+    FAKE_CLASSIFIER_CONFIDENCE: float = 0.82  # 가짜 분류기 확신도
     CORS_ORIGINS: str = "http://localhost:8081,http://localhost:19006"
 
 
