@@ -22,6 +22,8 @@ async function request<T>(path: string, init: RequestInit = {}, timeoutMs: numbe
   try {
     res = await fetch(`${BASE_URL}${path}`, { ...init, signal: controller.signal });
   } catch (e) {
+    // 개발 중에만 실패한 경로와 원인을 터미널에 남긴다 (질의 문자열·본문은 남기지 않는다)
+    if (__DEV__) console.warn('fetch failed:', path.split('?')[0], String(e));
     throw (e as { name?: string })?.name === 'AbortError' ? ApiError.timeout() : ApiError.network();
   } finally {
     clearTimeout(timer);
