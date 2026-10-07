@@ -134,6 +134,8 @@ export const copy = {
 
   // S4 결과
   results: {
+    toStart: '‹ 처음 화면으로',
+    toStartLabel: '처음 화면으로 가기',
     seenAs: (type: string) => ({ before: '', strong: type, after: ' 문제가 있으시네요' }),
     change: '바꾸기',
     changeLabel: '문제 종류 바꾸기',

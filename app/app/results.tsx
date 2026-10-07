@@ -8,8 +8,10 @@ import { ProblemPicker } from '../src/features/programs/ProblemPicker';
 import { SearchingView } from '../src/features/programs/SearchingView';
 import { resultKind, type ResultRow } from '../src/features/programs/resultRows';
 import { useAnalyze } from '../src/features/programs/useAnalyze';
+import { goHomeClean } from '../src/features/programs/goHome';
 import { useFlow } from '../src/store/flow';
 import {
+  BackLink,
   BigButton,
   Body,
   FixedBottomBar,
@@ -145,7 +147,12 @@ export default function ResultsScreen() {
 
   return (
     <Screen scroll>
-      <View style={{ gap: space.lg, paddingTop: space.xl, paddingBottom: space.xl }}>
+      <View style={{ gap: space.lg, paddingTop: space.sm, paddingBottom: space.xl }}>
+        <BackLink
+          onBack={() => goHomeClean(router)}
+          label={copy.results.toStart}
+          accessibilityLabel={copy.results.toStartLabel}
+        />
         <View style={{ gap: space.xs }}>
           <VoiceLine {...seen} />
           <BigButton
