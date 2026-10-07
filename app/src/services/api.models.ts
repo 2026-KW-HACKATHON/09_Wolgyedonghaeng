@@ -11,6 +11,9 @@ export type Program = S['Program'];
 export type ProgramsFile = S['ProgramsFile'];
 export type HealthResponse = S['HealthResponse'];
 export type ErrorBody = S['ErrorBody'];
+export type AuthUser = S['AuthUser'];
+export type AuthResponse = S['AuthResponse'];
+export type RemoteProfile = S['Profile'];
 
 export type IncomeBand = 'le48' | '48_60' | '60_100' | 'gt100' | 'unknown';
 export type YesNoUnknown = 'yes' | 'no' | 'unknown';

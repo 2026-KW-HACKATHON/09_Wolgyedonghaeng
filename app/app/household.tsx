@@ -10,6 +10,7 @@ import {
   TenureQuestion,
   TraitsQuestion,
 } from '../src/features/household/Questions';
+import { StartFromSaved } from '../src/features/profile/StartFromSaved';
 import { startLookup } from '../src/features/location/startLookup';
 import { useFlow } from '../src/store/flow';
 import { BigButton, FixedBottomBar, Screen, StepHeader, useTheme } from '../src/ui';
@@ -42,6 +43,7 @@ export default function HouseholdScreen() {
       }
     >
       <StepHeader step={2} onBack={() => router.back()} />
+      <StartFromSaved scope="household" />
       <View style={{ gap: space.xxl, paddingTop: space.sm }}>
         <SizeQuestion size={household.size} onChange={setHousehold} />
         <IncomeQuestion

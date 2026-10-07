@@ -20,6 +20,9 @@ export const getHealth: Api['getHealth'] = () => impl.getHealth();
 export const analyze: Api['analyze'] = (input) => impl.analyze(input);
 export const reverseAddress: Api['reverseAddress'] = (lat, lng) => impl.reverseAddress(lat, lng);
 export const searchAddress: Api['searchAddress'] = (q) => impl.searchAddress(q);
+export const getKakaoAuthUrl: Api['getKakaoAuthUrl'] = (r) => impl.getKakaoAuthUrl(r);
+export const loginKakao: Api['loginKakao'] = (code, r) => impl.loginKakao(code, r);
+export const putMyProfile: Api['putMyProfile'] = (t, p) => impl.putMyProfile(t, p);
 export const getBuilding: Api['getBuilding'] = (a) => impl.getBuilding(a);
 
 /** 이미 받은 사업 목록 (없으면 null). 화면이 바로 그릴 때 쓴다. */

@@ -90,8 +90,18 @@ def test_health_has_no_mock(settings):
     need(
         settings.OPENROUTER_API_KEY, settings.OPENROUTER_VISION_MODEL,
         settings.OPENROUTER_TEXT_MODEL, settings.KAKAO_REST_KEY, settings.JUSO_API_KEY,
-        settings.BLDG_API_KEY,
+        settings.BLDG_API_KEY, settings.KAKAO_CLIENT_SECRET,
         names="모든 키와 모델 이름",
     )  # fmt: skip
     assert classifier_is_real(settings)
     assert mock_parts(settings) == [], f"아직 가짜로 동작하는 부품: {mock_parts(settings)}"
+
+
+def test_kakao_authorize_url(settings):
+    need(settings.KAKAO_REST_KEY, settings.KAKAO_CLIENT_SECRET,
+         names="KAKAO_REST_KEY, KAKAO_CLIENT_SECRET")  # fmt: skip
+    from services.kakao_auth import RealKakaoAuth
+
+    url = RealKakaoAuth(settings).authorize_url("jipgyeol://auth-callback")
+    assert url.startswith("https://kauth.kakao.com/oauth/authorize?")
+    assert "response_type=code" in url

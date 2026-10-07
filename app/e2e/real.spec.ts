@@ -1,6 +1,6 @@
 // 실서버(가짜 모드) 연결 웹 E2E. 서버 :8010 이 가짜 분류기로 응답하고, 사진은 실제 multipart 로 올라간다.
 import { expect, test } from '@playwright/test';
-import { confirmAddress, fillHousehold, pickPhoto, runFullFlow } from './flow';
+import { confirmAddress, fillAndSaveProfile, fillHousehold, loginFromHome, pickPhoto, runFullFlow } from './flow';
 
 const GEO = { latitude: 37.6, longitude: 127.06 };
 const API = 'http://localhost:8010';
@@ -10,6 +10,7 @@ test('서버가 가짜 모드로 떠 있다', async ({ request }) => {
   expect(h.ok).toBe(true);
   expect(h.version.server).toBeTruthy();
   expect(h.mock).toContain('openrouter');
+  expect(h.mock).toContain('kakao');
 });
 
 for (const scheme of ['light', 'dark'] as const) {
@@ -49,4 +50,18 @@ test.describe('서버 오류', () => {
     await expect(page.getByRole('button', { name: /다시 시도/ })).toBeVisible({ timeout: 30_000 });
     await expect(page.getByRole('button', { name: /행정복지센터에 전화하기/ })).toBeVisible();
   });
+});
+
+test('가짜 서버로 로그인 → 내 정보 저장 (서버에도 올라간다)', async ({ page }) => {
+  const puts: number[] = [];
+  page.on('response', (r) => {
+    if (r.url().endsWith('/me/profile') && r.request().method() === 'PUT') puts.push(r.status());
+  });
+  await page.goto('/');
+  await loginFromHome(page);
+  await page.getByRole('button', { name: '내 정보 보기' }).click();
+  await expect(page.getByText('테스트 님으로 로그인했어요')).toBeVisible();
+  await fillAndSaveProfile(page);
+  await expect(page.getByText('다음 검색에서 이 정보로 시작할 수 있어요')).toBeVisible();
+  expect(puts).toEqual([200]);
 });

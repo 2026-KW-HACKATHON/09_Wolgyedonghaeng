@@ -2,6 +2,8 @@ import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { Linking, View, useWindowDimensions } from 'react-native';
 import { copy } from '../../src/config/copy';
+import { auth } from '../../src/features/auth';
+import { markPromptSeen, readPromptFlags, shouldPromptLogin } from '../../src/features/auth/loginPrompt';
 import { createCard } from '../../src/features/cards/buildCard';
 import { formatKoDate } from '../../src/features/cards/format';
 import { Group, Item, Lines } from '../../src/features/programs/DetailParts';
@@ -110,6 +112,13 @@ export default function ProgramDetail() {
         images: s.images,
       });
       await saveCard(card);
+      // 비로그인 사용자가 카드를 처음 만들 때 한 번만 로그인을 안내한다
+      const flags = await readPromptFlags();
+      if (shouldPromptLogin({ enabled: auth.enabled, signedIn: auth.getUser() !== null, ...flags })) {
+        void markPromptSeen();
+        router.push(`/login-modal?next=${encodeURIComponent(card.id)}` as Href);
+        return;
+      }
       router.push(`/card/${card.id}` as Href);
     } finally {
       setMaking(false);

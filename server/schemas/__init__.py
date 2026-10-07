@@ -11,6 +11,7 @@ from .analyze import (
     Recommendation,
     VersionInfo,
 )
+from .auth import AuthRequest, AuthResponse, AuthUrlResponse, AuthUser, Profile
 from .codes import (
     ApplyState,
     IncomeBand,
@@ -28,6 +29,10 @@ __all__ = [
     "Address",
     "AnalyzeResponse",
     "ApplyState",
+    "AuthRequest",
+    "AuthResponse",
+    "AuthUrlResponse",
+    "AuthUser",
     "Building",
     "CheckupItem",
     "ClassifyResult",
@@ -38,6 +43,7 @@ __all__ = [
     "Household",
     "IncomeBand",
     "ProblemType",
+    "Profile",
     "Program",
     "ProgramGroup",
     "ProgramKind",
