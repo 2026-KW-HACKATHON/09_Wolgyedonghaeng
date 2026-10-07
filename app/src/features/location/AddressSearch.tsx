@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { TextInput, View, type TextStyle } from 'react-native';
 import { copy } from '../../config/copy';
 import { searchAddress, type Address } from '../../services/api';
-import { BigButton, Body, Meta, Row, useTheme } from '../../ui';
+import { BigButton, Body, Meta, Row, useFocusBorder, useTheme } from '../../ui';
 import { CallCenterButton } from '../programs/CallCenterButton';
 
 export const SEARCH_DEBOUNCE_MS = 300;
@@ -22,6 +22,7 @@ export function AddressSearch({ onPick, disabled }: Props) {
   const [failed, setFailed] = useState(false);
   const [attempt, setAttempt] = useState(0);
   const seq = useRef(0);
+  const focus = useFocusBorder();
 
   useEffect(() => {
     const q = query.trim();
@@ -52,13 +53,14 @@ export function AddressSearch({ onPick, disabled }: Props) {
     minHeight: size.buttonSecondary,
     borderRadius: radius.md,
     borderWidth: size.borderWidth,
-    borderColor: colors.line,
+    borderColor: focus.style.borderColor,
     backgroundColor: colors.surface,
     color: colors.ink,
     paddingHorizontal: space.md,
     fontSize: type.body.size,
     ...font('400'),
-  } as const;
+    outlineStyle: 'none',
+  } as unknown as TextStyle;
 
   return (
     <View style={{ gap: space.md }}>
@@ -71,6 +73,8 @@ export function AddressSearch({ onPick, disabled }: Props) {
         autoCorrect={false}
         autoCapitalize="none"
         returnKeyType="search"
+        onFocus={focus.onFocus}
+        onBlur={focus.onBlur}
         style={input}
       />
 

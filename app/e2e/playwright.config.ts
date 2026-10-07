@@ -50,6 +50,7 @@ export default defineConfig({
         CORS_ORIGINS: `${REAL_URL},${MOCK_URL}`,
         OPENROUTER_API_KEY: '',
         FAKE_CLASSIFIER_CONFIDENCE: '0.82',
+        RATE_LIMIT_PER_MIN: '0',
         PATH: process.env.PATH ?? '',
       },
     },

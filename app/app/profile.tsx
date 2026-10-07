@@ -12,6 +12,7 @@ import {
   TenureQuestion,
 } from '../src/features/household/Questions';
 import { canSaveHousehold, draftToHousehold, type HouseholdDraft } from '../src/features/profile/defaults';
+import { goHomeClean } from '../src/features/programs/goHome';
 import { useProfileDraft } from '../src/features/profile/draft';
 import { toRemoteProfile } from '../src/features/profile/toRemote';
 import { putMyProfile } from '../src/services/api';
@@ -94,7 +95,7 @@ export default function ProfileScreen() {
     await auth.signOut();
     if (!keepData) await clearLocalData();
     setBusy(false);
-    router.replace('/');
+    goHomeClean(router);
   };
 
   if (step !== 'idle') {

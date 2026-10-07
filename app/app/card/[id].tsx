@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import { View } from 'react-native';
 import { copy } from '../../src/config/copy';
 import { CardPaper } from '../../src/features/cards/CardPaper';
+import { goHomeClean } from '../../src/features/programs/goHome';
 import { openDial } from '../../src/features/programs/dial';
 import { saveCardImage, shareCardImage } from '../../src/services/capture';
 import { deleteCard, useCards } from '../../src/services/storage';
@@ -23,7 +24,7 @@ export default function CardScreen() {
 
   const goHome = () => {
     useFlow.getState().reset();
-    router.replace('/');
+    goHomeClean(router);
   };
 
   if (!card) {

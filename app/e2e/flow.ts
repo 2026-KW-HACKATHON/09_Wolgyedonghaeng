@@ -92,7 +92,8 @@ export async function runFullFlow(page: Page, startUrl: string) {
 
   // 홈에 저장 목록
   await page.getByRole('button', { name: '처음 화면으로 가기' }).first().click();
-  await expect(page.getByRole('heading', { name: '저장한 지원사업' }).first()).toBeVisible();
+  await expect(page.getByRole('heading', { name: '저장한 지원사업' })).toHaveCount(1); // 홈이 스택에 두 번 남지 않는다
+  await expect(page.getByRole('heading', { name: '저장한 지원사업' })).toBeVisible();
   await expect(page.getByRole('button', { name: /^저장한 사업/ }).first()).toBeVisible();
   await expect(page.getByRole('heading', { name: '저장한 상담 카드' }).first()).toBeVisible();
   await expect(page.getByRole('button', { name: /^상담 카드/ }).first()).toBeVisible();

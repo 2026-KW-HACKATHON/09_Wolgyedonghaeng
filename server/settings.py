@@ -31,6 +31,8 @@ class Settings(BaseSettings):
     MAX_IMAGES: int = 3
     MAX_REQUEST_BYTES: int = 10 * 1024 * 1024
     CORS_ORIGINS: str = "http://localhost:8081,http://localhost:19006"
+    RATE_LIMIT_PER_MIN: int = 60  # IP당 분당 요청 수. 0이면 끈다. /health 는 세지 않는다
+    TRUST_PROXY: bool = False  # 프록시 뒤(Render 등)에서만 true: X-Forwarded-For 첫 값을 IP로 쓴다
 
 
 @lru_cache

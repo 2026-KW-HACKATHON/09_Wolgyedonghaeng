@@ -4,7 +4,7 @@ import Animated, { FadeIn, ReduceMotion } from 'react-native-reanimated';
 import { bands, needsCounselConfirm } from '../../config/income-2026';
 import { copy } from '../../config/copy';
 import type { Household, IncomeBand, Tenure, Trait, YesNoUnknown } from '../../services/api.models';
-import { ChoiceButton, Meta, Title, useReducedMotion, useTheme } from '../../ui';
+import { ChoiceButton, Meta, Title, useFocusBorder, useReducedMotion, useTheme } from '../../ui';
 import { parseSize } from './logic';
 import { TextChoice } from './TextChoice';
 
@@ -23,9 +23,16 @@ export function Question({ title, children }: { title: string; children: React.R
 // 질문 1: 인원
 export function SizeQuestion({ size, onChange }: { size?: number; onChange: Patch }) {
   const { colors, radius, space, font, type, size: dim } = useTheme();
-  const [custom, setCustom] = useState(size !== undefined && size > 4);
+  const [customOpen, setCustom] = useState(size !== undefined && size > 4);
   const [text, setText] = useState(size !== undefined && size > 4 ? String(size) : '');
   const [clamped, setClamped] = useState(false);
+  const focus = useFocusBorder();
+  // 저장된 정보로 시작해 5명 이상이 들어오면 직접 입력 칸을 열고 숫자를 채운다
+  const custom = customOpen;
+  if (size !== undefined && size > 4 && !customOpen) {
+    setCustom(true);
+    setText(String(size));
+  }
 
   return (
     <Question title={copy.household.q1}>
@@ -67,6 +74,8 @@ export function SizeQuestion({ size, onChange }: { size?: number; onChange: Patc
             maxLength={2}
             placeholder={copy.household.q1InputPlaceholder}
             placeholderTextColor={colors.inkMuted}
+            onFocus={focus.onFocus}
+            onBlur={focus.onBlur}
             accessibilityLabel={copy.household.q1InputLabel}
             style={{
               minHeight: dim.buttonSecondary,
@@ -74,7 +83,7 @@ export function SizeQuestion({ size, onChange }: { size?: number; onChange: Patc
               paddingHorizontal: space.md,
               backgroundColor: colors.surface,
               borderWidth: dim.borderWidth,
-              borderColor: colors.line,
+              ...focus.style,
               color: colors.ink,
               fontSize: type.amount.size,
               ...font('700'),
