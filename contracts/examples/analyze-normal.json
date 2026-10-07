@@ -1,0 +1,63 @@
+{
+  "requestId": "01JEXAMPLE0000000000000001",
+  "classification": {
+    "type": "leak",
+    "confidence": 0.86,
+    "description": "욕실 천장 모서리에 물이 번진 자국이 있어요",
+    "source": "fake",
+    "overridden": false
+  },
+  "needsConfirm": false,
+  "recommendations": [
+    {
+      "programId": "C01",
+      "rank": 1,
+      "reason": "집을 고치는 비용을 도와주는 지원이라, 받을 수 있을 수도 있어요",
+      "status": "likely",
+      "toConfirm": [],
+      "applyState": "always",
+      "variant": null
+    },
+    {
+      "programId": "S02",
+      "rank": 2,
+      "reason": "누수 같은 집 문제를 고치는 비용을 도와줘서, 받을 수 있을 수도 있어요",
+      "status": "maybe",
+      "toConfirm": [
+        "집을 다 지은 지 10년이 넘었는지"
+      ],
+      "applyState": "closed_next",
+      "variant": "A"
+    }
+  ],
+  "checkup": [
+    {
+      "programId": "N02",
+      "applyState": "closed_next"
+    }
+  ],
+  "excluded": [
+    {
+      "programId": "S01",
+      "why": "주거급여를 받는 집은 신청할 수 없어요"
+    }
+  ],
+  "rankerUsed": "rules",
+  "fallbackUsed": false,
+  "version": {
+    "server": "git:abc1234",
+    "rulesHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "programsAsOf": "2026-10-06",
+    "classifier": {
+      "provider": "fake",
+      "model": null,
+      "promptHash": null
+    },
+    "ranker": {
+      "provider": "rules",
+      "model": null,
+      "promptHash": null
+    },
+    "confirmThreshold": 0.7
+  }
+}
