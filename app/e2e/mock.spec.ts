@@ -31,7 +31,7 @@ test.describe('위치 권한 거부', () => {
     await page.goto('/?mock=normal');
     await pickPhoto(page);
     await fillHousehold(page);
-    await expect(page.getByText('위치를 쓸 수 없어서 주소를 직접 적어 주세요')).toBeVisible();
+    await expect(page.getByText('위치 권한이 막혀 있어요')).toBeVisible();
     await searchAddress(page, '월계로');
     const hit = page.getByRole('button', { name: /월계로/ }).first();
     await expect(hit).toBeVisible();

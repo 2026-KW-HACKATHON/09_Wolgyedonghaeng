@@ -68,7 +68,7 @@ export type ApplyState = 'always' | 'open' | 'check' | 'closed_next';
 const STATE_TEXT: Record<ApplyState, string> = {
   always: '언제든 신청할 수 있어요',
   open: '지금 신청할 수 있어요',
-  check: '지금 받는지 확인이 필요해요',
+  check: '접수기간 확인이 필요해요',
   closed_next: '올해는 끝났어요',
 };
 
