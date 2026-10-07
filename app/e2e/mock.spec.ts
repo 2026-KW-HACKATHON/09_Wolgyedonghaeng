@@ -1,6 +1,15 @@
 // 목 모드(EXPO_PUBLIC_USE_MOCK_API=1) 웹 E2E. 서버 없이 S0 → S6 → 홈.
 import { expect, test } from '@playwright/test';
-import { bodyText, confirmAddress, fillHousehold, pickPhoto, runFullFlow, searchAddress } from './flow';
+import {
+  bodyText,
+  confirmAddress,
+  fillAndSaveProfile,
+  fillHousehold,
+  loginFromHome,
+  pickPhoto,
+  runFullFlow,
+  searchAddress,
+} from './flow';
 
 const GEO = { latitude: 37.6, longitude: 127.06 };
 
@@ -73,5 +82,58 @@ test.describe('확인 단계·기타·결과 없음·오류', () => {
     await expect(page.getByRole('button', { name: /다시 시도/ })).toBeVisible();
     await expect(page.getByRole('button', { name: /행정복지센터에 전화하기/ })).toBeVisible();
     expect(await bodyText(page)).not.toContain('해당돼요');
+  });
+});
+
+test.describe('로그인과 내 정보', () => {
+  test.use({ permissions: ['geolocation'], geolocation: GEO });
+
+  test('로그인 → 내 정보 저장 → 저장된 정보로 시작 → 로그아웃', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    await page.goto('/?mock=normal');
+    await expect(page.getByText('집에서 고칠 곳을 찍어 주세요')).toBeVisible();
+    await loginFromHome(page);
+    await page.getByRole('button', { name: '내 정보 보기' }).click();
+    await expect(page.getByText('테스트 님으로 로그인했어요')).toBeVisible();
+    await fillAndSaveProfile(page);
+
+    // 다음 검색: S1 에서 저장된 정보로 시작
+    await page.getByRole('button', { name: '처음 화면으로 돌아가기' }).click();
+    await pickPhoto(page);
+    await expect(page.getByText('저장된 정보로 시작할까요?')).toBeVisible();
+    await page.getByRole('button', { name: '저장된 정보로 시작하기' }).click();
+    await expect(page.getByRole('button', { name: '다음' })).toBeDisabled(); // 가구 특성은 아직 답하지 않았다
+    await page.getByText('65세 이상 가족이 있어요').click();
+    await expect(page.getByRole('button', { name: '다음' })).toBeEnabled();
+
+    // 로그아웃: 기기에 저장한 것을 남기기
+    await page.goto('/?mock=normal');
+    await page.getByRole('button', { name: '내 정보 보기' }).click();
+    await page.getByRole('button', { name: '로그아웃하기' }).click();
+    await page.getByRole('button', { name: '로그아웃하기' }).click();
+    await expect(page.getByText('내 기기에 저장한 사업·카드를 남길까요?')).toBeVisible();
+    await page.getByRole('button', { name: '남길게요' }).click();
+    await expect(page.getByRole('button', { name: '카카오로 로그인하기' })).toBeVisible();
+    expect(errors).toEqual([]);
+  });
+
+  test('웹 리다이렉트로 돌아오는 주소(/auth-callback)가 로그인을 끝낸다', async ({ page }) => {
+    await page.goto('/auth-callback?code=fake');
+    await expect(page.getByRole('button', { name: '내 정보 보기' })).toBeVisible();
+  });
+
+  test('로그인 안내: 다시 보지 않기를 누르면 다음에는 뜨지 않는다', async ({ page }) => {
+    await page.goto('/?mock=normal');
+    await pickPhoto(page);
+    await fillHousehold(page);
+    await confirmAddress(page);
+    await expect(page.getByText('사진을 보니 누수예요')).toBeVisible({ timeout: 30_000 });
+    await page.getByRole('button', { name: /^(?!문제 종류|다른 사업).*,(?!.*무료 점검)/ }).first().click();
+    await page.getByRole('button', { name: '상담 카드 만들기' }).click();
+    await expect(page.getByText('로그인하면 정보가 지워지지 않아요')).toBeVisible();
+    await page.getByRole('button', { name: '로그인 안내를 다시 보지 않기' }).click();
+    await page.waitForURL(/card\//);
+    await expect(page.getByText('상담 준비 카드')).toBeVisible();
   });
 });

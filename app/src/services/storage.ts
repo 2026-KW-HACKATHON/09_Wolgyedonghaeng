@@ -201,6 +201,24 @@ export async function migrateLocalToRemote(local: Storage, remote: Storage): Pro
   if (profileLocal && !profileRemote) await remote.saveProfile(profileLocal);
 }
 
+/** 이 기기에 저장한 사업·카드·내 정보를 모두 지운다 (로그아웃할 때 [지울게요]). */
+export function clearLocalData(): Promise<void> {
+  return enqueue(async () => {
+    for (const key of [K.saved, K.cards, K.profile]) {
+      memory.delete(key);
+      try {
+        await AsyncStorage.removeItem(key);
+      } catch {
+        // 지우지 못해도 다음 읽기에서 빈 목록으로 보이도록 아래 빈 값을 쓴다
+      }
+    }
+    await writeRaw(K.saved, '[]');
+    await writeRaw(K.cards, '[]');
+    await writeRaw(K.profile, 'null');
+    emit();
+  });
+}
+
 let current: Storage = createLocalStorage();
 
 /** 저장소 구현을 바꾼다 (로그인 후 원격). */

@@ -47,6 +47,8 @@ def mock_parts(settings: Settings) -> list[str]:
         parts.append("address")
     if not settings.BLDG_API_KEY:
         parts.append("building")
+    if not (settings.KAKAO_REST_KEY and settings.KAKAO_CLIENT_SECRET):
+        parts.append("kakao")
     return parts
 
 

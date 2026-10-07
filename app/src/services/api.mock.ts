@@ -8,7 +8,15 @@ import examplesOther from './mock/examples/analyze-other.json';
 import programs from './mock/programs.json';
 import { ApiError } from './api.error';
 import type { Api } from './api.contract';
-import type { Address, AnalyzeResponse, Building, HealthResponse, ProgramsFile } from './api.models';
+import type {
+  Address,
+  AnalyzeResponse,
+  AuthResponse,
+  Building,
+  HealthResponse,
+  ProgramsFile,
+  RemoteProfile,
+} from './api.models';
 
 export type MockScenario = 'normal' | 'confirm' | 'other' | 'empty' | 'error';
 
@@ -77,7 +85,7 @@ export const mockApi: Api = {
   async getHealth() {
     await sleep(100);
     const base = examplesNormal.version;
-    return { ok: true, version: clone(base), mock: ['openrouter', 'address', 'building'] } as HealthResponse;
+    return { ok: true, version: clone(base), mock: ['openrouter', 'address', 'building', 'kakao'] } as HealthResponse;
   },
 
   async fetchPrograms() {
@@ -129,6 +137,22 @@ export const mockApi: Api = {
     if (!t) return [];
     const hits = MOCK_ADDRESSES.filter((a) => a.road.includes(t) || (a.jibun ?? '').includes(t));
     return clone(hits.length > 0 ? hits : t.length >= 2 ? MOCK_ADDRESSES.slice(0, 3) : []);
+  },
+
+  // 서버 가짜 모드와 같은 결과: 인가 URL 은 앱 자신으로 돌아오고, 어떤 code 든 가짜 사용자가 된다
+  async getKakaoAuthUrl(redirectUri) {
+    await sleep(100);
+    return `${redirectUri}${redirectUri.includes('?') ? '&' : '?'}code=fake`;
+  },
+
+  async loginKakao() {
+    await sleep(100);
+    return { token: 'mock-token', user: { id: 'fake-1', nickname: '테스트' } } as AuthResponse;
+  },
+
+  async putMyProfile(_token, profile) {
+    await sleep(100);
+    return clone(profile) as RemoteProfile;
   },
 
   async getBuilding() {

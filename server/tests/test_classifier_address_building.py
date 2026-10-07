@@ -28,15 +28,21 @@ def test_fake_classifier_settings_and_hint():
 
 
 def test_mock_parts():
-    assert mock_parts(Settings(_env_file=None)) == ["openrouter", "address", "building"]
+    assert mock_parts(Settings(_env_file=None)) == ["openrouter", "address", "building", "kakao"]
     only_key = Settings(_env_file=None, OPENROUTER_API_KEY="a")
-    assert mock_parts(only_key) == ["openrouter", "address", "building"]  # 모델 이름이 비어 있음
+    assert mock_parts(only_key) == [
+        "openrouter",
+        "address",
+        "building",
+        "kakao",
+    ]  # 모델 이름이 비어 있음
     s = Settings(
         _env_file=None,
         OPENROUTER_API_KEY="a",
         OPENROUTER_VISION_MODEL="m1",
         OPENROUTER_TEXT_MODEL="m2",
         KAKAO_REST_KEY="b",
+        KAKAO_CLIENT_SECRET="s",
         JUSO_API_KEY="c",
         BLDG_API_KEY="d",
     )

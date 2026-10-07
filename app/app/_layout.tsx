@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 import { useEffect, useSyncExternalStore } from 'react';
+import { auth } from '../src/features/auth';
 import { preloadPrograms } from '../src/services/api';
 import { ThemeProvider } from '../src/ui';
 
@@ -15,6 +16,8 @@ export default function RootLayout() {
   useEffect(() => {
     // 사업 목록을 미리 받아 둔다 (오프라인에서도 상세 화면이 열리도록)
     preloadPrograms();
+    // 기기에 저장된 로그인 상태를 읽는다
+    auth.init().catch(() => {});
   }, []);
 
   return (
@@ -26,6 +29,7 @@ export default function RootLayout() {
           <Stack.Screen name="address" />
           <Stack.Screen name="results" />
           <Stack.Screen name="design-demo" />
+          <Stack.Screen name="login-modal" options={{ presentation: 'transparentModal', animation: 'fade' }} />
         </Stack>
       ) : null}
     </ThemeProvider>

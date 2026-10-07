@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     OPENROUTER_TEXT_MODEL: str = ""
     KAKAO_REST_KEY: str = ""
     KAKAO_CLIENT_SECRET: str = ""
+    APP_TOKEN_SECRET: str = ""  # 비면 프로세스 시작 시 임의로 만든다 (재시작하면 로그인이 풀린다)
+    TOKEN_TTL_DAYS: int = 30
+    AUTH_TIMEOUT: float = 5.0
     JUSO_API_KEY: str = ""
     BLDG_API_KEY: str = ""
     FAKE_CLASSIFIER_TYPE: str = "leak"  # 가짜 분류기가 돌려줄 유형
