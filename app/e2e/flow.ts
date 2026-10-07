@@ -49,15 +49,15 @@ export async function runFullFlow(page: Page, startUrl: string) {
   page.on('pageerror', (e) => errors.push(e.message));
 
   await page.goto(startUrl);
-  await expect(page.getByText('집에서 고칠 곳을 찍어 주세요')).toBeVisible();
+  await expect(page.getByText('고칠 곳을 찍어 주세요')).toBeVisible();
   await pickPhoto(page); // S0
   await fillHousehold(page); // S1
-  await expect(page.getByText('여기 사세요?')).toBeVisible(); // S2
+  await expect(page.getByText('주소가 맞나요?')).toBeVisible(); // S2
   await expect(page.getByText('서울특별시 노원구 월계로 45길 12')).toBeVisible();
   await confirmAddress(page);
 
   // S4: 추천 행과 안내 문구 (S3 찾는 중 화면은 짧게 지나간다)
-  await expect(page.getByText('사진을 보니 누수예요')).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText('누수 문제가 있으시네요')).toBeVisible({ timeout: 30_000 });
   const rows = page.getByRole('button', { name: /^(?!문제 종류|다른 사업).*,(?!.*무료 점검)/ });
   await expect(rows.first()).toBeVisible();
   expect(await rows.count()).toBeGreaterThanOrEqual(1);

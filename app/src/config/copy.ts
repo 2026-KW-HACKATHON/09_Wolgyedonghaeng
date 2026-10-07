@@ -33,7 +33,7 @@ export const copy = {
     themeLight: '밝게',
     themeDark: '어둡게',
     logoLabel: '집결 로고',
-    emptyVoice: '집에서 고칠 곳을 찍어 주세요',
+    emptyVoice: '고칠 곳을 찍어 주세요',
     takePhoto: '사진 찍기',
     pickPhoto: '앨범에서 고르기',
     retake: '다시 찍기',
@@ -96,7 +96,7 @@ export const copy = {
 
   // S2 주소 확인
   address: {
-    askHere: '여기 사세요?',
+    askHere: '주소가 맞나요?',
     yes: '예',
     manual: '아니요, 직접 입력할게요',
     searching: '주소를 찾고 있어요',
@@ -126,7 +126,7 @@ export const copy = {
   // S3 찾는 중
   searching: {
     first: '사진을 보고 있어요',
-    second: '받을 수 있는 지원을 찾고 있어요',
+    second: '받을 지원을 찾고 있어요',
     long: '조금 더 걸리고 있어요',
     logoLabel: '집결 로고',
     failed: '지금은 찾지 못했어요',
@@ -134,7 +134,7 @@ export const copy = {
 
   // S4 결과
   results: {
-    seenAs: (type: string) => ({ before: '사진을 보니 ', strong: type, after: '예요' }),
+    seenAs: (type: string) => ({ before: '', strong: type, after: ' 문제가 있으시네요' }),
     change: '바꾸기',
     changeLabel: '문제 종류 바꾸기',
     confirmAsk: (type: string) => ({ before: '', strong: type, after: '로 보여요. 맞나요?' }),
@@ -191,7 +191,7 @@ export const copy = {
     savedLabel: '저장했어요. 누르면 저장을 취소해요',
     call: '전화하기',
     callLabel: '문의 전화 걸기',
-    makeCard: '상담 카드 만들기',
+    makeCard: '카드 만들기',
     makeCardLabel: '상담 카드 만들기',
     makingCard: '카드를 만들고 있어요',
     notFound: '찾는 사업이 없어요',
@@ -277,7 +277,7 @@ export const copy = {
     logoutLabel: '로그아웃하기',
     logoutAsk: '로그아웃할까요?',
     logoutYes: '로그아웃하기',
-    logoutNo: '그만둘게요',
+    logoutNo: '나가기',
     keepAsk: '내 기기에 저장한 사업·카드를 남길까요?',
     keepYes: '남길게요',
     keepNo: '지울게요',

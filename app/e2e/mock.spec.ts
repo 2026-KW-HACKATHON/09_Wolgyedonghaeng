@@ -36,7 +36,7 @@ test.describe('위치 권한 거부', () => {
     const hit = page.getByRole('button', { name: /월계로/ }).first();
     await expect(hit).toBeVisible();
     await hit.click();
-    await expect(page.getByText(/사진을 보니|지금은 찾지 못했어요/)).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByText(/문제가 있으시네요|지금은 찾지 못했어요/)).toBeVisible({ timeout: 30_000 });
   });
 });
 
@@ -47,7 +47,7 @@ test.describe('확인 단계·기타·결과 없음·오류', () => {
     await page.goto(`/?mock=${scenario}`);
     await pickPhoto(page);
     await fillHousehold(page);
-    await expect(page.getByText('여기 사세요?')).toBeVisible();
+    await expect(page.getByText('주소가 맞나요?')).toBeVisible();
     await confirmAddress(page);
     await page.waitForURL(/results/);
     // 이동하면 주소의 ?mock 값이 사라지므로 다시 붙인다
@@ -92,7 +92,7 @@ test.describe('로그인과 내 정보', () => {
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
     await page.goto('/?mock=normal');
-    await expect(page.getByText('집에서 고칠 곳을 찍어 주세요')).toBeVisible();
+    await expect(page.getByText('고칠 곳을 찍어 주세요')).toBeVisible();
     await loginFromHome(page);
     await page.getByRole('button', { name: '내 정보 보기' }).click();
     await expect(page.getByText('테스트 님으로 로그인했어요')).toBeVisible();
@@ -128,7 +128,7 @@ test.describe('로그인과 내 정보', () => {
     await pickPhoto(page);
     await fillHousehold(page);
     await confirmAddress(page);
-    await expect(page.getByText('사진을 보니 누수예요')).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByText('누수 문제가 있으시네요')).toBeVisible({ timeout: 30_000 });
     await page.getByRole('button', { name: /^(?!문제 종류|다른 사업).*,(?!.*무료 점검)/ }).first().click();
     await page.getByRole('button', { name: '상담 카드 만들기' }).click();
     await expect(page.getByText('로그인하면 정보가 지워지지 않아요')).toBeVisible();
