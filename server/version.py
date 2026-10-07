@@ -41,14 +41,25 @@ def rules_hash() -> str:
 
 
 def build_version(settings: Settings, classifier_source: str, ranker_provider: str) -> VersionInfo:
-    model = settings.OPENROUTER_VISION_MODEL or None
+    """classifier_source, ranker_provider 는 실제로 쓴 구현 (가짜면 fake, 규칙이면 rules)."""
+    from services.classifier.openrouter import classifier_prompt_hash
+    from services.ranker.llm import ranker_prompt_hash
+
+    real_cls = classifier_source == "openrouter"
+    real_rank = ranker_provider == "llm"
     return VersionInfo(
         server=server_version(),
         rulesHash=rules_hash(),
         programsAsOf=get_programs().asOf,
         classifier=ProviderInfo(
-            provider=classifier_source, model=model if classifier_source == "openrouter" else None
+            provider=classifier_source,
+            model=(settings.OPENROUTER_VISION_MODEL or None) if real_cls else None,
+            promptHash=classifier_prompt_hash() if real_cls else None,
         ),
-        ranker=RankerInfo(provider=ranker_provider, model=None),
+        ranker=RankerInfo(
+            provider=ranker_provider,
+            model=(settings.OPENROUTER_TEXT_MODEL or None) if real_rank else None,
+            promptHash=ranker_prompt_hash() if real_rank else None,
+        ),
         confirmThreshold=settings.CONFIRM_THRESHOLD,
     )

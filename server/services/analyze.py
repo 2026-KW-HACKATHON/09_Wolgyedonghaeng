@@ -21,6 +21,8 @@ from services.classifier import get_classifier
 from services.matcher import match
 from services.programs import get_programs
 from services.ranker.base import RankContext
+from services.ranker.factory import get_llm_ranker
+from services.ranker.llm import LLMRanker
 from services.ranker.rules import RulesRanker
 from services.validator import check
 from settings import Settings
@@ -82,13 +84,20 @@ async def analyze(inp: AnalyzeInput, settings: Settings) -> AnalyzeResponse:
         household=inp.household,
         building=inp.building,
     )
-    # TODO(T51): RANKER=llm 이고 키가 있으면 LLMRanker, 실패하면 rules로 대체
-    ranker_used, fallback_used = "rules", False
-    recs = await RulesRanker().rank(ctx, result.candidates)
-    checked = check(recs, result.candidates, ctx)
-    if not checked.ok:
-        log.warning("validator failed: %s", checked.errors)
-        fallback_used = True
+    ranker = get_llm_ranker(settings) or RulesRanker()
+    ranker_used, fallback_used = ("llm" if isinstance(ranker, LLMRanker) else "rules"), False
+    try:
+        recs = await ranker.rank(ctx, result.candidates)
+        checked = check(recs, result.candidates, ctx)
+        failed = not checked.ok
+        if failed:
+            log.warning("validator failed: %s", checked.errors)
+    except Exception as e:  # noqa: BLE001 추천기가 어떻게 실패해도 규칙 추천으로 대체한다
+        log.warning("ranker failed: %s", type(e).__name__)
+        failed = True
+    if failed:
+        # 추천기 실패·검증 위반이면 규칙 추천으로 대체한다
+        ranker_used, fallback_used = "rules", True
         checked = check(RulesRanker().rank_sync(ctx, result.candidates), result.candidates, ctx)
     t_rank = time.perf_counter()
 
