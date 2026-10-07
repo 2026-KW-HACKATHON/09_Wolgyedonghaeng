@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "types": [
+    { "id": "leak", "label": "누수", "criterion": "물이 새거나 젖은 자국이 있어요", "icon": "leak" },
+    { "id": "mold", "label": "곰팡이", "criterion": "벽이나 천장에 검은 얼룩이 퍼져 있어요", "icon": "mold" },
+    { "id": "window_insulation", "label": "창문 틈새·단열", "criterion": "창문이나 문 틈으로 바람이 들어와요", "icon": "window" },
+    { "id": "heating", "label": "난방·보일러", "criterion": "보일러나 바닥 난방이 잘 안 돼요", "icon": "heating" },
+    { "id": "plumbing", "label": "배관·설비", "criterion": "수도, 하수구, 화장실 설비가 고장 났어요", "icon": "plumbing" },
+    { "id": "safety", "label": "안전(계단·문턱·손잡이)", "criterion": "넘어지기 쉬운 계단이나 문턱이 있어요", "icon": "safety" },
+    { "id": "electric", "label": "전기", "criterion": "콘센트, 전선, 전등이 낡거나 고장 났어요", "icon": "electric" },
+    { "id": "other", "label": "기타", "criterion": "위에 없는 다른 문제예요", "icon": "other" }
+  ]
+}
