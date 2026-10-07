@@ -13,7 +13,7 @@ from settings import Settings
 ROOT = Path(__file__).resolve().parents[3]
 SAMPLE_IMAGE = ROOT / "app" / "e2e" / "fixtures" / "problem.jpg"
 # 서울 노원구 월계동 부근
-WOLGYE_LAT, WOLGYE_LNG = 37.6, 127.06
+WOLGYE_LAT, WOLGYE_LNG = 37.6256, 127.0513
 
 
 def pytest_configure(config):
