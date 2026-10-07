@@ -272,6 +272,7 @@ export const copy = {
     saveDisabledReason: '가구 정보에 모두 답하면 저장할 수 있어요',
     saved: '저장했어요. 다음 검색에서 이 정보로 시작할 수 있어요.',
     savedLocalOnly: '내 기기에 저장했어요. 서버에는 올리지 못했어요.',
+    sessionExpired: '내 기기에 저장했어요. 로그인이 풀려서 다시 로그인해 주세요.',
     themeTitle: '화면 밝기',
     logout: '로그아웃',
     logoutLabel: '로그아웃하기',

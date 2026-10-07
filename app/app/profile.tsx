@@ -16,6 +16,7 @@ import { goHomeClean } from '../src/features/programs/goHome';
 import { useProfileDraft } from '../src/features/profile/draft';
 import { toRemoteProfile } from '../src/features/profile/toRemote';
 import { putMyProfile } from '../src/services/api';
+import { isApiError } from '../src/services/api.error';
 import { clearLocalData, getProfile, saveProfile, type Profile } from '../src/services/storage';
 import { BigButton, Body, ChoiceButton, FixedBottomBar, Meta, Screen, Title, Voice, useTheme, type ThemeSetting } from '../src/ui';
 
@@ -82,8 +83,13 @@ export default function ProfileScreen() {
     if (user && token) {
       try {
         await putMyProfile(token, toRemoteProfile(next));
-      } catch {
+      } catch (e) {
         message = copy.profile.savedLocalOnly; // 서버에 못 올려도 기기 저장은 그대로 둔다
+        if (isApiError(e) && e.status === 401) {
+          // 로그인 토큰이 더 이상 맞지 않는다 (서버가 키를 바꿨거나 기간이 지남)
+          await auth.signOut();
+          message = copy.profile.sessionExpired;
+        }
       }
     }
     setNotice(message);
