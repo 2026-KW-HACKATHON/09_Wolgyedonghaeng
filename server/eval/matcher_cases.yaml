@@ -1,0 +1,196 @@
+# matcher 표 테스트 (spec 10절). 기대값은 programs-2026.json 의 규칙을 읽고 정했다.
+# status: likely | maybe | fail  (fail = excluded)
+# 지정하지 않은 사업은 검사하지 않는다.
+today: "2026-10-07"
+
+defaults:
+  address: {road: "월계로 1", sidoCd: "11", sigunguCd: "11350", bjdongCd: "10900", platGbCd: "0", bun: "0001", ji: "0000"}
+  building: {useAprDay: "1985-06-01", mainPurpose: "단독주택", grndFlrCnt: 2, ugrndFlrCnt: 0, fetchedOk: true}
+  household: {size: 1, income: le48, housingBenefit: "no", tenure: own, traits: none}
+
+cases:
+  # ---- 주거급여 자가 배타 (S01·C02·N01 <-> C01)
+  - name: 주거급여 받는 자가 -> 수선유지급여만
+    household: {housingBenefit: "yes"}
+    expect: {C01: likely, S01: fail, C02: fail, N01: fail, C03: likely, S06: fail, N06: fail}
+    why: {S01: "주거급여", C02: "주거급여", N01: "주거급여"}
+    checkup: [N02]
+  - name: 주거급여 안 받는 자가 -> 서울·노원 사업 열림
+    household: {housingBenefit: "no"}
+    expect: {S01: likely, N01: likely, C02: maybe, C01: likely}
+  - name: 주거급여 모름 -> 자가 제외 조건은 unknown
+    household: {housingBenefit: unknown}
+    expect: {S01: maybe, N01: maybe, C02: maybe}
+  - name: 소득 48~60은 주거급여를 안 묻고 no 로 본다
+    household: {income: "48_60", housingBenefit: null}
+    expect: {S01: likely, N01: likely, C01: fail}
+  - name: 주거급여 받는 세입자는 자가 제외에 안 걸린다
+    household: {tenure: rent, housingBenefit: "yes"}
+    expect: {S01: likely, N01: likely, C02: maybe}
+
+  # ---- 집 형태
+  - name: 공공임대 제외 (S01·C02·N01 fail, N06 pass)
+    household: {tenure: public_rent, housingBenefit: "no", traits: [elderly65]}
+    expect: {S01: fail, C02: fail, N01: fail, N06: likely, C01: fail, C03: fail, S02: fail}
+    why: {S01: "공공임대"}
+    checkup: [N02]
+  - name: 민간 세입자
+    household: {tenure: rent, income: "48_60", housingBenefit: null}
+    expect: {S01: likely, C01: fail, C03: fail, S02: fail, S03: fail, S04: likely, N01: likely}
+  - name: 집 형태 모름
+    household: {tenure: unknown, housingBenefit: unknown}
+    expect: {S01: maybe, C01: maybe, C03: maybe, S02: maybe}
+
+  # ---- 소득
+  - name: 소득 모름 -> 소득 조건 있는 사업은 maybe
+    household: {income: unknown, housingBenefit: null, traits: [disabled]}
+    expect: {C01: maybe, S01: maybe, S06: maybe, C03: likely}
+    confirm: {S01: ["재산을 포함한 소득 기준"]}
+  - name: 소득 100% 초과
+    household: {income: gt100, housingBenefit: null}
+    expect: {C01: fail, S01: fail, N01: fail, C02: fail, C03: likely}
+  - name: 소득 60~100 은 S01 60% 상한에서 fail, C01 fail
+    household: {income: "60_100", housingBenefit: null}
+    expect: {S01: fail, N01: fail, C01: fail}
+    why: {S01: "60%"}
+
+  # ---- 장애 필수 (S06, 소득 65%)
+  - name: 장애인 등록 + 소득 48 이하 -> S06 likely
+    household: {traits: [disabled]}
+    expect: {S06: likely}
+    trait_notes: {C01: ["장애인 편의시설 최대 380만 원 추가"]}
+  - name: 장애 없음 -> S06 fail
+    household: {traits: none}
+    expect: {S06: fail}
+    why: {S06: "장애인"}
+  - name: 특성 답 안 함 -> S06 maybe
+    household: {traits: null}
+    expect: {S06: maybe, N06: maybe}
+  - name: 소득 걸침 (S06 65% 와 60_100 -> unknown)
+    household: {income: "60_100", housingBenefit: null, traits: [disabled], tenure: rent}
+    expect: {S06: maybe}
+    confirm: {S06: ["65%"]}
+  - name: 소득 48~60 이면 S06 65% 안
+    household: {income: "48_60", housingBenefit: null, traits: [disabled]}
+    expect: {S06: likely}
+  - name: 소득 100% 초과 장애인 -> S06 fail
+    household: {income: gt100, housingBenefit: null, traits: [disabled]}
+    expect: {S06: fail}
+
+  # ---- 65세 필수 (N06)
+  - name: 65세 이상 -> N06 likely, C01 가산 문구
+    household: {traits: [elderly65]}
+    expect: {N06: likely}
+    trait_notes: {C01: ["65세 이상 편의시설 최대 50만 원 추가"]}
+  - name: 65세 아님 -> N06 fail
+    household: {traits: [disabled]}
+    expect: {N06: fail}
+    why: {N06: "65세"}
+
+  # ---- 수급 상태 (C02)
+  - name: 기초수급 -> C02 likely
+    household: {traits: [welfare], housingBenefit: "no"}
+    expect: {C02: likely}
+  - name: 소득 48~60 수급 아님 -> 사각지대 확인 maybe
+    household: {income: "48_60", housingBenefit: null}
+    expect: {C02: maybe}
+    confirm: {C02: ["사각지대"]}
+  - name: 소득 60 초과 수급 아님 -> C02 fail
+    household: {income: "60_100", housingBenefit: null}
+    expect: {C02: fail}
+
+  # ---- 집 형태: 아파트 제외 (S02·S03)
+  - name: 아파트 -> S02·S03 fail
+    building: {mainPurpose: "아파트"}
+    expect: {S02: fail, S03: fail, C03: likely}
+    why: {S02: "아파트", S03: "아파트"}
+    checkup: [N02]
+  - name: 건물 정보 없음 -> 저층·연식 unknown
+    building: null
+    expect: {S02: maybe, S03: maybe, S04: maybe, C03: maybe}
+  - name: 건축물대장 조회 실패(fetchedOk false)
+    building: {useAprDay: null, mainPurpose: null, grndFlrCnt: null, ugrndFlrCnt: null, fetchedOk: false}
+    expect: {S03: maybe, C03: maybe}
+
+  # ---- S02 유형 A~D
+  - name: S02 유형 A 취약가구 (65세, 소득 60~100)
+    household: {income: "60_100", housingBenefit: null, traits: [elderly65]}
+    building: {useAprDay: "1990-01-01"}
+    expect: {S02: likely}
+    variant: {S02: A}
+    amount_short: {S02: "공사비 80%, 최대 1,200만 원"}
+  - name: S02 유형 A 는 취약 요건 없다고 답해도 다른 요건 가능성 때문에 unknown
+    household: {traits: none}
+    building: {useAprDay: "1990-01-01"}
+    expect: {S02: maybe}
+    variant: {S02: A}
+  - name: S02 유형 B 반지하 (소득 100 초과라 A 는 fail, 지하층 있음)
+    household: {income: gt100, housingBenefit: null, traits: none}
+    building: {useAprDay: "1990-01-01", ugrndFlrCnt: 1}
+    expect: {S02: likely}
+    variant: {S02: B}
+    amount_short: {S02: "공사비 50%, 최대 600만 원 (취약가구는 80%, 1,200만 원)"}
+  - name: S02 유형 C 옥탑방 (지하층 없음, 연식 10년 이상은 상담 확인)
+    household: {income: gt100, housingBenefit: null, traits: none}
+    building: {useAprDay: "2012-01-01", ugrndFlrCnt: 0}
+    expect: {S02: maybe}
+    variant: {S02: C}
+  - name: S02 모든 유형이 연식 때문에 fail (10년 안 됨)
+    household: {traits: [elderly65]}
+    building: {useAprDay: "2020-05-01"}
+    expect: {S02: fail}
+    why: {S02: "10년"}
+  - name: S02 자가 아니면 fail
+    household: {tenure: rent, housingBenefit: null}
+    expect: {S02: fail}
+
+  # ---- 연식 (S03 20년, S04 15년)
+  - name: 연식 경계 S03 20년 (2006-10-07 은 딱 20년)
+    building: {useAprDay: "2006-10-07"}
+    expect: {S03: likely}
+  - name: 연식 경계 S03 하루 모자람
+    building: {useAprDay: "2006-10-08"}
+    expect: {S03: fail, S04: likely}
+    why: {S03: "20년"}
+
+  # ---- C03 2016년 이전 승인
+  - name: C03 2015-12-31 승인 -> pass
+    building: {useAprDay: "2015-12-31"}
+    expect: {C03: likely}
+  - name: C03 2016-01-01 승인 -> fail
+    building: {useAprDay: "2016-01-01"}
+    expect: {C03: fail}
+    why: {C03: "2016"}
+  - name: C03 승인일 모름 -> maybe
+    building: {useAprDay: null, mainPurpose: "단독주택", fetchedOk: false}
+    expect: {C03: maybe}
+
+  # ---- 지역
+  - name: 서울 다른 구 -> 노원 사업 제외, 점검 대상 아님
+    address: {sigunguCd: "11680"}
+    expect: {S01: likely, N01: fail, N05: fail, N06: fail}
+    checkup: []
+  - name: 서울 밖 -> 서울 사업 모두 제외
+    address: {sidoCd: "26", sigunguCd: "26440"}
+    expect: {S01: fail, S03: fail, N01: fail, C01: likely}
+    why: {S01: "지역"}
+    checkup: []
+  - name: 주소 없음 -> 지역 조건은 unknown
+    address: null
+    expect: {S01: maybe, N01: maybe, C01: likely}
+    checkup: [N02]
+
+  # ---- N05 침수방지(지하층 힌트)
+  - name: N05 지하층 있음
+    building: {ugrndFlrCnt: 1}
+    expect: {N05: likely}
+  - name: N05 지하층 없음 -> 힌트라서 fail 아님
+    building: {ugrndFlrCnt: 0}
+    expect: {N05: maybe}
+
+  # ---- 점검(N02)은 지역·소유만 본다
+  - name: N02 는 소득·연식과 무관
+    household: {income: gt100, housingBenefit: null, tenure: rent}
+    building: {useAprDay: "2023-01-01"}
+    expect: {}
+    checkup: [N02]
