@@ -2,6 +2,7 @@ import React from 'react';
 import { Text as RNText, type TextProps, type TextStyle } from 'react-native';
 import { useTheme } from './theme';
 import type { TypeRole } from './tokens';
+import { wordBreakStyle } from './wordBreak';
 
 interface Props extends TextProps {
   /** 기본 색 대신 쓸 토큰 이름 */
@@ -17,6 +18,7 @@ function make(role: TypeRole, defaultTone: NonNullable<Props['tone']>) {
       fontSize: s.size,
       lineHeight: s.lineHeight,
       color: t.colors[tone ?? defaultTone],
+      ...wordBreakStyle,
     };
     if (role === 'amount') base.fontVariant = ['tabular-nums'];
     return <RNText {...rest} style={[base, style]} />;
