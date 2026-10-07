@@ -20,6 +20,9 @@ class Settings(BaseSettings):
     BLDG_API_KEY: str = ""
     FAKE_CLASSIFIER_TYPE: str = "leak"  # 가짜 분류기가 돌려줄 유형
     FAKE_CLASSIFIER_CONFIDENCE: float = 0.82  # 가짜 분류기 확신도
+    CLASSIFY_TIMEOUT: float = 8.0
+    MAX_IMAGES: int = 3
+    MAX_REQUEST_BYTES: int = 10 * 1024 * 1024
     CORS_ORIGINS: str = "http://localhost:8081,http://localhost:19006"
 
 
