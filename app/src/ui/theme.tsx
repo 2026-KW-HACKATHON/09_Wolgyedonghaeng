@@ -47,7 +47,7 @@ function build(
     font: (w) =>
       fontsReady
         ? { fontFamily: FONT[w] }
-        : { fontWeight: w === 'voice' ? '400' : w },
+        : { fontWeight: w === 'voice' ? '500' : w },
     type: base.type,
     space: base.space,
     radius: base.radius,
