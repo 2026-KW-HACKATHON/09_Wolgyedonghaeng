@@ -36,9 +36,9 @@ export const Title = make('title', 'ink');
 export const Body = make('body', 'ink');
 export const Label = make('label', 'ink');
 export const Amount = make('amount', 'ink');
-export const Meta = make('meta', 'inkMuted');
+export const Meta = make('meta', 'inkSoft');
 
-/** 집결의 말. strong 부분(문제 이름 등)만 Pretendard 700. */
+/** 집결의 말. 한 문장은 한 글꼴로 쓰고, 강조할 부분(문제 이름 등)만 글자 색을 더 진하게 한다. */
 export function VoiceLine({
   before,
   strong,
@@ -54,9 +54,9 @@ export function VoiceLine({
 }) {
   const t = useTheme();
   return (
-    <Voice style={style} accessibilityRole="text">
+    <Voice tone="inkSoft" style={style} accessibilityRole="text">
       {before}
-      {strong ? <RNText style={t.font('700')}>{strong}</RNText> : null}
+      {strong ? <RNText style={{ color: t.colors.ink }}>{strong}</RNText> : null}
       {after}
       {children}
     </Voice>
@@ -73,6 +73,13 @@ const STATE_TEXT: Record<ApplyState, string> = {
 };
 
 /** 접수 상태. 글자와 색으로만 말한다 (배지 금지). */
+/** 접수 상태를 한 줄 글로 */
+export function statusSentence(state: ApplyState, nextMonth?: number | null): string {
+  let text = STATE_TEXT[state];
+  if (state === 'closed_next' && nextMonth) text += ` · 다음 모집 ${nextMonth}월`;
+  return text;
+}
+
 export function StatusText({
   state,
   nextMonth,
@@ -83,8 +90,7 @@ export function StatusText({
   style?: TextStyle;
 }) {
   const { font } = useTheme();
-  let text = STATE_TEXT[state];
-  if (state === 'closed_next' && nextMonth) text += ` · 다음 모집 ${nextMonth}월`;
+  const text = statusSentence(state, nextMonth);
   const tone = state === 'always' || state === 'open' ? 'green' : state === 'check' ? 'ink' : 'inkMuted';
   return (
     <Body tone={tone} style={[font('700'), style]}>

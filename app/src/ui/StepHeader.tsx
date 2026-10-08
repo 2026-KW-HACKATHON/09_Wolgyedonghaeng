@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function StepHeader({ step, total = 3, name, onBack }: Props) {
-  const { size } = useTheme();
+  const { size, colors, radius, space, font } = useTheme();
   const stepName = name ?? STEP_NAMES[step - 1] ?? '';
   return (
     <View
@@ -30,11 +30,16 @@ export function StepHeader({ step, total = 3, name, onBack }: Props) {
           style={({ pressed }) => ({
             minHeight: size.touch,
             minWidth: size.touch,
+            paddingHorizontal: space.md,
             justifyContent: 'center',
+            borderRadius: radius.md,
+            backgroundColor: colors.raised,
+            borderWidth: size.borderWidth,
+            borderColor: colors.line,
             opacity: pressed ? 0.85 : 1,
           })}
         >
-          <Body tone="inkSoft">‹ 뒤로</Body>
+          <Body style={font('700')}>‹ 뒤로</Body>
         </Pressable>
       ) : (
         <View style={{ minWidth: size.touch }} />
@@ -56,7 +61,7 @@ export function BackLink({
   label?: string;
   accessibilityLabel?: string;
 }) {
-  const { size } = useTheme();
+  const { size, colors, radius, space, font } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
@@ -65,12 +70,17 @@ export function BackLink({
       style={({ pressed }) => ({
         minHeight: size.touch,
         minWidth: size.touch,
+        paddingHorizontal: space.md,
         alignSelf: 'flex-start',
         justifyContent: 'center',
+        borderRadius: radius.md,
+        backgroundColor: colors.raised,
+        borderWidth: size.borderWidth,
+        borderColor: colors.line,
         opacity: pressed ? 0.85 : 1,
       })}
     >
-      <Body tone="inkSoft">{label}</Body>
+      <Body style={font('700')}>{label}</Body>
     </Pressable>
   );
 }

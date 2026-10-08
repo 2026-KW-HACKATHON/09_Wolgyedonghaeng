@@ -112,7 +112,7 @@ export default function AddressScreen() {
             variant="text"
             title={copy.address.outOfRegionLink}
             accessibilityLabel={copy.address.outOfRegionLinkLabel}
-            style={{ alignSelf: 'flex-start', marginLeft: -space.screen }}
+            style={{ alignSelf: 'flex-start' }}
             onPress={() => {
               Linking.openURL(OUT_OF_REGION_URL).catch(() => {});
             }}

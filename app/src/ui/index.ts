@@ -12,3 +12,4 @@ export * from './ProblemIcon';
 export * from './useReducedMotion';
 export * from './useFocusBorder';
 export * from './PhoneButton';
+export * from './FilterTabs';

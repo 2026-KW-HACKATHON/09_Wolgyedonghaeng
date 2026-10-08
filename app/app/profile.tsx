@@ -169,7 +169,7 @@ export default function ProfileScreen() {
             title={copy.profile.back}
             accessibilityLabel={copy.profile.backLabel}
             onPress={goHome}
-            style={{ marginLeft: -space.screen }}
+            style={{ alignSelf: 'flex-start' }}
           />
         </View>
 

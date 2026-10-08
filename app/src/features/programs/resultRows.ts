@@ -95,6 +95,15 @@ export function buildRows(res: AnalyzeResponse, programs: ProgramsFile): ResultR
   return { main, checkup, excluded };
 }
 
+export type StatusFilter = 'all' | 'open' | 'later' | 'check';
+
+/** 사업 행이 어느 접수 상태 묶음에 드는지: 신청 가능(open), 추후 신청(later), 확인 필요(check). */
+export function statusGroupOf(row: Pick<ResultRow, 'state' | 'statusText'>): Exclude<StatusFilter, 'all'> {
+  if (row.state === 'always' || row.state === 'open') return 'open';
+  if (row.state === 'closed_next' || (!row.state && row.statusText)) return 'later';
+  return 'check';
+}
+
 export type ResultKind = 'confirm' | 'other' | 'empty' | 'list';
 
 /** 결과 화면이 어떤 단계를 보여 줄지. confirmed 는 사용자가 [맞아요]를 눌렀는지. */

@@ -1,22 +1,22 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Body, Meta, useTheme } from '../../ui';
+import { Body, Label, useTheme } from '../../ui';
 
-/** 항목 제목(Meta)과 내용. 면·구분선 없이 여백으로만 나눈다. */
+/** 항목 제목(Label)과 내용. 면·구분선 없이 제목의 굵기와 여백으로 나눈다. */
 export function Item({ title, children }: { title: string; children: React.ReactNode }) {
   const { space } = useTheme();
   return (
     <View style={{ gap: space.xs }}>
-      <Meta accessibilityRole="header">{title}</Meta>
+      <Label accessibilityRole="header">{title}</Label>
       {children}
     </View>
   );
 }
 
-/** 묶음. 항목 사이 24, 묶음 사이는 바깥에서 32. */
+/** 묶음. 항목 사이 32, 묶음 사이는 바깥에서 32. */
 export function Group({ children }: { children: React.ReactNode }) {
   const { space } = useTheme();
-  return <View style={{ gap: space.lg }}>{children}</View>;
+  return <View style={{ gap: space.xl }}>{children}</View>;
 }
 
 /** 줄바꿈이 들어 있는 사업 데이터 글을 그대로 보여 준다. */

@@ -28,7 +28,7 @@ export function BigButton({
   style,
   compact = false,
 }: Props) {
-  const { colors, size, radius, type } = useTheme();
+  const { colors, size, radius, type, font } = useTheme();
   const label = accessibilityLabel ?? title;
 
   const surface: ViewStyle =
@@ -36,7 +36,7 @@ export function BigButton({
       ? { backgroundColor: colors.green }
       : variant === 'secondary'
         ? { backgroundColor: colors.surface, borderWidth: size.borderWidth, borderColor: colors.line }
-        : {};
+        : { backgroundColor: colors.raised, borderWidth: size.borderWidth, borderColor: colors.line };
   const height = variant === 'primary' ? size.buttonPrimary : variant === 'secondary' ? size.buttonSecondary : size.touch;
 
   return (
@@ -56,9 +56,7 @@ export function BigButton({
         ]}
       >
         {variant === 'text' ? (
-          <Body tone="inkSoft" style={styles.underline}>
-            {title}
-          </Body>
+          <Body style={[font('700'), compact ? { textAlign: 'center' } : null]}>{title}</Body>
         ) : (
           <Label
             style={[
@@ -81,6 +79,5 @@ export function BigButton({
 
 const styles = StyleSheet.create({
   base: { alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20, paddingVertical: 8 },
-  underline: { textDecorationLine: 'underline' },
   reason: { marginTop: 8, textAlign: 'center' },
 });

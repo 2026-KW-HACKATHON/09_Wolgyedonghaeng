@@ -4,7 +4,7 @@ import other from '../../../services/mock/examples/analyze-other.json';
 import empty from '../../../services/mock/examples/analyze-empty.json';
 import programsJson from '../../../services/mock/programs.json';
 import type { AnalyzeResponse, ProgramsFile } from '../../../services/api.models';
-import { amountLine, buildRows, parseNextMonth, resultKind, statusFields } from '../resultRows';
+import { amountLine, buildRows, parseNextMonth, resultKind, statusFields, statusGroupOf } from '../resultRows';
 
 const programs = programsJson as unknown as ProgramsFile;
 const res = (x: unknown) => x as AnalyzeResponse;
@@ -98,5 +98,19 @@ describe('resultKind', () => {
   });
   it('보통은 list', () => {
     expect(resultKind(res(normal), false, buildRows(res(normal), programs))).toBe('list');
+  });
+});
+
+describe('접수 상태 묶음', () => {
+  it('언제든·지금은 신청 가능, 마감은 추후 신청, 그 밖은 확인 필요', () => {
+    expect(statusGroupOf({ state: 'always' })).toBe('open');
+    expect(statusGroupOf({ state: 'open' })).toBe('open');
+    expect(statusGroupOf({ state: 'closed_next' })).toBe('later');
+    expect(statusGroupOf({ state: 'check' })).toBe('check');
+  });
+
+  it('상태 없이 다음 모집 안내 글만 있으면 추후 신청, 아무것도 없으면 확인 필요', () => {
+    expect(statusGroupOf({ statusText: '주로 4~8월' })).toBe('later');
+    expect(statusGroupOf({})).toBe('check');
   });
 });

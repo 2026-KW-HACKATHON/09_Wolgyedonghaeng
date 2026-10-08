@@ -173,7 +173,7 @@ export default function ProgramDetail() {
                   variant="text"
                   title={amountOpen ? copy.program.amountLess : copy.program.amountMore}
                   accessibilityLabel={amountOpen ? copy.program.amountLessLabel : copy.program.amountMoreLabel}
-                  style={{ alignSelf: 'flex-start', marginLeft: -space.screen }}
+                  style={{ alignSelf: 'flex-start' }}
                   onPress={() => setAmountOpen((v) => !v)}
                 />
               </>
@@ -249,7 +249,7 @@ export default function ProgramDetail() {
                 variant="text"
                 title={copy.program.openSource(l.host)}
                 accessibilityLabel={copy.program.openSourceLabel(l.host)}
-                style={{ alignSelf: 'flex-start', marginLeft: -space.screen }}
+                style={{ alignSelf: 'flex-start' }}
                 onPress={() => {
                   Linking.openURL(l.url).catch(() => {});
                 }}

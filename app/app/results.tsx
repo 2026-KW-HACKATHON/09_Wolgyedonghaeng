@@ -6,7 +6,7 @@ import { getProblemType, type ProblemTypeId } from '../src/config/problemTypes';
 import { CallCenterButton } from '../src/features/programs/CallCenterButton';
 import { ProblemPicker } from '../src/features/programs/ProblemPicker';
 import { SearchingView } from '../src/features/programs/SearchingView';
-import { resultKind, type ResultRow } from '../src/features/programs/resultRows';
+import { resultKind, statusGroupOf, type ResultRow, type StatusFilter } from '../src/features/programs/resultRows';
 import { useAnalyze } from '../src/features/programs/useAnalyze';
 import { goHomeClean } from '../src/features/programs/goHome';
 import { useFlow } from '../src/store/flow';
@@ -14,6 +14,7 @@ import {
   BackLink,
   BigButton,
   Body,
+  FilterTabs,
   FixedBottomBar,
   Label,
   Meta,
@@ -22,6 +23,7 @@ import {
   Title,
   Voice,
   VoiceLine,
+  statusSentence,
   useTheme,
 } from '../src/ui';
 
@@ -32,6 +34,7 @@ export default function ResultsScreen() {
   const { phase, slow, run } = useAnalyze();
   const [confirmed, setConfirmed] = useState(false);
   const [picking, setPicking] = useState(false);
+  const [filter, setFilter] = useState<StatusFilter>('all');
   const [showWhy, setShowWhy] = useState(false);
 
   // 사진이 없으면(새로고침 등) 처음으로
@@ -129,21 +132,38 @@ export default function ResultsScreen() {
   }
 
   const seen = copy.results.seenAs(type.label);
+  // 사업 행은 사업명과 지원 금액만 보여 준다. 접수 상태는 위의 선택 버튼으로 걸러 보고, 근거와 자세한 내용은 사업 상세에 있다.
+  const statusPlain = (r: ResultRow) =>
+    r.state ? statusSentence(r.state, r.nextMonth) : r.statusText ?? '';
   const renderRow = (r: ResultRow, label?: string) => (
     <Row
       key={r.programId}
       title={r.title}
-      note={r.note}
-      reason={r.reason}
       amount={r.amount}
       amountPrefix={r.amountPrefix}
-      state={r.state}
-      nextMonth={r.nextMonth}
-      statusText={r.statusText}
-      accessibilityLabel={label}
+      accessibilityLabel={
+        label ??
+        [r.title, [r.amountPrefix, r.amount].filter(Boolean).join(' '), statusPlain(r)].filter(Boolean).join(', ')
+      }
       onPress={() => openProgram(r.programId)}
     />
   );
+
+  const counts = {
+    open: rows.main.filter((r) => statusGroupOf(r) === 'open').length,
+    later: rows.main.filter((r) => statusGroupOf(r) === 'later').length,
+    check: rows.main.filter((r) => statusGroupOf(r) === 'check').length,
+  };
+  const filterOptions = [
+    { key: 'all', label: copy.results.filterAll, count: rows.main.length },
+    { key: 'open', label: copy.results.filterOpen, count: counts.open },
+    { key: 'later', label: copy.results.filterLater, count: counts.later },
+    { key: 'check', label: copy.results.filterCheck, count: counts.check },
+  ].filter((o) => o.key === 'all' || o.count > 0);
+  // 묶음이 둘 이상일 때만 선택 버튼이 의미가 있다
+  const showFilter = kind === 'list' && filterOptions.length > 2;
+  const activeFilter = filterOptions.some((o) => o.key === filter) ? filter : 'all';
+  const shownMain = activeFilter === 'all' ? rows.main : rows.main.filter((r) => statusGroupOf(r) === activeFilter);
 
   return (
     <Screen scroll>
@@ -159,7 +179,7 @@ export default function ResultsScreen() {
             variant="text"
             title={copy.results.change}
             accessibilityLabel={copy.results.changeLabel}
-            style={{ alignSelf: 'flex-start', marginLeft: -space.screen }}
+            style={{ alignSelf: 'flex-start' }}
             onPress={() => setPicking(true)}
           />
         </View>
@@ -172,7 +192,12 @@ export default function ResultsScreen() {
           </View>
         ) : (
           <View style={{ gap: space.sm }}>
-            {rows.main.map((r) => renderRow(r))}
+            {showFilter ? (
+              <View style={{ paddingBottom: space.xs }}>
+                <FilterTabs options={filterOptions} value={activeFilter} onChange={(k) => setFilter(k as StatusFilter)} />
+              </View>
+            ) : null}
+            {shownMain.map((r) => renderRow(r))}
             {rows.checkup.length > 0 ? (
               <View style={{ paddingTop: space.md, gap: space.sm }}>
                 {rows.checkup.map((r) =>
@@ -198,7 +223,7 @@ export default function ResultsScreen() {
             <BigButton
               variant="text"
               title={showWhy ? copy.results.whyNotClose : copy.results.whyNot}
-              style={{ alignSelf: 'flex-start', marginLeft: -space.screen }}
+              style={{ alignSelf: 'flex-start' }}
               onPress={() => setShowWhy((v) => !v)}
             />
             {showWhy
