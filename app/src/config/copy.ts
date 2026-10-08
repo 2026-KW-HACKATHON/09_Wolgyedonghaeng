@@ -120,7 +120,7 @@ export const copy = {
     permissionDenied: '위치 권한이 막혀 있어요\n주소를 직접 적어 주세요',
     noCoords: '지금 계신 곳을 알 수 없어요\n주소를 직접 적어 주세요',
     lookupFailed: '주소를 찾지 못했어요\n주소를 직접 적어 주세요',
-    buildingUnknown: '집을 다 지은 해는 상담에서 확인해요',
+    buildingUnknown: '준공연도는 상담에서 확인해요',
   },
 
   // S3 찾는 중
@@ -240,8 +240,8 @@ export const copy = {
     incomeUnknown: '한 달 소득은 상담에서 확인해요',
     benefit: { yes: '주거급여 받고 있어요', no: '주거급여 받지 않아요', unknown: '주거급여는 모르겠어요' },
     tenure: { own: '우리 집(자가)', rent: '전세·월세', public_rent: '공공임대', unknown: '집 형태는 모르겠어요' },
-    builtYear: (y: number) => `집을 다 지은 해 ${y}년`,
-    builtUnknown: '집을 다 지은 해 확인 필요',
+    builtYear: (y: number) => `준공연도 ${y}년`,
+    builtUnknown: '준공연도 확인 필요',
     problem: (name: string) => `문제 ${name}`,
     thumbLabel: '문제 사진',
     permissionDenied: '앨범에 저장할 수 없어요. 보내기를 눌러 보세요.',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
-import { Amount, Body, Label, Meta, StatusText, type ApplyState } from './Text';
+import { Body, Label, Meta, StatusText, type ApplyState } from './Text';
 import { useTheme } from './theme';
 
 interface Props {
@@ -32,7 +32,7 @@ export function Row({
   onPress,
   accessibilityLabel,
 }: Props) {
-  const { colors, radius, space } = useTheme();
+  const { colors, radius, space, font } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
@@ -48,12 +48,17 @@ export function Row({
         opacity: pressed ? 0.85 : 1,
       })}
     >
-      <View style={{ flex: 1, gap: 4 }}>
+      <View style={{ flex: 1, gap: 8 }}>
         <Label>{title}</Label>
         {note ? <Meta>{note}</Meta> : null}
         {reason ? <Body tone="inkSoft">{reason}</Body> : null}
         {amountPrefix ? <Meta>{amountPrefix}</Meta> : null}
-        {amount ? <Amount>{amount}</Amount> : null}
+        {/* 사업명이 행에서 가장 강한 글씨. 금액은 본문 크기·보통 굵기·연한 색으로 한 단계 낮춰 이름과 구분한다 */}
+        {amount ? (
+          <Body tone="inkSoft" style={font('500')}>
+            {amount.replace(/([0-9만억천]) (원|명|%|개월)/g, '$1\u00a0$2')}
+          </Body>
+        ) : null}
         {state ? <StatusText state={state} nextMonth={nextMonth} /> : null}
         {!state && statusText ? <Meta>{statusText}</Meta> : null}
       </View>

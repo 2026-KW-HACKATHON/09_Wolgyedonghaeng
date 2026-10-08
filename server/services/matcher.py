@@ -191,7 +191,7 @@ def check_traits_any(any_of: list[str], other_ok: bool, h: Household) -> Check:
 
 def check_age(min_years: int, b: Building | None, today: date) -> Check:
     if b is None or b.useAprDay is None:
-        return Check("unknown", ask="집을 다 지은 해")
+        return Check("unknown", ask="준공연도")
     if full_years(b.useAprDay, today) >= min_years:
         return PASS
     return Check("fail", f"집을 지은 지 {min_years}년이 안 된 집은 대상이 아니에요")
@@ -199,7 +199,7 @@ def check_age(min_years: int, b: Building | None, today: date) -> Check:
 
 def check_approved_before(limit: str, b: Building | None) -> Check:
     if b is None or b.useAprDay is None:
-        return Check("unknown", ask="집을 다 지은 해")
+        return Check("unknown", ask="준공연도")
     if b.useAprDay < date.fromisoformat(limit):
         return PASS
     return Check("fail", f"{limit[:4]}년 이전에 지은 집만 신청할 수 있어요")

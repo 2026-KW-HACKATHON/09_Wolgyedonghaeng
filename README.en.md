@@ -65,7 +65,7 @@ Each screen does one thing, and the user can go back a step at any point.
 |---|---|---|
 | Home | Take a photo of the problem or pick one from the album (up to 3). Photos are shrunk and re-saved on the device first. The top bar has login, my info, and screen brightness (auto, light, dark); below it are the saved programs and counseling cards. | If the camera or album cannot be used, the app points to the other option. If a photo cannot be loaded, the user picks again. |
 | Household | Answer five simple questions: "How many people live together?", "About how much does your family earn per month in total?" (4 range buttons), "Do you receive the housing benefit?" (only when income is at or below 48%), "What kind of home do you live in?", and "Tap everything that applies". Every question has an "I'm not sure" option. If information was saved before, the app first asks "Start with your saved information?" | Unknown answers are fine; programs stay visible and the item is kept as something to check at counseling. |
-| Address | Find the address from the phone's location (GPS) and confirm "Is this the right address?", or type a road address and pick it. Once the address is set, the building age is looked up from the building register automatically. Unit number is optional. | If location permission is blocked or the address is not found, the screen switches to manual input. If the building-register lookup fails, it says "We'll check the year the house was finished at counseling". For an address outside Nowon-gu it shows a notice and points to Bokjiro, and the user can still continue. |
+| Address | Find the address from the phone's location (GPS) and confirm "Is this the right address?", or type a road address and pick it. Once the address is set, the building age is looked up from the building register automatically. Unit number is optional. | If location permission is blocked or the address is not found, the screen switches to manual input. If the building-register lookup fails, it says "We'll check the year of completion at counseling". For an address outside Nowon-gu it shows a notice and points to Bokjiro, and the user can still continue. |
 | Searching | Sends the photo and answers to the server and waits. If it takes long, it says "This is taking a little longer". | Shows "We couldn't find anything right now" with [Try again] and [Call the community service center]. |
 | Results | First tells the user what problem the AI saw. If confidence is low it asks "This looks like a leak. Is that right?" ([Yes] or [No, let me choose]), and then lists programs by name and amount only. Selection buttons at the top (All, Can apply, Apply later, Needs checking) filter the list by application status. Programs left out can be viewed with reasons under "Look at other programs". | If the photo alone is unclear ("other"), the user picks the problem type from an illustrated list. If nothing matches, it says "We couldn't find anything with these conditions" and points to the community service center. On an error it shows [Try again] and [Call the community service center]. |
 | Program detail | Shows what is supported, the amount, who it is for (income, year of completion, area, other conditions), "why you may qualify", application status and period, how to apply, a phone number, what to check or prepare at counseling, source links, and the reference date. The bottom bar has save, make card, and call. | If a program has no phone number, the Wolgye 1-dong community service center number is shown instead. If the program cannot be found, a back button is shown. |
@@ -91,7 +91,7 @@ External data comes in as follows:
 |---|---|
 | Ministry of the Interior and Safety road address search API | Address search, legal-district code and lot number |
 | Kakao Local | Turning the phone's location (coordinates) into an address |
-| Ministry of Land, Infrastructure and Transport building register (Architecture HUB) | Year the house was finished (approval date), main use, floor counts |
+| Ministry of Land, Infrastructure and Transport building register (Architecture HUB) | Year of completion (approval date), main use, floor counts |
 | `server/data/programs-2026.json` | Rule matching and all program information in the app (amounts, periods, phone numbers, sources) |
 
 ### The three steps residents see
@@ -215,7 +215,7 @@ On a program's detail screen, "Make card" creates a one-page card to take to the
 |---|---|
 | Program | Program name, where to apply, phone number |
 | Application status | Apply anytime, application period to be checked, and so on |
-| Our home | Household size, monthly income range, housing benefit, owner or tenant, neighborhood, the year the house was finished, problem type (photo thumbnail) |
+| Our home | Household size, monthly income range, housing benefit, owner or tenant, neighborhood, the year of completion, problem type (photo thumbnail) |
 | To check | Income criteria including assets, and other program-specific items |
 
 The card does not include a name or detailed address, only the neighborhood. Printing and text-message delivery are under review.
@@ -226,7 +226,7 @@ So that older residents can use the app on their own, the design follows these p
 
 - Large text and sufficient color contrast
 - Large, easy-to-tap buttons
-- Plain language instead of administrative terms ("the year the house was finished" instead of "approval date", "monthly household income" instead of "recognized income")
+- Plain language instead of administrative terms ("year of completion" instead of "approval date", "monthly household income" instead of "recognized income")
 - A progress indicator with the step number, such as "Step 2 of 3", showing which step the user is on
 - Step-by-step screens with one task per screen, and a way back at every step
 - If the AI is wrong or unsure, the resident picks the problem type from an illustrated list
@@ -416,7 +416,7 @@ The code in this project is AGPL-3.0-only and uses the open-source software belo
 | Source | Used for |
 |---|---|
 | Ministry of the Interior and Safety road address search API | Address search, legal-dong code and lot number |
-| Ministry of Land, Infrastructure and Transport Architecture HUB building register (Public Data Portal) | The year the house was finished, building use |
+| Ministry of Land, Infrastructure and Transport Architecture HUB building register (Public Data Portal) | The year of completion, building use |
 | Kakao Local and Kakao Login | Converting coordinates to an address, optional login (Kakao API terms of use) |
 | OpenRouter | Calling the AI model used for photo classification and recommendations |
 | Program announcements from the Ministry of Land, Infrastructure and Transport, Korea Land and Housing Corporation, Seoul Metropolitan Government, Nowon-gu, Korea Energy Foundation, and Korea Authority of Land and Infrastructure Safety | The content of the 14 support programs. Source links and the reference date for each program are in `server/data/programs-2026.json` |
