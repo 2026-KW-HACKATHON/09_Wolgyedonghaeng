@@ -41,7 +41,7 @@
 <text x="1010.0" y="235.5" font-size="14" fill="#1D221E" text-anchor="middle">주소 검색, 법정동코드·번지</text>
 <rect x="860" y="262" width="300" height="72" rx="14" fill="#ECE8DF"/>
 <text x="1010.0" y="293.5" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">국토부 건축HUB</text>
-<text x="1010.0" y="321.5" font-size="14" fill="#1D221E" text-anchor="middle">건축물대장 → 집을 다 지은 해</text>
+<text x="1010.0" y="321.5" font-size="14" fill="#1D221E" text-anchor="middle">건축물대장 → 준공연도</text>
 <rect x="860" y="348" width="300" height="72" rx="14" fill="#ECE8DF"/>
 <text x="1010.0" y="379.5" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">카카오</text>
 <text x="1010.0" y="407.5" font-size="14" fill="#1D221E" text-anchor="middle">좌표 → 주소 (로컬), 로그인</text>
