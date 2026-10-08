@@ -9,8 +9,10 @@
 A project by **Wolgyedonghaeng** (Team 9), 2026 Kwangwoon University KW Hackathon.
 
 - Topic area: Barrier-free and everyday convenience
-- Written: October 1, 2026 (support programs and income thresholds as of 2026)
-- Status: Planning and prototype design (MVP in development)
+- Last updated: October 8, 2026 (program data as of October 6, 2026; income thresholds based on the 2026 standard median income)
+- Status: **MVP complete and deployed** (web, Android, and iOS from one codebase; no resident evaluation has been run yet)
+
+Results are guidance on programs you "may qualify for"; the app does not determine eligibility.
 
 ---
 
@@ -67,17 +69,19 @@ Jipgyeol starts from **the problem in the home**, not from a policy name. Reside
 ### 2. Confirm
 
 - The app shows the AI's judgment ("This looks like a leak. Is that right?") and lets the resident confirm it or choose a different type. If the AI is not confident, the app suggests counseling first.
-- The resident then answers a few simple questions: age, housing type, and owner or tenant.
-- Building age and approval date come from the public building register, so the resident does not need to enter them.
-- Income is never asked as an exact amount. Instead, simple questions come first:
+- The resident then answers a few simple household questions. Income is chosen from amount-range buttons that match the household size, never typed as an exact amount.
+- The address is found from the phone's location (GPS) and confirmed with "Is this the right address?"; if location is unavailable, the resident types a road address.
+- Building age and approval date come from the public building register, so the resident does not need to enter them. If the lookup fails, the app says the year will be checked at counseling.
 
-| Order | Question | What it tells us |
-|---|---|---|
-| 1 | "Do you receive the housing benefit?" | At or below 48% of the standard median income. Owner-occupiers qualify for Repair and Maintenance; excluded from Hope Home Repair |
-| 2 | "Are you a basic livelihood recipient or in the near-poverty group?" | Roughly at or below 50%. May qualify for Hope Home Repair and Energy Efficiency Improvement |
-| 3 | Household size and "Which range is your monthly household income in?" (buttons) | The 60% and 100% brackets. May qualify for the Safe Home Repair Grant and Hope Home Repair |
+| Question | What it tells us |
+|---|---|
+| "How many people live together?" | Household size; the income ranges below are shown for that size |
+| "About how much does your family earn per month in total?" (4 buttons) | Ranges cut at 48%, 60%, and 100% of the standard median income. Example for a 1-person household: up to 1.23M won, 1.23 to 1.54M, 1.54 to 2.56M, and over 2.56M |
+| "Do you receive the housing benefit?" (only when income is at or below 48%) | Owner-occupiers who receive it are guided to Repair and Maintenance and excluded from other repair programs |
+| "What kind of home do you live in?" | Owned, jeonse or monthly rent, or public rental |
+| "Tap everything that applies" | A member aged 65+, a member with a disability, basic livelihood or near-poverty status |
 
-If the answer to question 1 or 2 is "yes", the following questions are skipped. Every question has an "I'm not sure" option; choosing it still shows the programs but adds "income and asset criteria to be checked at counseling" to the prep card. Bracket amounts are listed in [docs/support-programs-research-2026.md](docs/support-programs-research-2026.md) (Korean).
+Every question has an "I'm not sure" option; choosing it still shows the programs but adds "income criteria including assets to be checked at counseling" to the prep card. Bracket amounts and per-program income criteria are listed in [docs/support-programs-research-2026.md](docs/support-programs-research-2026.md) (Korean).
 
 ### 3. Receive
 
@@ -85,18 +89,18 @@ If the answer to question 1 or 2 is "yes", the following questions are skipped. 
 - What is confirmed and what still needs checking are summarized on a one-page counseling prep card.
 - The app guides the resident to the Wolgye 1-dong community service center or the relevant agency for counseling and application.
 
-## Programs we connect to (as of 2026)
+## Programs we connect to (14, as of 2026)
 
-| Program | Operator | Main eligibility | Related problem types |
-|---|---|---|---|
-| Safe Home Repair Grant (안심 집수리 보조사업) | Seoul | Vulnerable households at or below 100% of median income in low-rise houses 10+ years old, semi-basement units, rooftop units, and others | Windows, insulation, heating, waterproofing, accessibility and fire-safety fixtures |
-| Safe Home Repair Loan (안심 집수리 융자) | Seoul | Low-rise houses 20+ years after approval | Most types |
-| Hope Home Repair (희망의 집수리) | Seoul, applied through community service centers | At or below 60% of median income (housing-benefit recipients excluded) | Wallpaper and flooring, insulation, grab bars, sill removal, anti-slip bathroom floors, and more |
-| Housing Benefit Repair and Maintenance (주거급여 수선유지급여) | Ministry of Land, Infrastructure and Transport; LH | Owner-occupier households at or below 48% of median income | Light, medium, and major repairs |
-| Energy Efficiency Improvement for Low-Income Households (저소득층 에너지효율개선) | Ministry of Trade, Industry and Energy; Korea Energy Foundation | Basic livelihood recipients, near-poverty households, and others | Insulation, windows, boilers, air conditioners |
-| Nowon-gu home repair support | Nowon-gu | Low-income households | Under verification |
+Program data lives in [server/data/programs-2026.json](server/data/programs-2026.json) with sources and a reference date (2026-10-06), and the app shows only these values. Eligibility is decided by code rules (`server/services/matcher.py`); the AI only orders and explains the programs that remain as candidates.
 
-Conditions, amounts, application periods, and sources for each program are in [docs/support-programs-research-2026.md](docs/support-programs-research-2026.md) (Korean).
+| Operator | Programs |
+|---|---|
+| National | Housing Benefit Repair and Maintenance, Energy Efficiency Improvement for Low-Income Households, Green Remodeling Interest Support for Private Buildings |
+| Seoul | Hope Home Repair, Safe Home Repair Grant, Safe Home Repair Loan, Saebit Housing (building energy efficiency subsidy), Housing Accessibility Support for Low-Income People with Disabilities |
+| Nowon-gu | Low-income home repair support (small repairs), winter home energy consulting, free flood-prevention installation, housing stability support through in-home elder care agencies |
+| Reference only | Nowon-gu apartment complex support, living-environment improvement for hoarding households (information only, not repair programs) |
+
+Conditions, amounts, application periods, and sources for each program are in [docs/support-programs-research-2026.md](docs/support-programs-research-2026.md) and [docs/support-programs-research-2-2026.md](docs/support-programs-research-2-2026.md) (Korean). Each program's phone number is included only where it was confirmed in the announcement; otherwise the app falls back to the Wolgye 1-dong community service center.
 
 ## What is different
 
@@ -142,16 +146,16 @@ Jipgyeol starts from the problem, so residents do not have to translate it into 
 
 ## Counseling prep card
 
+On a program's detail screen, "Make card" creates a one-page card to take to the counseling desk. It can be saved or shared as an image, and it is stored on the device so it can be reopened from the home screen.
+
 | Item | Example |
 |---|---|
-| Problem | Bathroom ceiling leak (photo attached) |
-| Confirmed conditions | Age 72, owner-occupied, detached house, approved in 1985 |
-| Conditions to check | Income and asset criteria, housing-benefit status |
-| Programs that may apply | Program name, operator, application period |
-| Documents to prepare | Per program |
-| Where to go | Wolgye 1-dong community service center contact and hours |
+| Program | Program name, where to apply, phone number |
+| Application status | Apply anytime, application period to be checked, and so on |
+| Our home | Household size, monthly income range, housing benefit, owner or tenant, neighborhood, the year the house was finished, problem type (photo thumbnail) |
+| To check | Income criteria including assets, and other program-specific items |
 
-The card is shown on screen; printing and text-message delivery are under review.
+The card does not include a name or detailed address, only the neighborhood. Printing and text-message delivery are under review.
 
 ## Easy mode (barrier-free)
 
@@ -160,17 +164,19 @@ So that older residents can use the app on their own, the design follows these p
 - Large text and sufficient color contrast
 - Large, easy-to-tap buttons
 - Plain language instead of administrative terms ("the year the house was finished" instead of "approval date", "monthly household income" instead of "recognized income")
-- A 1-2-3 progress indicator showing which step the user is on
+- A progress indicator with step number and name, such as "2/3 Our home", showing which step the user is on
 - Step-by-step screens with one task per screen, and a way back at every step
-- Choosing the problem from an illustrated list instead of a photo (under review)
+- If the AI is wrong or unsure, the resident picks the problem type from an illustrated list
+- Light and dark modes (following the phone setting, switchable between auto, light, and dark), support for 200% text scaling and reduced motion, and an accessible name on every button
 - Voice guidance (under review)
 
-## Privacy principles (under review)
+## Privacy principles
 
 - Income is asked only as a range, never as an exact amount.
-- Location metadata (EXIF) is removed from photos before processing.
-- Original photos are not stored by default.
-- Users are informed on screen before any photo is sent to an external AI service.
+- Photos are shrunk and re-saved on the device, which removes location metadata (EXIF), before they are sent. The server does not store photos.
+- Server logs do not record photos, addresses, coordinates, or names.
+- Saved programs and counseling cards are stored on the device. Login is optional, and Kakao login receives only the nickname.
+- Because an external AI service is used for photo classification and recommendations, how to tell users on screen that a photo is sent is under review.
 
 ## Evaluation plan
 
@@ -182,33 +188,88 @@ We plan to run usability evaluations with Wolgye 1-dong residents to check wheth
 - **Running costs:** The main costs are AI calls for photo classification and updating program information and income thresholds, which change every year, once or twice a year.
 - **Benefits for the administration:** When residents arrive with a counseling prep card, counselors do not need to ask about every condition from scratch, which shortens counseling. Cases with no matching program are also filtered out in advance.
 
-## Tech stack (under review)
+## Tech stack
 
-- App: React Native
-- Server: FastAPI
-- AI: Multimodal AI for photo classification (outputs a fixed problem type and a confidence score)
-- Data: Public data APIs including the building register, curated data on Seoul, Nowon-gu, and national home-repair programs, and the standard median income table
+| Area | What we use |
+|---|---|
+| App | Expo (React Native, expo-router, TypeScript); web, Android, and iOS from one codebase |
+| Server | FastAPI (Python 3.12, Pydantic v2) |
+| AI | A multimodal model called through OpenRouter. It classifies a photo into a fixed problem type with a confidence score, and orders and explains the remaining candidate programs |
+| Public and external data | Ministry of the Interior and Safety road address search API, Ministry of Land, Infrastructure and Transport building register (Architecture HUB), Kakao Local (coordinates to address) and Kakao Login |
+| Own data | 14 support programs (`server/data/programs-2026.json`), problem types (`contracts/problem-types.json`), the standard median income table (`app/src/config/income-2026.ts`) |
+| Deployment | Web on Vercel, server on Render (Docker) |
+| Quality | Server pytest, app jest, web Playwright E2E, GitHub Actions CI |
+
+Every external integration sits behind an interface. When an API key is empty, the server automatically uses a fake implementation (mock), and the `/health` response lists which parts are fake.
 
 ## Timeline
 
-| Period | Work |
-|---|---|
-| Sep 29 to Oct 3 | Core features: photo-based problem classification, program matching, counseling prep card |
-| Oct 4 to Oct 8 | MVP: automatic housing information lookup, easy mode |
+| Period | Work | Status |
+|---|---|---|
+| Sep 29 to Oct 3 | Core features: photo-based problem classification, program matching, counseling prep card | Done |
+| Oct 4 to Oct 8 | MVP: automatic housing information lookup, easy mode, deployment | Done |
 
 ## Future plans
 
-- **Expanding to other areas:** Keep photo classification and matching rules as they are, and swap only the regional program data to extend the service to other neighborhoods and districts.
+- **Reflecting resident feedback:** Run usability evaluations with Wolgye 1-dong residents and refine screens and questions based on the results.
+- **Saving personal information on the server:** Today a logged-in user's information is still stored only on the device. Permanent server-side storage is the next step.
+- **Voice guidance, card printing and text-message delivery** are under review.
+- **Expanding to other areas:** Photo classification and matching rules stay as they are; only the regional program data changes to extend the service to other neighborhoods and districts.
 - **Managing program data:** Keep original announcements and reference dates together, and set up a process to update information in line with application periods and the standard median income announced each year.
-- **Reflecting resident feedback:** Refine screens and questions based on usability evaluations with Wolgye 1-dong residents.
+- **More real-device checks:** Verify camera, phone call, and card saving on more Android and iOS devices.
 
 ## Getting started
 
-To be added as development progresses.
+### Server
+
+```bash
+cd server
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env            # leave keys empty to run in fake (mock) mode
+uvicorn main:app --reload --port 8000
+pytest -q                       # rule-table tests and contract tests
+pytest -q tests/smoke -rs       # real-integration checks after adding keys (skipped without keys)
+```
+
+`server/.env.example` lists only the variable names: photo classification (`OPENROUTER_*`), addresses (`JUSO_API_KEY`, `KAKAO_REST_KEY`), the building register (`BLDG_API_KEY`), and Kakao Login (`KAKAO_CLIENT_SECRET`, `APP_TOKEN_SECRET`). `.env` files and keys are never committed. While the server runs, `http://localhost:8000/health` shows which parts are fake.
+
+### App
+
+```bash
+cd app
+npm install
+cp .env.example .env            # set EXPO_PUBLIC_API_BASE_URL to the server address
+npx expo start                  # i: iOS, a: Android, w: web
+npx tsc --noEmit && npx eslint . && npx jest
+npm run e2e                     # web E2E (includes the build)
+```
+
+- To reach the server on your PC from a phone (Expo Go), use the PC's LAN IP instead of `localhost`.
+- To view screens without a server, run with `EXPO_PUBLIC_USE_MOCK_API=1`.
+- Camera and location work on the web only over HTTPS or localhost.
+- Kakao only redirects back to `http(s)` addresses, so the app returns through a web address (`EXPO_PUBLIC_AUTH_WEB_BASE`) to get back into the app.
+
+### Deployment
+
+- Server: deployed to Render from `render.yaml` at the repository root and `server/Dockerfile`. Secrets are entered as environment variables in the Render dashboard.
+- Web: deployed to Vercel with `app/vercel.json` (Root Directory is `app`).
 
 ## Project structure
 
-To be added as development progresses.
+```
+app/                  Expo app (web, Android, iOS)
+  app/                screens (expo-router): home, household, address, results, program detail, card, my info
+  src/                config (copy, income table), features, services (API, storage), ui (design tokens, shared parts)
+  e2e/                web E2E
+server/               FastAPI server
+  routers/ services/  API, rules (matcher), classifier, ranker, address, building, login
+  data/               program data (programs-2026.json) and build_programs.py that produces it
+  tests/ eval/        tests and rule-table tests
+contracts/            API contract and problem types shared by server and app
+docs/                 program research, logos, records of compared services
+render.yaml           server deployment config
+```
 
 ## Team Wolgyedonghaeng
 
@@ -237,4 +298,4 @@ Please cite this project using its Zenodo record.
 
 ---
 
-This document is a draft describing the idea and design direction, and it may change as development progresses. Items marked "(under review)" are still being decided by the team.
+This document reflects the MVP as of October 8, 2026. Program information changes every year, so please check the original announcement and the responsible agency before applying. Items marked "(under review)" are still being decided by the team.
