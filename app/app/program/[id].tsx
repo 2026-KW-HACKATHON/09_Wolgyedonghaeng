@@ -116,10 +116,21 @@ export default function ProgramDetail() {
     }
   };
 
-  const cardButton = (
+  const saveButton = (
     <BigButton
       style={{ flex: 1 }}
       variant="secondary"
+      compact
+      title={saved ? copy.program.saved : copy.program.save}
+      accessibilityLabel={saved ? copy.program.savedLabel : copy.program.saveLabel}
+      onPress={onSave}
+    />
+  );
+  const cardButton = (
+    <BigButton
+      style={{ flex: 1.3 }}
+      variant="secondary"
+      compact
       title={making ? copy.program.makingCard : copy.program.makeCard}
       accessibilityLabel={copy.program.makeCardLabel}
       disabled={making}
@@ -133,6 +144,7 @@ export default function ProgramDetail() {
       footer={
         <FixedBottomBar>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+            {saveButton}
             {cardButton}
             <PhoneButton accessibilityLabel={copy.program.callLabel} onPress={onCall} />
           </View>
@@ -140,16 +152,7 @@ export default function ProgramDetail() {
       }
     >
       <View style={{ gap: space.xl, paddingTop: space.xs, paddingBottom: space.lg }}>
-        {/* 뒤로는 왼쪽 위, 저장은 오른쪽 위 */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <BackLink onBack={goBack} />
-          <BigButton
-            variant="text"
-            title={saved ? copy.program.saved : copy.program.save}
-            accessibilityLabel={saved ? copy.program.savedLabel : copy.program.saveLabel}
-            onPress={onSave}
-          />
-        </View>
+        <BackLink onBack={goBack} />
         <View style={{ gap: space.xs }}>
           <Title accessibilityRole="header">{program.name}</Title>
           <Meta>{program.display.operatorText}</Meta>

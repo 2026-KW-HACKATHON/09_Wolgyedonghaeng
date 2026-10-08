@@ -138,4 +138,19 @@ test.describe('로그인과 내 정보', () => {
     await page.getByRole('button', { name: '로그인 안내를 다시 보지 않기' }).click();
     await expect(page.getByText('상담 준비 카드')).toBeVisible();
   });
+
+  test('로그인 안내: 이미지를 저장하지 않고 카드에서 나가도 한 번 뜨고, 닫으면 이어서 나간다', async ({ page }) => {
+    await page.goto('/?mock=normal');
+    await pickPhoto(page);
+    await fillHousehold(page);
+    await confirmAddress(page);
+    await expect(page.getByText('누수 문제가 있으시네요')).toBeVisible({ timeout: 30_000 });
+    await page.getByRole('button', { name: /^(?!문제 종류|다른 사업).*,(?!.*무료 점검)/ }).first().click();
+    await page.getByRole('button', { name: '상담 카드 만들기' }).click();
+    await page.waitForURL(/card\//);
+    await page.getByRole('button', { name: '처음 화면으로 가기' }).first().click();
+    await expect(page.getByText('로그인하고 정보를 지키세요')).toBeVisible();
+    await page.getByRole('button', { name: '로그인하지 않고 카드 보기' }).click();
+    await expect(page.getByText('고칠 곳을 찍어 주세요')).toBeVisible(); // 하려던 이동(처음 화면)을 이어서 한다
+  });
 });

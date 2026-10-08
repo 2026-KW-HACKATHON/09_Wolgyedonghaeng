@@ -14,6 +14,8 @@ interface Props {
   disabledReason?: string;
   accessibilityLabel?: string;
   style?: StyleProp<ViewStyle>;
+  /** 한 줄에 버튼을 여러 개 놓을 때: 글자를 본문 크기로, 좌우 여백을 줄인다 */
+  compact?: boolean;
 }
 
 export function BigButton({
@@ -24,8 +26,9 @@ export function BigButton({
   disabledReason,
   accessibilityLabel,
   style,
+  compact = false,
 }: Props) {
-  const { colors, size, radius } = useTheme();
+  const { colors, size, radius, type } = useTheme();
   const label = accessibilityLabel ?? title;
 
   const surface: ViewStyle =
@@ -48,6 +51,7 @@ export function BigButton({
           styles.base,
           { minHeight: height, borderRadius: radius.md },
           surface,
+          compact ? { paddingHorizontal: 8 } : null,
           { opacity: disabled ? 0.4 : pressed ? 0.85 : 1 },
         ]}
       >
@@ -56,7 +60,14 @@ export function BigButton({
             {title}
           </Body>
         ) : (
-          <Label style={{ color: variant === 'primary' ? colors.onGreen : colors.ink }}>{title}</Label>
+          <Label
+            style={[
+              { color: variant === 'primary' ? colors.onGreen : colors.ink },
+              compact ? { fontSize: type.body.size, lineHeight: type.body.lineHeight, textAlign: 'center' } : null,
+            ]}
+          >
+            {title}
+          </Label>
         )}
       </Pressable>
       {disabled && disabledReason ? (
