@@ -11,7 +11,7 @@ interface Props {
   contentStyle?: ViewStyle;
 }
 
-/** paper 배경, 좌우 20, 웹에서는 가운데 480px 열. */
+/** paper 배경, 좌우 20, 위쪽은 안전 영역 아래 16 (맨 위 버튼이 화면 끝에 붙지 않게), 웹에서는 가운데 480px 열. */
 export function Screen({ children, scroll = false, footer, contentStyle }: Props) {
   const { colors, space, size } = useTheme();
   const insets = useSafeAreaInsets();
@@ -23,7 +23,7 @@ export function Screen({ children, scroll = false, footer, contentStyle }: Props
     ...contentStyle,
   };
   return (
-    <View style={{ flex: 1, backgroundColor: colors.paper, paddingTop: insets.top }}>
+    <View style={{ flex: 1, backgroundColor: colors.paper, paddingTop: insets.top + space.md }}>
       {scroll ? (
         <ScrollView
           style={{ flex: 1 }}

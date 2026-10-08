@@ -126,13 +126,15 @@ export function IncomeQuestion({
                 onPress={() => onChange(b.code)}
               />
             ))}
+            {/* 구간 버튼과 같은 모양의 다섯 번째 선택지 */}
+            <ChoiceButton
+              size="wide64"
+              title={copy.household.q2Unknown}
+              selected={income === 'unknown'}
+              onPress={() => onChange('unknown')}
+            />
           </Animated.View>
           {needsCounselConfirm(size) ? <Meta>{copy.household.q2Over7}</Meta> : null}
-          <TextChoice
-            title={copy.household.q2Unknown}
-            selected={income === 'unknown'}
-            onPress={() => onChange('unknown')}
-          />
         </>
       ) : (
         <Meta>{copy.household.q2Pick}</Meta>

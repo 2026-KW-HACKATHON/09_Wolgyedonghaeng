@@ -112,7 +112,17 @@ export default function ResultsScreen() {
   if (kind === 'other' || picking) {
     return (
       <Screen scroll>
-        <View style={{ gap: space.lg, paddingTop: space.xl, paddingBottom: space.xl }}>
+        <View style={{ gap: space.lg, paddingTop: space.sm, paddingBottom: space.xl }}>
+          {/* 뒤로는 다른 화면과 같이 맨 위 왼쪽. 고르는 중이면 목록으로, 사진으로 알 수 없을 때는 처음 화면으로 */}
+          {kind === 'other' ? (
+            <BackLink
+              onBack={() => goHomeClean(router)}
+              label={copy.results.toStart}
+              accessibilityLabel={copy.results.toStartLabel}
+            />
+          ) : (
+            <BackLink onBack={() => setPicking(false)} />
+          )}
           {kind === 'other' ? (
             <>
               <Voice accessibilityRole="header">{copy.results.otherVoice}</Voice>
@@ -123,9 +133,6 @@ export default function ResultsScreen() {
           )}
           <ProblemPicker onPick={pick} current={res.classification.type} />
           {kind === 'other' ? <CallCenterButton /> : null}
-          {picking && kind !== 'other' ? (
-            <BigButton variant="text" title={copy.common.back} onPress={() => setPicking(false)} />
-          ) : null}
         </View>
       </Screen>
     );
