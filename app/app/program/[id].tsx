@@ -1,6 +1,6 @@
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { Linking, View, useWindowDimensions } from 'react-native';
+import { Linking, View } from 'react-native';
 import { copy } from '../../src/config/copy';
 import { createCard } from '../../src/features/cards/buildCard';
 import { formatKoDate } from '../../src/features/cards/format';
@@ -20,6 +20,7 @@ import { useFlow } from '../../src/store/flow';
 import {
   Amount,
   BackLink,
+  PhoneButton,
   BigButton,
   Body,
   FixedBottomBar,
@@ -35,7 +36,6 @@ export default function ProgramDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const { space } = useTheme();
-  const win = useWindowDimensions();
   const { file, loading } = usePrograms();
   const result = useFlow((s) => s.result);
   const { items: savedList } = useSavedPrograms();
@@ -78,8 +78,6 @@ export default function ProgramDetail() {
   const confirms = mergeToConfirm(program, rec);
   const links = extractLinks(program.display.sourcesText);
   const nextText = program.apply.nextText;
-  // 큰 글씨나 좁은 화면에서는 아래 버튼 두 개를 위아래로 둔다
-  const stackButtons = win.fontScale > 1.2 || win.width / win.fontScale < 360;
 
   const onSave = () => {
     void toggleSavedProgram({
@@ -118,17 +116,9 @@ export default function ProgramDetail() {
     }
   };
 
-  const callButton = (
-    <BigButton
-      style={{ flex: stackButtons ? undefined : 1 }}
-      title={copy.program.call}
-      accessibilityLabel={copy.program.callLabel}
-      onPress={onCall}
-    />
-  );
   const cardButton = (
     <BigButton
-      style={{ flex: stackButtons ? undefined : 1 }}
+      style={{ flex: 1 }}
       variant="secondary"
       title={making ? copy.program.makingCard : copy.program.makeCard}
       accessibilityLabel={copy.program.makeCardLabel}
@@ -142,17 +132,10 @@ export default function ProgramDetail() {
       scroll
       footer={
         <FixedBottomBar>
-          {stackButtons ? (
-            <>
-              {callButton}
-              {cardButton}
-            </>
-          ) : (
-            <View style={{ flexDirection: 'row', gap: space.sm }}>
-              {callButton}
-              {cardButton}
-            </View>
-          )}
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: space.sm }}>
+            {cardButton}
+            <PhoneButton accessibilityLabel={copy.program.callLabel} onPress={onCall} />
+          </View>
         </FixedBottomBar>
       }
     >
