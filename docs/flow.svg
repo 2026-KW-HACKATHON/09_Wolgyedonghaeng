@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" font-family="Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" role="img" aria-labelledby="t d">
+<title id="t">집결 서비스 흐름</title>
+<desc id="d">사용자 화면은 홈, 가구 정보, 주소, 찾는 중, 결과, 사업 상세, 상담 카드 순서입니다. 서버는 문제 유형 분류, 규칙 매칭, 추천, 검증 순서로 처리합니다. 주소 화면은 행안부 도로명주소, 카카오 로컬, 건축HUB 건축물대장에서 정보를 가져오고, 규칙 매칭은 지원사업 데이터를 사용합니다.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9 Z" fill="#1D221E"/></marker></defs>
+<rect width="1200" height="650" fill="#F6F4EE"/>
+<g fill="#1D221E" text-anchor="middle">
+<text x="40" y="38" font-size="24" font-weight="700" text-anchor="start">집결 서비스 흐름</text>
+<text x="40" y="74" font-size="16" font-weight="700" text-anchor="start">사용자 화면</text>
+<rect x="40" y="90" width="140" height="110" rx="14" fill="#ECE8DF"/>
+<text x="110.0" y="130" font-size="17" font-weight="700">홈</text>
+<text x="110.0" y="156" font-size="14">사진 찍기</text>
+<text x="110.0" y="176" font-size="14">또는 고르기</text>
+<rect x="202" y="90" width="140" height="110" rx="14" fill="#ECE8DF"/>
+<text x="272.0" y="130" font-size="17" font-weight="700">가구 정보</text>
+<text x="272.0" y="156" font-size="14">인원·소득</text>
+<text x="272.0" y="176" font-size="14">집 형태 질문</text>
+<rect x="364" y="90" width="140" height="110" rx="14" fill="#ECE8DF"/>
+<text x="434.0" y="130" font-size="17" font-weight="700">주소</text>
+<text x="434.0" y="156" font-size="14">GPS 또는</text>
+<text x="434.0" y="176" font-size="14">직접 입력</text>
+<rect x="526" y="90" width="110" height="110" rx="14" fill="#ECE8DF"/>
+<text x="581.0" y="140" font-size="17" font-weight="700">찾는 중</text>
+<text x="581.0" y="166" font-size="14">잠시 기다려요</text>
+<rect x="658" y="80" width="190" height="130" rx="14" fill="#ECE8DF"/>
+<text x="753.0" y="120" font-size="17" font-weight="700">결과</text>
+<text x="753.0" y="146" font-size="14">문제 확인 단계</text>
+<text x="753.0" y="166" font-size="14">접수 상태 선택 버튼</text>
+<text x="753.0" y="186" font-size="14">사업명과 금액 목록</text>
+<rect x="870" y="90" width="134" height="110" rx="14" fill="#ECE8DF"/>
+<text x="937.0" y="130" font-size="17" font-weight="700">사업 상세</text>
+<text x="937.0" y="156" font-size="14">조건·신청 방법</text>
+<text x="937.0" y="176" font-size="14">저장·전화</text>
+<rect x="1026" y="90" width="134" height="110" rx="14" fill="#ECE8DF"/>
+<text x="1093.0" y="130" font-size="17" font-weight="700">상담 카드</text>
+<text x="1093.0" y="156" font-size="14">상담에 가져갈</text>
+<text x="1093.0" y="176" font-size="14">한 장</text>
+<line x1="182" y1="145" x2="199" y2="145" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="344" y1="145" x2="361" y2="145" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="506" y1="145" x2="523" y2="145" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="638" y1="145" x2="655" y2="145" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="850" y1="145" x2="867" y2="145" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="1006" y1="145" x2="1023" y2="145" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="40" y="250" width="170" height="80" rx="14" fill="#ECE8DF"/>
+<text x="125.0" y="286" font-size="17" font-weight="700">행안부 도로명주소</text>
+<text x="125.0" y="312" font-size="14">주소 검색</text>
+<rect x="226" y="250" width="130" height="80" rx="14" fill="#ECE8DF"/>
+<text x="291.0" y="286" font-size="17" font-weight="700">카카오 로컬</text>
+<text x="291.0" y="312" font-size="14">좌표 → 주소</text>
+<rect x="372" y="250" width="176" height="80" rx="14" fill="#ECE8DF"/>
+<text x="460.0" y="286" font-size="17" font-weight="700">건축HUB 건축물대장</text>
+<text x="460.0" y="312" font-size="14">집 지은 해 조회</text>
+<rect x="700" y="250" width="200" height="90" rx="14" fill="#ECE8DF"/>
+<text x="800.0" y="280" font-size="17" font-weight="700">지원사업 데이터</text>
+<text x="800.0" y="306" font-size="14">14개 · 기준일 2026-10-06</text>
+<text x="800.0" y="326" font-size="14">앱도 이 값만 보여 줘요</text>
+<g stroke="#1D221E" stroke-width="2" fill="none">
+<line x1="125" y1="250" x2="125" y2="228"/>
+<line x1="291" y1="250" x2="291" y2="228"/>
+<line x1="460" y1="250" x2="460" y2="228"/>
+<line x1="125" y1="228" x2="460" y2="228"/>
+<line x1="434" y1="228" x2="434" y2="204" marker-end="url(#ah)"/>
+<path d="M581 202 V375 H170 V398" marker-end="url(#ah)"/>
+<path d="M1060 400 V228 H753 V204" marker-end="url(#ah)"/>
+<path d="M800 340 V365 H600 V398" marker-end="url(#ah)"/>
+</g>
+<text x="40" y="378" font-size="16" font-weight="700" text-anchor="start">서버 처리</text>
+<text x="593" y="300" font-size="14" text-anchor="start">사진·답변</text>
+<text x="885" y="222" font-size="14" text-anchor="start">추천 목록</text>
+<rect x="40" y="400" width="260" height="110" rx="14" fill="#ECE8DF"/>
+<text x="170.0" y="430" font-size="17" font-weight="700">문제 유형 분류</text>
+<text x="170.0" y="456" font-size="14">사진을 8가지 유형 중 하나로</text>
+<text x="170.0" y="476" font-size="14">확신도 0.7 미만이면</text>
+<text x="170.0" y="496" font-size="14">확인 단계를 거쳐요</text>
+<rect x="330" y="400" width="310" height="110" rx="14" fill="#ECE8DF" stroke="#2E7544" stroke-width="3"/>
+<text x="485.0" y="430" font-size="17" font-weight="700" fill="#2E7544">규칙 매칭</text>
+<text x="485.0" y="456" font-size="14">자격은 규칙이 정해요</text>
+<text x="485.0" y="476" font-size="14">소득·집 형태·지은 해·지역</text>
+<text x="485.0" y="496" font-size="14">후보에 든 사업만 다음으로</text>
+<rect x="670" y="400" width="260" height="110" rx="14" fill="#ECE8DF"/>
+<text x="800.0" y="440" font-size="17" font-weight="700">추천</text>
+<text x="800.0" y="466" font-size="14">규칙 순서 또는 LLM</text>
+<text x="800.0" y="486" font-size="14">후보 안에서만 순서와 이유</text>
+<rect x="960" y="400" width="200" height="110" rx="14" fill="#ECE8DF"/>
+<text x="1060.0" y="430" font-size="17" font-weight="700">검증</text>
+<text x="1060.0" y="456" font-size="14">후보 밖 사업·금지어</text>
+<text x="1060.0" y="476" font-size="14">숫자 확인, 실패하면</text>
+<text x="1060.0" y="496" font-size="14">규칙 추천으로 대체</text>
+<line x1="302" y1="455" x2="327" y2="455" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="642" y1="455" x2="667" y2="455" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="932" y1="455" x2="957" y2="455" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="40" y="545" width="540" height="84" rx="14" fill="#ECE8DF"/>
+<text x="60" y="578" font-size="16" font-weight="700" text-anchor="start">막혀도 사람에게 이어져요</text>
+<text x="60" y="605" font-size="15" text-anchor="start">어느 단계에서든 [다시 시도]와 [행정복지센터에 전화하기]</text>
+<rect x="600" y="545" width="560" height="84" rx="14" fill="#ECE8DF"/>
+<text x="620" y="578" font-size="16" font-weight="700" text-anchor="start">키가 없어도 끝까지 돌아요</text>
+<text x="620" y="605" font-size="15" text-anchor="start">가짜(mock) 구현으로 대신하고, /health 에 version과 mock 목록</text>
+</g></svg>
