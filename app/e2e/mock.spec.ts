@@ -134,7 +134,7 @@ test.describe('로그인과 내 정보', () => {
     await page.waitForURL(/card\//);
     await expect(page.getByText('상담 준비 카드')).toBeVisible(); // 카드가 먼저 보인다
     await page.getByRole('button', { name: '상담 카드를 이미지로 저장하기' }).click();
-    await expect(page.getByText('로그인하면 정보가 지워지지 않아요')).toBeVisible();
+    await expect(page.getByText('로그인하고 정보를 지키세요')).toBeVisible();
     await page.getByRole('button', { name: '로그인 안내를 다시 보지 않기' }).click();
     await expect(page.getByText('상담 준비 카드')).toBeVisible();
   });

@@ -12,7 +12,7 @@ import { BigButton, Meta, Voice, useTheme } from '../src/ui';
 export default function LoginModal() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { colors, radius, space, size } = useTheme();
+  const { colors, radius, space, size, type } = useTheme();
   const { next, from } = useLocalSearchParams<{ next?: string; from?: string }>();
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -57,7 +57,10 @@ export default function LoginModal() {
         }}
       >
         <View style={{ paddingBottom: space.md }}>
-          <Voice accessibilityRole="header">{copy.card.loginVoice}</Voice>
+          {/* 한 줄로 보이도록 Voice 글꼴을 Label 크기로 */}
+          <Voice accessibilityRole="header" style={{ fontSize: type.label.size, lineHeight: type.label.lineHeight }}>
+            {copy.card.loginVoice}
+          </Voice>
         </View>
         <KakaoButton
           title={copy.card.loginKakao}

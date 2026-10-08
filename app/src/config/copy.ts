@@ -241,7 +241,7 @@ export const copy = {
     thumbLabel: '문제 사진',
     permissionDenied: '앨범에 저장할 수 없어요. 보내기를 눌러 보세요.',
     noPhone: '번호를 확인하고 있어요',
-    loginVoice: '로그인하면 정보가\n지워지지 않아요',
+    loginVoice: '로그인하고 정보를 지키세요',
     loginKakao: '카카오로 로그인',
     loginLater: '괜찮아요',
     loginNever: '다시 보지 않기',

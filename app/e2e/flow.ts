@@ -88,7 +88,7 @@ export async function runFullFlow(page: Page, startUrl: string) {
   expect(download.suggestedFilename()).toMatch(/\.png$/);
   await expect(page.getByText('이미지를 내려받았어요')).toBeVisible();
   // 비로그인으로 처음 이미지를 저장하면 보관 방법으로 로그인 안내가 한 번 뜬다
-  await expect(page.getByText('로그인하면 정보가 지워지지 않아요')).toBeVisible();
+  await expect(page.getByText('로그인하고 정보를 지키세요')).toBeVisible();
   await page.getByRole('button', { name: '로그인하지 않고 카드 보기' }).click();
   await expect(page.getByText('상담 준비 카드')).toBeVisible();
 
