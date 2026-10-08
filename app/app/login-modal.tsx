@@ -13,12 +13,13 @@ export default function LoginModal() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { colors, radius, space, size } = useTheme();
-  const { next } = useLocalSearchParams<{ next?: string }>();
+  const { next, from } = useLocalSearchParams<{ next?: string; from?: string }>();
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
 
   const cardPath = (next ? `/card/${next}` : '/') as Href;
-  const goCard = () => router.replace(cardPath);
+  // 카드 화면에서 열렸으면 닫기만 한다 (카드 화면이 뒤에 그대로 있다)
+  const goCard = () => (from === 'card' && router.canGoBack() ? router.back() : router.replace(cardPath));
 
   const onKakao = async () => {
     if (busy) return;

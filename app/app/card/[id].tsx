@@ -1,14 +1,25 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import React, { useRef, useState } from 'react';
 import { View } from 'react-native';
 import { copy } from '../../src/config/copy';
+import { auth } from '../../src/features/auth';
+import { markPromptSeen, readPromptFlags, shouldPromptLogin } from '../../src/features/auth/loginPrompt';
 import { CardPaper } from '../../src/features/cards/CardPaper';
 import { goHomeClean } from '../../src/features/programs/goHome';
 import { openDial } from '../../src/features/programs/dial';
 import { saveCardImage, shareCardImage } from '../../src/services/capture';
 import { deleteCard, useCards } from '../../src/services/storage';
 import { useFlow } from '../../src/store/flow';
-import { BigButton, Body, Meta, Screen, Voice, useTheme } from '../../src/ui';
+import { BackLink, BigButton, Body, Screen, Voice, useTheme } from '../../src/ui';
+
+function Notice({ at, message }: { at: 'save' | 'share' | 'call'; message: { at: string; text: string } | null }) {
+  if (!message || message.at !== at) return null;
+  return (
+    <Body accessibilityLiveRegion="polite" accessibilityRole="alert" style={{ textAlign: 'center' }}>
+      {message.text}
+    </Body>
+  );
+}
 
 export default function CardScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -16,7 +27,8 @@ export default function CardScreen() {
   const { space } = useTheme();
   const { items, loaded } = useCards();
   const paperRef = useRef<View>(null);
-  const [message, setMessage] = useState<string | null>(null);
+  // 안내 문구는 방금 누른 버튼 바로 아래에 보인다
+  const [message, setMessage] = useState<{ at: 'save' | 'share' | 'call'; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [asking, setAsking] = useState(false);
 
@@ -40,21 +52,33 @@ export default function CardScreen() {
 
   const fileName = `jipgyeol-card-${card.id}.png`;
 
+  // 이미지를 저장하거나 보낸 뒤, 비로그인 사용자에게 보관 방법으로 로그인을 한 번 안내한다
+  const maybePromptLogin = async () => {
+    const flags = await readPromptFlags();
+    if (shouldPromptLogin({ enabled: auth.enabled, signedIn: auth.getUser() !== null, ...flags })) {
+      void markPromptSeen();
+      router.push(`/login-modal?next=${encodeURIComponent(card.id)}&from=card` as Href);
+    }
+  };
+
   const onSaveImage = async () => {
     if (busy) return;
     setBusy(true);
     setMessage(null);
     const r = await saveCardImage(paperRef.current, fileName);
     setBusy(false);
-    setMessage(
-      r === 'saved'
-        ? copy.card.imageSaved
-        : r === 'downloaded'
-          ? copy.card.imageDownloaded
-          : r === 'denied'
-            ? copy.card.permissionDenied
-            : copy.card.imageFailed,
-    );
+    setMessage({
+      at: 'save',
+      text:
+        r === 'saved'
+          ? copy.card.imageSaved
+          : r === 'downloaded'
+            ? copy.card.imageDownloaded
+            : r === 'denied'
+              ? copy.card.permissionDenied
+              : copy.card.imageFailed,
+    });
+    if (r === 'saved' || r === 'downloaded') await maybePromptLogin();
   };
 
   const onShare = async () => {
@@ -63,14 +87,15 @@ export default function CardScreen() {
     setMessage(null);
     const r = await shareCardImage(paperRef.current, fileName);
     setBusy(false);
-    if (r === 'shared') setMessage(copy.card.shared);
-    else if (r === 'downloaded') setMessage(copy.card.imageDownloaded);
-    else if (r === 'failed') setMessage(copy.card.shareFailed);
+    if (r === 'shared') setMessage({ at: 'share', text: copy.card.shared });
+    else if (r === 'downloaded') setMessage({ at: 'share', text: copy.card.imageDownloaded });
+    else if (r === 'failed') setMessage({ at: 'share', text: copy.card.shareFailed });
+    if (r === 'shared' || r === 'downloaded') await maybePromptLogin();
   };
 
   const onCall = async () => {
     if (!card.phone) {
-      setMessage(copy.common.callCenterNoPhone);
+      setMessage({ at: 'call', text: copy.common.callCenterNoPhone });
       return;
     }
     await openDial(card.phone);
@@ -83,7 +108,8 @@ export default function CardScreen() {
 
   return (
     <Screen scroll>
-      <View style={{ gap: space.lg, paddingTop: space.lg, paddingBottom: space.lg }}>
+      <View style={{ gap: space.lg, paddingTop: space.sm, paddingBottom: space.lg }}>
+        <BackLink onBack={() => (router.canGoBack() ? router.back() : goHome())} />
         <CardPaper ref={paperRef} card={card} />
 
         <View style={{ gap: space.sm }}>
@@ -93,6 +119,7 @@ export default function CardScreen() {
             disabled={busy}
             onPress={onSaveImage}
           />
+          <Notice at="save" message={message} />
           <BigButton
             variant="secondary"
             title={copy.card.share}
@@ -100,17 +127,14 @@ export default function CardScreen() {
             disabled={busy}
             onPress={onShare}
           />
+          <Notice at="share" message={message} />
           <BigButton
             variant="text"
             title={copy.card.call}
             accessibilityLabel={copy.card.callLabel}
             onPress={onCall}
           />
-          {message ? (
-            <Meta accessibilityLiveRegion="polite" accessibilityRole="alert" style={{ textAlign: 'center' }}>
-              {message}
-            </Meta>
-          ) : null}
+          <Notice at="call" message={message} />
         </View>
 
         <View style={{ gap: space.xs }}>

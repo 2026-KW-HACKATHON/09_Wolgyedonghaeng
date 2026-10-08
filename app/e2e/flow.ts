@@ -78,9 +78,7 @@ export async function runFullFlow(page: Page, startUrl: string) {
 
   // 상담 카드 → S6
   await page.getByRole('button', { name: '상담 카드 만들기' }).click();
-  // 비로그인으로 처음 카드를 만들면 로그인 안내가 한 번 뜬다
-  await expect(page.getByText('로그인하면 정보가 지워지지 않아요')).toBeVisible();
-  await page.getByRole('button', { name: '로그인하지 않고 카드 보기' }).click();
+  // 카드를 먼저 보여 준다
   await page.waitForURL(/card\//);
   await expect(page.getByText('상담 준비 카드')).toBeVisible();
   const [download] = await Promise.all([
@@ -89,6 +87,10 @@ export async function runFullFlow(page: Page, startUrl: string) {
   ]);
   expect(download.suggestedFilename()).toMatch(/\.png$/);
   await expect(page.getByText('이미지를 내려받았어요')).toBeVisible();
+  // 비로그인으로 처음 이미지를 저장하면 보관 방법으로 로그인 안내가 한 번 뜬다
+  await expect(page.getByText('로그인하면 정보가 지워지지 않아요')).toBeVisible();
+  await page.getByRole('button', { name: '로그인하지 않고 카드 보기' }).click();
+  await expect(page.getByText('상담 준비 카드')).toBeVisible();
 
   // 홈에 저장 목록
   await page.getByRole('button', { name: '처음 화면으로 가기' }).first().click();

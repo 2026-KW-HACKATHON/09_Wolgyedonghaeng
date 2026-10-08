@@ -82,12 +82,13 @@ export function StatusText({
   nextMonth?: number | null;
   style?: TextStyle;
 }) {
+  const { font } = useTheme();
   let text = STATE_TEXT[state];
   if (state === 'closed_next' && nextMonth) text += ` · 다음 모집 ${nextMonth}월`;
   const tone = state === 'always' || state === 'open' ? 'green' : state === 'check' ? 'ink' : 'inkMuted';
   return (
-    <Meta tone={tone} style={style}>
+    <Body tone={tone} style={[font('700'), style]}>
       {text}
-    </Meta>
+    </Body>
   );
 }

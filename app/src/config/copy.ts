@@ -153,7 +153,7 @@ export const copy = {
     checkupRow: '먼저 무료 점검을\n받아 볼 수 있어요',
     emptyVoice: '지금 조건으로는 찾지 못했어요',
     emptyHelp: '행정복지센터에서 다른 방법을 알려 드려요',
-    whyNot: '다른 사업은 왜 없나요?',
+    whyNot: '다른 사업도 살펴볼래요',
     whyNotClose: '접기',
     reasonPrefix: '이유',
     infoChecking: '정보를 확인하고 있어요',

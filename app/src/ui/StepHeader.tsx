@@ -3,17 +3,21 @@ import { Pressable, View } from 'react-native';
 import { Body, Label } from './Text';
 import { useTheme } from './theme';
 
-const CIRCLED = ['①', '②', '③', '④', '⑤'];
+/** 단계마다 사용자에게 보이는 이름 (1 사진, 2 가구 정보, 3 주소) */
+const STEP_NAMES = ['사진', '우리 집 정보', '사는 곳', '결과', '카드'];
 
 interface Props {
   /** 지금 단계 (1부터) */
   step: number;
   total?: number;
+  /** 단계 이름. 없으면 단계 번호에 맞는 기본 이름 */
+  name?: string;
   onBack?: () => void;
 }
 
-export function StepHeader({ step, total = 3, onBack }: Props) {
-  const { colors, size, font } = useTheme();
+export function StepHeader({ step, total = 3, name, onBack }: Props) {
+  const { size } = useTheme();
+  const stepName = name ?? STEP_NAMES[step - 1] ?? '';
   return (
     <View
       style={{ minHeight: size.touch, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
@@ -35,23 +39,9 @@ export function StepHeader({ step, total = 3, onBack }: Props) {
       ) : (
         <View style={{ minWidth: size.touch }} />
       )}
-      <View
-        style={{ flexDirection: 'row', gap: 8 }}
-        accessible
-        accessibilityLabel={`${total}단계 중 ${step}단계`}
-      >
-        {Array.from({ length: total }, (_, i) => (
-          <Label
-            key={i}
-            style={{
-              color: i + 1 === step ? colors.ink : colors.inkMuted,
-              ...font(i + 1 === step ? '700' : '400'),
-            }}
-          >
-            {CIRCLED[i] ?? String(i + 1)}
-          </Label>
-        ))}
-      </View>
+      <Label accessibilityLabel={`${total}단계 중 ${step}단계, ${stepName}`}>
+        {step}/{total} {stepName}
+      </Label>
     </View>
   );
 }
