@@ -142,12 +142,6 @@ export default function ProgramDetail() {
       scroll
       footer={
         <FixedBottomBar>
-          <BigButton
-            variant="text"
-            title={saved ? copy.program.saved : copy.program.save}
-            accessibilityLabel={saved ? copy.program.savedLabel : copy.program.saveLabel}
-            onPress={onSave}
-          />
           {stackButtons ? (
             <>
               {callButton}
@@ -163,7 +157,16 @@ export default function ProgramDetail() {
       }
     >
       <View style={{ gap: space.xl, paddingTop: space.xs, paddingBottom: space.lg }}>
-        <BackLink onBack={goBack} />
+        {/* 뒤로는 왼쪽 위, 저장은 오른쪽 위 */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <BackLink onBack={goBack} />
+          <BigButton
+            variant="text"
+            title={saved ? copy.program.saved : copy.program.save}
+            accessibilityLabel={saved ? copy.program.savedLabel : copy.program.saveLabel}
+            onPress={onSave}
+          />
+        </View>
         <View style={{ gap: space.xs }}>
           <Title accessibilityRole="header">{program.name}</Title>
           <Meta>{program.display.operatorText}</Meta>
