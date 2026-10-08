@@ -215,7 +215,7 @@ export const copy = {
     toConfirm: '확인이 필요한 것',
     assetConfirm: '재산을 포함한 소득 기준',
     madeOn: (d: string) => `만든 날 ${d}`,
-    saveImage: '이미지로 저장',
+    saveImage: '이미지 저장',
     saveImageLabel: '상담 카드를 이미지로 저장하기',
     imageSaved: '이미지로 저장했어요',
     imageDownloaded: '이미지를 내려받았어요',

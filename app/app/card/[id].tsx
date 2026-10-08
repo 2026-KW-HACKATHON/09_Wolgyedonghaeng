@@ -10,16 +10,7 @@ import { openDial } from '../../src/features/programs/dial';
 import { saveCardImage, shareCardImage } from '../../src/services/capture';
 import { deleteCard, useCards } from '../../src/services/storage';
 import { useFlow } from '../../src/store/flow';
-import { BackLink, BigButton, Body, Screen, Voice, useTheme } from '../../src/ui';
-
-function Notice({ at, message }: { at: 'save' | 'share' | 'call'; message: { at: string; text: string } | null }) {
-  if (!message || message.at !== at) return null;
-  return (
-    <Body accessibilityLiveRegion="polite" accessibilityRole="alert" style={{ textAlign: 'center' }}>
-      {message.text}
-    </Body>
-  );
-}
+import { BackLink, BigButton, Body, FixedBottomBar, Screen, Voice, useTheme } from '../../src/ui';
 
 export default function CardScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -148,35 +139,49 @@ export default function CardScreen() {
   };
 
   return (
-    <Screen scroll>
+    <Screen
+      scroll
+      footer={
+        <FixedBottomBar>
+          {/* 안내는 방금 누른 버튼 줄 바로 위에 보인다 */}
+          {message ? (
+            <Body accessibilityLiveRegion="polite" accessibilityRole="alert" style={{ textAlign: 'center' }}>
+              {message.text}
+            </Body>
+          ) : null}
+          <View style={{ flexDirection: 'row', gap: space.sm }}>
+            <BigButton
+              style={{ flex: 1.3 }}
+              compact
+              title={copy.card.saveImage}
+              accessibilityLabel={copy.card.saveImageLabel}
+              disabled={busy}
+              onPress={onSaveImage}
+            />
+            <BigButton
+              style={{ flex: 1 }}
+              compact
+              variant="secondary"
+              title={copy.card.share}
+              accessibilityLabel={copy.card.shareLabel}
+              disabled={busy}
+              onPress={onShare}
+            />
+            <BigButton
+              style={{ flex: 1 }}
+              compact
+              variant="secondary"
+              title={copy.card.call}
+              accessibilityLabel={copy.card.callLabel}
+              onPress={onCall}
+            />
+          </View>
+        </FixedBottomBar>
+      }
+    >
       <View style={{ gap: space.lg, paddingTop: space.sm, paddingBottom: space.lg }}>
         <BackLink onBack={() => (router.canGoBack() ? router.back() : goHome())} />
         <CardPaper ref={paperRef} card={card} />
-
-        <View style={{ gap: space.sm }}>
-          <BigButton
-            title={copy.card.saveImage}
-            accessibilityLabel={copy.card.saveImageLabel}
-            disabled={busy}
-            onPress={onSaveImage}
-          />
-          <Notice at="save" message={message} />
-          <BigButton
-            variant="secondary"
-            title={copy.card.share}
-            accessibilityLabel={copy.card.shareLabel}
-            disabled={busy}
-            onPress={onShare}
-          />
-          <Notice at="share" message={message} />
-          <BigButton
-            variant="text"
-            title={copy.card.call}
-            accessibilityLabel={copy.card.callLabel}
-            onPress={onCall}
-          />
-          <Notice at="call" message={message} />
-        </View>
 
         <View style={{ gap: space.xs }}>
           <BigButton variant="text" title={copy.card.home} accessibilityLabel={copy.card.homeLabel} onPress={goHome} />
