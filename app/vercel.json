@@ -2,13 +2,13 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "npm ci --legacy-peer-deps",
-  "buildCommand": "npx expo export -p web --clear",
+  "buildCommand": "npx expo export -p web --clear && cp \"dist/program/[id].html\" dist/program/detail.html && cp \"dist/card/[id].html\" dist/card/detail.html",
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/program/:id", "destination": "/program/[id].html" },
-    { "source": "/card/:id", "destination": "/card/[id].html" },
+    { "source": "/program/:id", "destination": "/program/detail" },
+    { "source": "/card/:id", "destination": "/card/detail" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
