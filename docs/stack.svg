@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" font-family="Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" role="img" aria-labelledby="t d">
+<title id="t">집결 기술 스택</title>
+<desc id="d">사용자 기기에서 Expo 앱이 웹, Android, iOS로 실행되고 사진은 줄여서 서버로 보냅니다. 서버는 FastAPI이고 서비스 인터페이스 뒤에서 OpenRouter 멀티모달 모델, 행안부 도로명주소, 국토부 건축HUB, 카카오와 연결됩니다. 지원사업 데이터와 API 계약은 저장소에 두고, 웹은 Vercel, 서버는 Render에 배포하며 서버 테스트, 앱 테스트, 웹 E2E와 GitHub Actions로 확인합니다.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9 Z" fill="#1D221E"/></marker></defs>
+<rect width="1200" height="650" fill="#F6F4EE"/>
+<text x="40" y="38" font-size="24" font-weight="700" fill="#1D221E" text-anchor="start">집결 기술 스택</text>
+<text x="40" y="74" font-size="16" font-weight="700" fill="#1D221E" text-anchor="start">사용자 기기</text>
+<text x="460" y="74" font-size="16" font-weight="700" fill="#1D221E" text-anchor="start">서버</text>
+<text x="860" y="74" font-size="16" font-weight="700" fill="#1D221E" text-anchor="start">외부 서비스</text>
+<rect x="40" y="90" width="330" height="120" rx="14" fill="#ECE8DF"/>
+<text x="205.0" y="124.5" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">앱 (웹 · Android · iOS)</text>
+<text x="205.0" y="152.5" font-size="14" fill="#1D221E" text-anchor="middle">Expo · React Native · TypeScript</text>
+<text x="205.0" y="173.5" font-size="14" fill="#1D221E" text-anchor="middle">expo-router 화면, zustand 상태</text>
+<text x="205.0" y="194.5" font-size="14" fill="#1D221E" text-anchor="middle">같은 코드로 세 곳에서 실행</text>
+<rect x="40" y="226" width="330" height="90" rx="14" fill="#ECE8DF"/>
+<text x="205.0" y="256.0" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">사진·위치 처리</text>
+<text x="205.0" y="284.0" font-size="14" fill="#1D221E" text-anchor="middle">사진 축소와 EXIF 제거 후 전송</text>
+<text x="205.0" y="305.0" font-size="14" fill="#1D221E" text-anchor="middle">GPS는 주소를 찾을 때만 사용</text>
+<rect x="40" y="332" width="330" height="90" rx="14" fill="#ECE8DF"/>
+<text x="205.0" y="362.0" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">기기 저장소</text>
+<text x="205.0" y="390.0" font-size="14" fill="#1D221E" text-anchor="middle">저장한 사업·상담 카드·내 정보</text>
+<text x="205.0" y="411.0" font-size="14" fill="#1D221E" text-anchor="middle">AsyncStorage (서버가 아니라 기기 안)</text>
+<rect x="460" y="90" width="320" height="120" rx="14" fill="#ECE8DF"/>
+<text x="620.0" y="124.5" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">FastAPI 서버</text>
+<text x="620.0" y="152.5" font-size="14" fill="#1D221E" text-anchor="middle">Python 3.12 · Pydantic v2</text>
+<text x="620.0" y="173.5" font-size="14" fill="#1D221E" text-anchor="middle">/analyze /address /building</text>
+<text x="620.0" y="194.5" font-size="14" fill="#1D221E" text-anchor="middle">/programs /auth /me /health</text>
+<rect x="460" y="226" width="320" height="90" rx="14" fill="#ECE8DF" stroke="#2E7544" stroke-width="3"/>
+<text x="620.0" y="256.0" font-size="17" font-weight="700" fill="#2E7544" text-anchor="middle">서비스 인터페이스</text>
+<text x="620.0" y="284.0" font-size="14" fill="#1D221E" text-anchor="middle">분류기·추천기·주소·건물·로그인</text>
+<text x="620.0" y="305.0" font-size="14" fill="#1D221E" text-anchor="middle">키가 없으면 가짜(mock)로 대체</text>
+<rect x="460" y="332" width="320" height="90" rx="14" fill="#ECE8DF"/>
+<text x="620.0" y="362.0" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">규칙 매칭과 검증</text>
+<text x="620.0" y="390.0" font-size="14" fill="#1D221E" text-anchor="middle">자격은 코드(matcher)가 정해요</text>
+<text x="620.0" y="411.0" font-size="14" fill="#1D221E" text-anchor="middle">LLM은 후보 안에서만 고르고 설명</text>
+<rect x="860" y="90" width="300" height="72" rx="14" fill="#ECE8DF"/>
+<text x="1010.0" y="121.5" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">OpenRouter</text>
+<text x="1010.0" y="149.5" font-size="14" fill="#1D221E" text-anchor="middle">멀티모달 모델 (사진 분류·추천)</text>
+<rect x="860" y="176" width="300" height="72" rx="14" fill="#ECE8DF"/>
+<text x="1010.0" y="207.5" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">행안부 도로명주소</text>
+<text x="1010.0" y="235.5" font-size="14" fill="#1D221E" text-anchor="middle">주소 검색, 법정동코드·번지</text>
+<rect x="860" y="262" width="300" height="72" rx="14" fill="#ECE8DF"/>
+<text x="1010.0" y="293.5" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">국토부 건축HUB</text>
+<text x="1010.0" y="321.5" font-size="14" fill="#1D221E" text-anchor="middle">건축물대장 → 집을 다 지은 해</text>
+<rect x="860" y="348" width="300" height="72" rx="14" fill="#ECE8DF"/>
+<text x="1010.0" y="379.5" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">카카오</text>
+<text x="1010.0" y="407.5" font-size="14" fill="#1D221E" text-anchor="middle">좌표 → 주소 (로컬), 로그인</text>
+<line x1="370" y1="150" x2="460" y2="150" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<text x="415" y="138" font-size="14" fill="#1D221E" text-anchor="middle">HTTPS</text>
+<line x1="780" y1="271" x2="820" y2="271" stroke="#1D221E" stroke-width="2"/>
+<line x1="820" y1="126" x2="820" y2="384" stroke="#1D221E" stroke-width="2"/>
+<line x1="820" y1="126" x2="860" y2="126" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="820" y1="212" x2="860" y2="212" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="820" y1="298" x2="860" y2="298" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="820" y1="384" x2="860" y2="384" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<text x="820" y="80" font-size="14" fill="#1D221E" text-anchor="middle"></text>
+<line x1="620" y1="210" x2="620" y2="226" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<line x1="620" y1="316" x2="620" y2="332" stroke="#1D221E" stroke-width="2" marker-end="url(#ah)"/>
+<text x="40" y="452" font-size="16" font-weight="700" fill="#1D221E" text-anchor="start">데이터·계약 · 배포 · 품질</text>
+<rect x="40" y="466" width="360" height="150" rx="14" fill="#ECE8DF"/>
+<text x="220.0" y="505.0" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">데이터와 계약</text>
+<text x="220.0" y="533.0" font-size="14" fill="#1D221E" text-anchor="middle">programs-2026.json (지원사업 14개)</text>
+<text x="220.0" y="554.0" font-size="14" fill="#1D221E" text-anchor="middle">problem-types.json (문제 유형 8개)</text>
+<text x="220.0" y="575.0" font-size="14" fill="#1D221E" text-anchor="middle">openapi.json → 앱 타입 자동 생성</text>
+<text x="220.0" y="596.0" font-size="14" fill="#1D221E" text-anchor="middle">income-2026.ts (기준 중위소득표)</text>
+<rect x="420" y="466" width="360" height="150" rx="14" fill="#ECE8DF"/>
+<text x="600.0" y="505.0" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">배포</text>
+<text x="600.0" y="533.0" font-size="14" fill="#1D221E" text-anchor="middle">웹: Vercel (정적 파일)</text>
+<text x="600.0" y="554.0" font-size="14" fill="#1D221E" text-anchor="middle">서버: Render (Docker, 무료 플랜)</text>
+<text x="600.0" y="575.0" font-size="14" fill="#1D221E" text-anchor="middle">웹은 푸시하면 자동으로 다시 배포</text>
+<text x="600.0" y="596.0" font-size="14" fill="#1D221E" text-anchor="middle">서버는 수동 배포</text>
+<rect x="800" y="466" width="360" height="150" rx="14" fill="#ECE8DF"/>
+<text x="980.0" y="505.0" font-size="17" font-weight="700" fill="#1D221E" text-anchor="middle">품질</text>
+<text x="980.0" y="533.0" font-size="14" fill="#1D221E" text-anchor="middle">서버: pytest 164 · ruff</text>
+<text x="980.0" y="554.0" font-size="14" fill="#1D221E" text-anchor="middle">앱: jest 80 · tsc · eslint</text>
+<text x="980.0" y="575.0" font-size="14" fill="#1D221E" text-anchor="middle">웹: Playwright E2E</text>
+<text x="980.0" y="596.0" font-size="14" fill="#1D221E" text-anchor="middle">GitHub Actions CI</text>
+</svg>

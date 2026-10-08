@@ -267,6 +267,8 @@ We plan to run usability evaluations with Wolgye 1-dong residents to check wheth
 
 ## Tech stack
 
+![Jipgyeol tech stack: app, server, external services, data and contracts, deployment and quality](docs/stack.svg)
+
 | Area | What we use |
 |---|---|
 | App | Expo (React Native, expo-router, TypeScript); web, Android, and iOS from one codebase |

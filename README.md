@@ -267,6 +267,8 @@
 
 ## 기술 스택
 
+![집결 기술 스택: 앱, 서버, 외부 서비스, 데이터와 계약, 배포와 품질](docs/stack.svg)
+
 | 구분 | 사용한 것 |
 |---|---|
 | 앱 | Expo (React Native, expo-router, TypeScript). 웹, Android, iOS를 같은 코드로 지원 |
