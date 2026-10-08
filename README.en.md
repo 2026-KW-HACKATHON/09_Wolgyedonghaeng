@@ -16,7 +16,11 @@ Results are guidance on programs you "may qualify for"; the app does not determi
 
 ---
 
-## At a glance
+## Summary
+
+- **Why we build it:** Residents of aging homes often miss out on support because they cannot tell which programs exist or whether they qualify. Existing services start from policy names, but all a resident knows is "water is leaking from the ceiling."
+- **Who it is for:** Residents of aging homes (especially older adults), the family members, neighborhood leaders, and neighbors who help them, and the staff who counsel at the community center.
+- **How it solves it:** One photo identifies the problem type, a few easy questions plus a building-register lookup check the conditions, and the app finds programs you may qualify for and carries you through to a counseling prep card. Rules decide eligibility; AI only classifies the problem and ranks within the candidates.
 
 **One photo is all it takes.** If water is leaking from your bathroom ceiling, just take a picture of it. Jipgyeol recognizes the problem and, using a few simple questions and building-register data, finds the Seoul, Nowon-gu, and national home-repair programs you may qualify for, then summarizes everything on a card you can take to counseling.
 
@@ -32,9 +36,7 @@ Results are guidance on programs you "may qualify for"; the app does not determi
 
 Example: A 72-year-old homeowner in a detached house takes a photo of the bathroom ceiling, answers "Is this a leak?" and two or three questions, then receives the home-repair programs that may apply (for example, Housing Benefit Repair and Maintenance or Hope Home Repair) and a counseling prep card to bring to the Wolgye 1-dong community service center.
 
----
-
-## Why
+## Problem definition and analysis
 
 Nowon-gu is one of the Seoul districts with a high concentration of aging houses ([Seoul Shinmun, Dec 29, 2025](https://go.seoul.co.kr/news/newsView.php?id=20251229020004)), and Wolgye 1-dong has many older residents and old houses. Old houses bring both everyday discomfort and safety risks: leaks, mold, drafty windows, door sills, and slippery bathrooms. Yet residents often miss out on available support because:
 
@@ -43,7 +45,32 @@ Nowon-gu is one of the Seoul districts with a high concentration of aging houses
 - **Search does not match how they think.** Existing services ask users to search by program name or category. Residents know the problem ("water is leaking from the bathroom ceiling"), not the program name.
 - **Digital access is hard.** Older residents in particular struggle to collect and compare information across several websites.
 
-## Who it is for
+### Compared with existing services
+
+| | Existing approaches | Jipgyeol |
+|---|---|---|
+| Starting point | Search by program name or category (Bokjiro, Seoul home-repair portal), or proactive notices based on administrative data (Welfare Membership) | **The actual condition of the home**, as residents see it |
+| Eligibility check | Read announcements and decide yourself | Simple questions plus automatic building-register lookup |
+| Outcome | Ends with information | A counseling prep card that leads to actual counseling and application |
+
+Administrative data knows a household's income and composition, but it cannot tell whether the roof is leaking today. Jipgyeol fills this gap with a resident's photo and a few answers.
+
+#### Compared with private home-repair apps
+
+Some private apps now combine a government-support eligibility check with contractor matching. We tried a representative one, Drrk (드르륵), on October 2, 2026.
+
+| | Private home-repair app (Drrk) | Jipgyeol |
+|---|---|---|
+| Starting point for finding support | Choosing a type of construction work (waterproofing, insulation, windows, and so on) | A photo of the problem or plain words ("water is leaking from the ceiling") |
+| Role of photos | Checked by staff in the paid repair flow | AI classifies the problem type to find support programs |
+| Result | Eligible or not eligible | Programs that may apply, one by one, with reasons, sources, and reference dates |
+| Next step | In-house consultation and contractor matching | Counseling at the community service center (public connection) |
+
+Jipgyeol starts from the problem, so residents do not have to translate it into construction terms such as "waterproofing work". The app's screen flow is documented in [docs/related-services/drrk-2026-10-02](docs/related-services/drrk-2026-10-02/) (Korean screenshots).
+
+![Drrk app flow (captured 2026-10-02)](docs/related-services/drrk-2026-10-02/flow.png)
+
+## Target users
 
 | User | Need |
 |---|---|
@@ -51,48 +78,9 @@ Nowon-gu is one of the Seoul districts with a high concentration of aging houses
 | Helpers (family members, neighborhood representatives, neighbors) | Check quickly on a resident's behalf and help prepare for counseling |
 | Counselors at the community service center | Receive residents who already have the needed information organized, shortening counseling time |
 
-## How it works
+## Solution
 
-Jipgyeol starts from **the problem in the home**, not from a policy name. Residents see three steps (1. Snap, 2. Confirm, 3. Receive), and the diagram below shows what happens behind them. The top row is what the user sees, the bottom row is what the server does, and the arrows show where external data comes in. (The diagram text is in Korean.)
-
-![Jipgyeol service flow: the screens Home, Household, Address, Searching, Results, Program detail, and Counseling card; the server steps problem-type classification, rule matching, recommendation, and validation; and where road-address, Kakao Local, building-register, and program data come in](docs/flow.svg)
-
-### Screen by screen
-
-Each screen does one thing, and the user can go back a step at any point.
-
-| Screen | The one thing it does | When something fails |
-|---|---|---|
-| Home | Take a photo of the problem or pick one from the album (up to 3). Photos are shrunk and re-saved on the device first. The top bar has login, my info, and screen brightness (auto, light, dark); below it are the saved programs and counseling cards. | If the camera or album cannot be used, the app points to the other option. If a photo cannot be loaded, the user picks again. |
-| Household | Answer five simple questions: "How many people live together?", "About how much does your family earn per month in total?" (4 range buttons), "Do you receive the housing benefit?" (only when income is at or below 48%), "What kind of home do you live in?", and "Tap everything that applies". Every question has an "I'm not sure" option. If information was saved before, the app first asks "Start with your saved information?" | Unknown answers are fine; programs stay visible and the item is kept as something to check at counseling. |
-| Address | Find the address from the phone's location (GPS) and confirm "Is this the right address?", or type a road address and pick it. Once the address is set, the building age is looked up from the building register automatically. Unit number is optional. | If location permission is blocked or the address is not found, the screen switches to manual input. If the building-register lookup fails, it says "We'll check the year of completion at counseling". For an address outside Nowon-gu it shows a notice and points to Bokjiro, and the user can still continue. |
-| Searching | Sends the photo and answers to the server and waits. If it takes long, it says "This is taking a little longer". | Shows "We couldn't find anything right now" with [Try again] and [Call the community service center]. |
-| Results | First tells the user what problem the AI saw. If confidence is low it asks "This looks like a leak. Is that right?" ([Yes] or [No, let me choose]), and then lists programs by name and amount only. Selection buttons at the top (All, Can apply, Apply later, Needs checking) filter the list by application status. Programs left out can be viewed with reasons under "Look at other programs". | If the photo alone is unclear ("other"), the user picks the problem type from an illustrated list. If nothing matches, it says "We couldn't find anything with these conditions" and points to the community service center. On an error it shows [Try again] and [Call the community service center]. |
-| Program detail | Shows what is supported, the amount, who it is for (income, year of completion, area, other conditions), "why you may qualify", application status and period, how to apply, a phone number, what to check or prepare at counseling, source links, and the reference date. The bottom bar has save, make card, and call. | If a program has no phone number, the Wolgye 1-dong community service center number is shown instead. If the program cannot be found, a back button is shown. |
-| Counseling card | Makes a one-page card to bring to the counseling desk. It can be saved or shared as an image, and the user can call the application office directly. Created cards stay on the device. | If saving or sharing fails, the app suggests the other way. Leaving the card without saving an image shows a login prompt once (closing it continues; "Don't show again" is also available). |
-| Saved list on Home | Reopen saved programs and created cards. | When empty it says "No saved programs yet". |
-| My info | Edit and save the home location and household information, and change screen brightness. Login is optional, and Kakao login receives only the nickname. On logout the user chooses whether to keep or delete the saved programs and cards on the device. | If the upload to the server fails, the data is still saved on the device and the app says so. If the login has expired, it asks the user to log in again. |
-
-### Server flow
-
-The app sends the photos, household, address, and building information to `POST /analyze`, and the server (`server/services/analyze.py`) processes them in this order:
-
-1. **Problem-type classification.** The photo is classified into one of 8 fixed types (leak, mold, window draft/insulation, heating/boiler, plumbing/fixtures, safety, electric, other) with a confidence score. If confidence is below 0.7, or the type is "other", the response is marked as needing confirmation and the app shows the confirmation step. If the user picked the type themselves, classification is skipped.
-2. **Rule matching.** `server/services/matcher.py` compares the 14 programs with the household, address, and building and gives each condition a pass, unknown, or fail. One fail removes the program from the candidates (the reason is returned separately); an unknown keeps it as a "may qualify" candidate with a note on what to check at counseling. Only these rules decide the eligibility candidates. For example, an owner-occupier who receives the housing benefit is guided to Repair and Maintenance and removed from other repair programs.
-3. **Recommendation.** Among the remaining candidates, the order and a reason sentence are chosen. The default is the rule ranker (a score from problem-type match, application status, and so on, with template reasons). Depending on configuration, an LLM picks the order and a one-sentence reason from the candidates only. The LLM is given a JSON schema that forces the program id to be one of the candidate ids, so it cannot output a program outside the candidates, and it is never asked to judge eligibility.
-4. **Validation.** `server/services/validator.py` checks the result. A candidate-external id, a duplicate, or a schema violation replaces the whole result with the rule ranker's. A reason sentence containing a forbidden word ("for sure", "without fail", "you qualify" in Korean) or a number not in the program data is replaced with a template, sentence by sentence. Status, application state, and items to check are always overwritten with the candidate's own values.
-5. **Response.** Returns the classification, whether confirmation is needed, the recommendations, free-checkup notices, excluded programs with reasons, and `version` (server git commit, rules and data hash, program reference date, classifier and ranker provider and model, confirmation threshold). Photos are not stored, and the operation log keeps only values such as type, confidence, counts, and timings.
-
-**Fake (mock) implementations.** Classification, recommendation, address, building register, and Kakao login all sit behind interfaces. When an API key is empty, the server automatically uses a fake implementation, so the whole screen flow can run from start to finish without any keys. `GET /health` returns `version` (the same version information) and `mock` (the parts currently running as fakes, for example `openrouter`, `address`, `building`, `kakao`). If the LLM ranker fails or times out, the rule ranker takes over and `fallbackUsed` is set in the response.
-
-External data comes in as follows:
-
-| Data | Used for |
-|---|---|
-| Ministry of the Interior and Safety road address search API | Address search, legal-district code and lot number |
-| Kakao Local | Turning the phone's location (coordinates) into an address |
-| Ministry of Land, Infrastructure and Transport building register (Architecture HUB) | Year of completion (approval date), main use, floor counts |
-| `server/data/programs-2026.json` | Rule matching and all program information in the app (amounts, periods, phone numbers, sources) |
+Jipgyeol starts from the **problem with the home**, not from policy names. Residents see three steps: Snap, Confirm, Receive. The screens and the server processing are covered in "User flow" and "Server processing flow" below.
 
 ### The three steps residents see
 
@@ -124,7 +112,7 @@ Every question has an "I'm not sure" option; choosing it still shows the program
 - What is confirmed and what still needs checking are summarized on a one-page counseling prep card.
 - The app guides the resident to the Wolgye 1-dong community service center or the relevant agency for counseling and application.
 
-## Income ranges
+### Income ranges
 
 Jipgyeol never asks for an exact income. It asks the resident to pick one of 4 ranges cut at **48%, 60%, and 100%** of the 2026 standard median income (`app/src/config/income-2026.ts`). Program income criteria are 48%, 60%, 65%, or 100%, so these three cut points sort most programs. The amounts depend on household size, so the screen asks for the household size first and prints that size's amounts on the buttons. Monthly amounts for 1 to 4 people, rounded to 10,000 won (man-won):
 
@@ -139,7 +127,7 @@ Jipgyeol never asks for an exact income. It asks the resident to pick one of 4 r
 - 5 to 7 people are calculated the same way. For 8 or more, the 7-person values are used and the screen adds "to be checked at counseling".
 - The bracket amounts and per-program income criteria are in [docs/support-programs-research-2026.md](docs/support-programs-research-2026.md) (Korean).
 
-## Programs we connect to (14, as of 2026)
+### Programs we connect to (14, as of 2026)
 
 Program data lives in [server/data/programs-2026.json](server/data/programs-2026.json) with sources and a reference date (2026-10-06), and the app shows only these values. Eligibility candidates are decided by code rules (`server/services/matcher.py`); the AI only orders and explains the programs that remain as candidates. The application status below is as of the reference date; check the original announcement and the agency before applying.
 
@@ -165,32 +153,20 @@ Program data lives in [server/data/programs-2026.json](server/data/programs-2026
 - Each program's phone number is included only where it was confirmed in the announcement; otherwise the app falls back to the Wolgye 1-dong community service center. Conditions, amounts, application periods, and sources for each program are in [docs/support-programs-research-2026.md](docs/support-programs-research-2026.md) and [docs/support-programs-research-2-2026.md](docs/support-programs-research-2-2026.md) (Korean).
 - The data is built from the Excel source (`server/data/support-programs-2026.xlsx`) by `server/data/build_programs.py`. The eligibility rules are structured fields in that script, written by a person after review.
 
-## What is different
+### Counseling prep card
 
-| | Existing approaches | Jipgyeol |
-|---|---|---|
-| Starting point | Search by program name or category (Bokjiro, Seoul home-repair portal), or proactive notices based on administrative data (Welfare Membership) | **The actual condition of the home**, as residents see it |
-| Eligibility check | Read announcements and decide yourself | Simple questions plus automatic building-register lookup |
-| Outcome | Ends with information | A counseling prep card that leads to actual counseling and application |
+On a program's detail screen, "Make card" creates a one-page card to take to the counseling desk. It can be saved or shared as an image, and it is stored on the device so it can be reopened from the home screen.
 
-Administrative data knows a household's income and composition, but it cannot tell whether the roof is leaking today. Jipgyeol fills this gap with a resident's photo and a few answers.
+| Item | Example |
+|---|---|
+| Program | Program name, where to apply, phone number |
+| Application status | Apply anytime, application period to be checked, and so on |
+| Our home | Household size, monthly income range, housing benefit, owner or tenant, neighborhood, the year of completion, problem type (photo thumbnail) |
+| To check | Income criteria including assets, and other program-specific items |
 
-### Compared with private home-repair apps
+The card does not include a name or detailed address, only the neighborhood. Printing and text-message delivery are under review.
 
-Some private apps now combine a government-support eligibility check with contractor matching. We tried a representative one, Drrk (드르륵), on October 2, 2026.
-
-| | Private home-repair app (Drrk) | Jipgyeol |
-|---|---|---|
-| Starting point for finding support | Choosing a type of construction work (waterproofing, insulation, windows, and so on) | A photo of the problem or plain words ("water is leaking from the ceiling") |
-| Role of photos | Checked by staff in the paid repair flow | AI classifies the problem type to find support programs |
-| Result | Eligible or not eligible | Programs that may apply, one by one, with reasons, sources, and reference dates |
-| Next step | In-house consultation and contractor matching | Counseling at the community service center (public connection) |
-
-Jipgyeol starts from the problem, so residents do not have to translate it into construction terms such as "waterproofing work". The app's screen flow is documented in [docs/related-services/drrk-2026-10-02](docs/related-services/drrk-2026-10-02/) (Korean screenshots).
-
-![Drrk app flow (captured 2026-10-02)](docs/related-services/drrk-2026-10-02/flow.png)
-
-## Built to be trusted
+### Built to be trusted
 
 **Showing why a program was suggested**
 - Each suggested program comes with the conditions behind it, for example "You may qualify because you own the house and it was built more than 20 years ago."
@@ -207,18 +183,60 @@ Jipgyeol starts from the problem, so residents do not have to translate it into 
 - Tenant households are told in advance that landlord consent may be required.
 - Residents outside the service area see a notice and are redirected to Bokjiro.
 
-## Counseling prep card
+## User flow
 
-On a program's detail screen, "Make card" creates a one-page card to take to the counseling desk. It can be saved or shared as an image, and it is stored on the device so it can be reopened from the home screen.
+The top row is the user screens, the bottom row is the server processing, and the arrows mark where external data comes in.
 
-| Item | Example |
+![Jipgyeol service flow: the screens Home, Household, Address, Searching, Results, Program detail, and Counseling card; the server steps problem-type classification, rule matching, recommendation, and validation; and where road-address, Kakao Local, building-register, and program data come in](docs/flow.svg)
+
+Each screen does one thing, and the user can go back a step at any point.
+
+| Screen | The one thing it does | When something fails |
+|---|---|---|
+| Home | Take a photo of the problem or pick one from the album (up to 3). Photos are shrunk and re-saved on the device first. The top bar has login, my info, and screen brightness (auto, light, dark); below it are the saved programs and counseling cards. | If the camera or album cannot be used, the app points to the other option. If a photo cannot be loaded, the user picks again. |
+| Household | Answer five simple questions: "How many people live together?", "About how much does your family earn per month in total?" (4 range buttons), "Do you receive the housing benefit?" (only when income is at or below 48%), "What kind of home do you live in?", and "Tap everything that applies". Every question has an "I'm not sure" option. If information was saved before, the app first asks "Start with your saved information?" | Unknown answers are fine; programs stay visible and the item is kept as something to check at counseling. |
+| Address | Find the address from the phone's location (GPS) and confirm "Is this the right address?", or type a road address and pick it. Once the address is set, the building age is looked up from the building register automatically. Unit number is optional. | If location permission is blocked or the address is not found, the screen switches to manual input. If the building-register lookup fails, it says "We'll check the year of completion at counseling". For an address outside Nowon-gu it shows a notice and points to Bokjiro, and the user can still continue. |
+| Searching | Sends the photo and answers to the server and waits. If it takes long, it says "This is taking a little longer". | Shows "We couldn't find anything right now" with [Try again] and [Call the community service center]. |
+| Results | First tells the user what problem the AI saw. If confidence is low it asks "This looks like a leak. Is that right?" ([Yes] or [No, let me choose]), and then lists programs by name and amount only. Selection buttons at the top (All, Can apply, Apply later, Needs checking) filter the list by application status. Programs left out can be viewed with reasons under "Look at other programs". | If the photo alone is unclear ("other"), the user picks the problem type from an illustrated list. If nothing matches, it says "We couldn't find anything with these conditions" and points to the community service center. On an error it shows [Try again] and [Call the community service center]. |
+| Program detail | Shows what is supported, the amount, who it is for (income, year of completion, area, other conditions), "why you may qualify", application status and period, how to apply, a phone number, what to check or prepare at counseling, source links, and the reference date. The bottom bar has save, make card, and call. | If a program has no phone number, the Wolgye 1-dong community service center number is shown instead. If the program cannot be found, a back button is shown. |
+| Counseling card | Makes a one-page card to bring to the counseling desk. It can be saved or shared as an image, and the user can call the application office directly. Created cards stay on the device. | If saving or sharing fails, the app suggests the other way. Leaving the card without saving an image shows a login prompt once (closing it continues; "Don't show again" is also available). |
+| Saved list on Home | Reopen saved programs and created cards. | When empty it says "No saved programs yet". |
+| My info | Edit and save the home location and household information, and change screen brightness. Login is optional, and Kakao login receives only the nickname. On logout the user chooses whether to keep or delete the saved programs and cards on the device. | If the upload to the server fails, the data is still saved on the device and the app says so. If the login has expired, it asks the user to log in again. |
+
+## Server processing flow
+
+The app sends the photos, household, address, and building information to `POST /analyze`, and the server (`server/services/analyze.py`) processes them in this order:
+
+1. **Problem-type classification.** The photo is classified into one of 8 fixed types (leak, mold, window draft/insulation, heating/boiler, plumbing/fixtures, safety, electric, other) with a confidence score. If confidence is below 0.7, or the type is "other", the response is marked as needing confirmation and the app shows the confirmation step. If the user picked the type themselves, classification is skipped.
+2. **Rule matching.** `server/services/matcher.py` compares the 14 programs with the household, address, and building and gives each condition a pass, unknown, or fail. One fail removes the program from the candidates (the reason is returned separately); an unknown keeps it as a "may qualify" candidate with a note on what to check at counseling. Only these rules decide the eligibility candidates. For example, an owner-occupier who receives the housing benefit is guided to Repair and Maintenance and removed from other repair programs.
+3. **Recommendation.** Among the remaining candidates, the order and a reason sentence are chosen. The default is the rule ranker (a score from problem-type match, application status, and so on, with template reasons). Depending on configuration, an LLM picks the order and a one-sentence reason from the candidates only. The LLM is given a JSON schema that forces the program id to be one of the candidate ids, so it cannot output a program outside the candidates, and it is never asked to judge eligibility. If the LLM ranker fails or times out, the rule ranker takes over and `fallbackUsed` is set in the response.
+4. **Validation.** `server/services/validator.py` checks the result. A candidate-external id, a duplicate, or a schema violation replaces the whole result with the rule ranker's. A reason sentence containing a forbidden word ("for sure", "without fail", "you qualify" in Korean) or a number not in the program data is replaced with a template, sentence by sentence. Status, application state, and items to check are always overwritten with the candidate's own values.
+5. **Response.** Returns the classification, whether confirmation is needed, the recommendations, free-checkup notices, excluded programs with reasons, and `version` (server git commit, rules and data hash, program reference date, classifier and ranker provider and model, confirmation threshold). Photos are not stored, and the operation log keeps only values such as type, confidence, counts, and timings.
+
+External data comes in as follows:
+
+| Data | Used for |
 |---|---|
-| Program | Program name, where to apply, phone number |
-| Application status | Apply anytime, application period to be checked, and so on |
-| Our home | Household size, monthly income range, housing benefit, owner or tenant, neighborhood, the year of completion, problem type (photo thumbnail) |
-| To check | Income criteria including assets, and other program-specific items |
+| Ministry of the Interior and Safety road address search API | Address search, legal-district code and lot number |
+| Kakao Local | Turning the phone's location (coordinates) into an address |
+| Ministry of Land, Infrastructure and Transport building register (Architecture HUB) | Year of completion (approval date), main use, floor counts |
+| `server/data/programs-2026.json` | Rule matching and all program information in the app (amounts, periods, phone numbers, sources) |
 
-The card does not include a name or detailed address, only the neighborhood. Printing and text-message delivery are under review.
+## Tech stack
+
+![Jipgyeol tech stack: app, server, external services, data and contracts, deployment and quality](docs/stack.svg)
+
+| Area | What we use |
+|---|---|
+| App | Expo (React Native, expo-router, TypeScript); web, Android, and iOS from one codebase |
+| Server | FastAPI (Python 3.12, Pydantic v2) |
+| AI | A multimodal model called through OpenRouter. It classifies a photo into a fixed problem type with a confidence score, and orders and explains the remaining candidate programs |
+| Public and external data | Ministry of the Interior and Safety road address search API, Ministry of Land, Infrastructure and Transport building register (Architecture HUB), Kakao Local (coordinates to address) and Kakao Login |
+| Own data | 14 support programs (`server/data/programs-2026.json`), problem types (`contracts/problem-types.json`), the standard median income table (`app/src/config/income-2026.ts`) |
+| Deployment | Web on Vercel, server on Render (Docker) |
+| Quality | Server pytest, app jest, web Playwright E2E, GitHub Actions CI (see "Tests and quality" below) |
+
+Every external integration (classifier, ranker, address, building register, login) sits behind an interface, so implementations can be swapped through settings.
 
 ## Easy mode (barrier-free)
 
@@ -265,22 +283,6 @@ We plan to run usability evaluations with Wolgye 1-dong residents to check wheth
 - **Running costs:** The main costs are AI calls for photo classification and updating program information and income thresholds, which change every year, once or twice a year.
 - **Benefits for the administration:** When residents arrive with a counseling prep card, counselors do not need to ask about every condition from scratch, which shortens counseling. Cases with no matching program are also filtered out in advance.
 
-## Tech stack
-
-![Jipgyeol tech stack: app, server, external services, data and contracts, deployment and quality](docs/stack.svg)
-
-| Area | What we use |
-|---|---|
-| App | Expo (React Native, expo-router, TypeScript); web, Android, and iOS from one codebase |
-| Server | FastAPI (Python 3.12, Pydantic v2) |
-| AI | A multimodal model called through OpenRouter. It classifies a photo into a fixed problem type with a confidence score, and orders and explains the remaining candidate programs |
-| Public and external data | Ministry of the Interior and Safety road address search API, Ministry of Land, Infrastructure and Transport building register (Architecture HUB), Kakao Local (coordinates to address) and Kakao Login |
-| Own data | 14 support programs (`server/data/programs-2026.json`), problem types (`contracts/problem-types.json`), the standard median income table (`app/src/config/income-2026.ts`) |
-| Deployment | Web on Vercel, server on Render (Docker) |
-| Quality | Server pytest, app jest, web Playwright E2E, GitHub Actions CI (see "Tests and quality" below) |
-
-Every external integration sits behind an interface. When an API key is empty, the server automatically uses a fake implementation (mock), and the `/health` response lists which parts are fake.
-
 ## Tests and quality
 
 These are the numbers we ran and checked on October 8, 2026. The web E2E was not run; its test files were counted instead.
@@ -289,7 +291,7 @@ These are the numbers we ran and checked on October 8, 2026. The web E2E was not
 |---|---|---|---|
 | Server | pytest | 164 passed, 7 skipped | Rule-table tests (`test_matcher.py` with `server/eval/matcher_cases.yaml`), ranker and validator, classifier/address/building, auth, rate limits, API contract tests. The 7 skipped are real-integration checks (`tests/smoke`) that need real keys |
 | App | jest | 80 passed (11 files) | Income range calculation, household logic, photo processing, card building, result-row assembly, program detail, storage, login, design-token contrast |
-| Web E2E | Playwright | 16 (11 against the mock API, 5 against the real server in fake mode) | Full run from Home to the counseling card (light and dark), location permission denied then manual input, confirmation step, "other", empty result, error screen, login and my info |
+| Web E2E | Playwright | 16 | Full run from Home to the counseling card (light and dark), location permission denied then manual input, confirmation step, "other", empty result, error screen, login and my info |
 
 - GitHub Actions: the server runs `ruff check` and `pytest`; the app runs `tsc --noEmit`, `eslint`, `jest`, and a web export; a separate workflow runs the web E2E.
 - App checks run together with `npx tsc --noEmit && npx eslint . && npx jest`.
@@ -319,13 +321,13 @@ These are the numbers we ran and checked on October 8, 2026. The web E2E was not
 cd server
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env            # leave keys empty to run in fake (mock) mode
+cp .env.example .env            # fill in the keys
 uvicorn main:app --reload --port 8000
 pytest -q                       # rule-table tests and contract tests
 pytest -q tests/smoke -rs       # real-integration checks after adding keys (skipped without keys)
 ```
 
-`server/.env.example` lists only the variable names: photo classification (`OPENROUTER_*`), addresses (`JUSO_API_KEY`, `KAKAO_REST_KEY`), the building register (`BLDG_API_KEY`), and Kakao Login (`KAKAO_CLIENT_SECRET`, `APP_TOKEN_SECRET`). `.env` files and keys are never committed. While the server runs, `http://localhost:8000/health` shows which parts are fake.
+`server/.env.example` lists only the variable names: photo classification (`OPENROUTER_*`), addresses (`JUSO_API_KEY`, `KAKAO_REST_KEY`), the building register (`BLDG_API_KEY`), and Kakao Login (`KAKAO_CLIENT_SECRET`, `APP_TOKEN_SECRET`). `.env` files and keys are never committed. While the server runs, `http://localhost:8000/health` shows its status and version information.
 
 ### App
 
@@ -339,7 +341,6 @@ npm run e2e                     # web E2E (includes the build)
 ```
 
 - To reach the server on your PC from a phone (Expo Go), use the PC's LAN IP instead of `localhost`.
-- To view screens without a server, run with `EXPO_PUBLIC_USE_MOCK_API=1`.
 - Camera and location work on the web only over HTTPS or localhost.
 - Kakao only redirects back to `http(s)` addresses, so the app returns through a web address (`EXPO_PUBLIC_AUTH_WEB_BASE`) to get back into the app.
 
@@ -365,7 +366,7 @@ app/                          Expo app (web, Android, iOS)
   src/
     config/                   copy (copy.ts), income table (income-2026.ts), problem types
     features/                 auth, cards, household, location, photo, profile, programs
-    services/                 API (real and mock), local storage, screen capture
+    services/                 API, local storage, screen capture
     store/                    screen-flow state
     ui/                       design tokens (tokens.ts), theme, shared parts
   e2e/                        web E2E (Playwright)
@@ -379,7 +380,7 @@ server/                       FastAPI server
     matcher.py                rule matching
     validator.py              recommendation validation
     analyze.py                /analyze processing order
-    classifier/               classifier (OpenRouter, fake)
+    classifier/               classifier (OpenRouter)
     ranker/                   ranker (LLM, rules)
     address.py building.py    address, building register
     kakao_auth.py             Kakao login
