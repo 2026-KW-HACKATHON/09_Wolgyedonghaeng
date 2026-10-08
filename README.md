@@ -394,6 +394,36 @@ docs/                         지원사업 조사 자료, 서비스 흐름 그�
 render.yaml                   서버 배포 설정
 ```
 
+## 오픈소스와 데이터 출처
+
+### 오픈소스
+
+이 프로젝트의 코드는 AGPL-3.0-only이고, 아래 오픈소스를 라이선스를 지켜 사용합니다. 전체 의존 목록은 `app/package.json`, `server/requirements.txt`에 있고, 각 라이선스는 해당 프로젝트의 저장소를 따릅니다.
+
+| 이름 | 라이선스 | 쓰는 곳 |
+|---|---|---|
+| Expo, React Native, expo-router와 Expo SDK 패키지 | MIT | 앱 전체 |
+| React, react-native-web, react-native-svg, zustand | MIT | 화면, 웹 실행, 도식과 아이콘, 상태 관리 |
+| FastAPI, Pydantic | MIT | 서버 |
+| Uvicorn, httpx | BSD-3-Clause | 서버 실행, 외부 API 호출 |
+| PyYAML | MIT | 규칙 표 테스트 데이터 읽기 |
+| Pretendard | SIL Open Font License 1.1 | 앱의 모든 글자. 라이선스 전문은 `app/assets/fonts/Pretendard-LICENSE.txt` |
+| Feather 아이콘 (전화 모양) | MIT | 사업 상세의 전화 버튼 |
+| pytest, Jest, Playwright, ruff | MIT, MIT, Apache-2.0, MIT | 테스트와 코드 검사 |
+
+### 데이터와 외부 서비스
+
+| 출처 | 쓰는 곳 |
+|---|---|
+| 행정안전부 도로명주소 검색 API | 주소 검색, 법정동코드와 번지 |
+| 국토교통부 건축HUB 건축물대장정보 (공공데이터포털) | 집을 다 지은 해, 주택 용도 |
+| 카카오 로컬, 카카오 로그인 | 좌표를 주소로 바꾸기, 선택 로그인 (카카오 API 이용약관) |
+| OpenRouter | 사진 분류와 추천에 쓰는 AI 모델 호출 |
+| 국토교통부, 한국토지주택공사, 서울특별시, 노원구, 한국에너지재단, 국토안전관리원의 사업 공고 | 지원사업 14개의 내용. 사업별 출처 링크와 정보 기준일은 `server/data/programs-2026.json`에 있습니다 |
+| 보건복지부 고시 (2026년 기준 중위소득) | 소득 구간 금액 |
+
+비교를 위해 인용한 다른 서비스의 캡처(`docs/related-services/`)는 해당 운영사에 저작권이 있으며, 이 프로젝트의 라이선스 대상이 아닙니다.
+
 ## 팀 월계동행
 
 | 역할 | 이름 |

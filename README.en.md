@@ -394,6 +394,36 @@ docs/                         program research, service flow diagram (flow.svg),
 render.yaml                   server deployment config
 ```
 
+## Open source and data sources
+
+### Open source
+
+The code in this project is AGPL-3.0-only and uses the open-source software below in accordance with their licenses. The full dependency lists are in `app/package.json` and `server/requirements.txt`; each license follows the respective project's repository.
+
+| Name | License | Used for |
+|---|---|---|
+| Expo, React Native, expo-router, and Expo SDK packages | MIT | The whole app |
+| React, react-native-web, react-native-svg, zustand | MIT | Screens, running on the web, graphics and icons, state management |
+| FastAPI, Pydantic | MIT | Server |
+| Uvicorn, httpx | BSD-3-Clause | Running the server, calling external APIs |
+| PyYAML | MIT | Reading rule-table test data |
+| Pretendard | SIL Open Font License 1.1 | All text in the app. Full license text in `app/assets/fonts/Pretendard-LICENSE.txt` |
+| Feather icons (phone shape) | MIT | The phone button on the program detail screen |
+| pytest, Jest, Playwright, ruff | MIT, MIT, Apache-2.0, MIT | Testing and code checks |
+
+### Data and external services
+
+| Source | Used for |
+|---|---|
+| Ministry of the Interior and Safety road address search API | Address search, legal-dong code and lot number |
+| Ministry of Land, Infrastructure and Transport Architecture HUB building register (Public Data Portal) | The year the house was finished, building use |
+| Kakao Local and Kakao Login | Converting coordinates to an address, optional login (Kakao API terms of use) |
+| OpenRouter | Calling the AI model used for photo classification and recommendations |
+| Program announcements from the Ministry of Land, Infrastructure and Transport, Korea Land and Housing Corporation, Seoul Metropolitan Government, Nowon-gu, Korea Energy Foundation, and Korea Authority of Land and Infrastructure Safety | The content of the 14 support programs. Source links and the reference date for each program are in `server/data/programs-2026.json` |
+| Ministry of Health and Welfare notice (2026 standard median income) | Income bracket amounts |
+
+Screenshots of other services quoted for comparison (`docs/related-services/`) are copyright of their operators and are not covered by this project's licenses.
+
 ## Team Wolgyedonghaeng
 
 | Role | Name |
